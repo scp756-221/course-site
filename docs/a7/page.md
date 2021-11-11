@@ -1,10 +1,3 @@
----
-title: Exercise 5: Examining system state with Grafana
-style:
-  background: red
-
----
-
 ## Introduction: our system architecture
 
 
