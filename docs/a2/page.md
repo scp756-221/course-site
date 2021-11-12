@@ -1,9 +1,3 @@
----
-title: Exercise 1A: Cloud Credits
-style:
-  background: red
----
-
 ## Introduction
 
 You will be exercising a few cloud providers within this course using educational or

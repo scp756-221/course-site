@@ -1,9 +1,3 @@
----
-title: Exercise 4: kubernetes & friends
-style:
-  background: red
----
-
 ## Introduction
 
 **Please refer to the [Exercise 4 FAQ](https://docs.google.com/document/d/1xXuSCJCHU_l0moMviQu_DlPgcj2qFJN4z6a7-MJt5dY/edit?usp=sharing) for up-to-date answers on common problems. I will update them continually as new information rolls in.**

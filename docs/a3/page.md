@@ -1,9 +1,3 @@
----
-title: Exercise 3: CloudFormation and Getting Started with Containers
-style:
-  background: red
----
-
 ## Introduction
 
 **Please refer to the [Exercise 3 FAQ](https://docs.google.com/document/d/1A5-n71llg8PMa_l7O5BG0_kU-A6xGIHLgnsjbLd3emw/edit?usp=sharing) for up-to-date answers on common problems. I will update them continually as new information rolls in.**

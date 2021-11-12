@@ -1,9 +1,3 @@
----
-title: Assignment 2/2
-style:
-  background: red
----
-
 ## Introduction
 
 In this assignment you will explore the range of speedups enabled by

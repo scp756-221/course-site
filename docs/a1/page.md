@@ -1,9 +1,3 @@
----
-title: Exercise 1: Dev tools & cloud
-style:
-  background: red
----
-
 ## Introduction
 
 This exercise sets up a development environment on your Windows, MacOS or Linux laptop/desktop for the remainder of the course. You will be using a mix of Azure and AWS.

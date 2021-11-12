@@ -1,9 +1,3 @@
----
-title: Exercise 7: Service mesh with Istio and Kiali
-style:
-  background: red
----
-
 ## Introduction
 
 In the last exercises, you used Prometheus and Grafana to gather and
