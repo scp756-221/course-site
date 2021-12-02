@@ -10,8 +10,8 @@ Even though you already have an AWS userid you may not have set up all
 the features we need for this course:
 
 * AWS root user
-* IAM administrative user
-* At least one EC2 key pair
+* IAM administrative user (& key pair)
+* EC2 ssh key pair
 * Budget alert
 
 If you have not already set up any of these, skip to the
@@ -61,13 +61,13 @@ Finally, you need an access key pair for this IAM administrative user. Follow Am
 
 
 
-## Create an EC2 key pair
+## Create an EC2 ssh key pair
 
 You will also need an EC2 key pair for SSHing into the master node of
-your EMR Spark cluster.
+your EMR Spark cluster. 
 
-**Perform this step on a private computer, not a publicly-shared
-  machine. You will be downloading a private key that will serve as
+**Perform this step on a private computer (e.g., your personal laptop), not a publicly-shared
+  machine (e.g., a CSIL workstation). You will be downloading a private key that will serve as
   your identification to AWS machine instances.**
 
 1. Sign on using your IAM administrative user.
@@ -92,15 +92,14 @@ your EMR Spark cluster.
 
 On your machine, do the following:
 
-1. Create a directory for storing AWS keys. Set the access modes so
+1. Choose a location to store your private key. You can either create a directory for storing this or use ssh's default hidden directory (~/.ssh). If you choose to create a directory, set the access modes so
    that only you have access. In Linux/macOS, the command is
 
    ~~~
    chmod go-rwx <DIRNAME>
    ~~~
 
-2. Move the key file from the download directory to the directory you
-   just created.
+2. Move the key file from the download directory to your chosen directory location.
 3. Set the access modes on the key file so that only you have access.
 4. Set the access modes on the key file so that even you cannot
    modify it. In Linux/macOS, the command is
@@ -115,11 +114,11 @@ getting nasty surprises on your credit card bill.
 ## Set a budget alert
 
 In this final step, you will set up an alert so that AWS emails you
-whenever your monthly bill has gone above a specified limit.  We
-suggest a limit of $20 US but you can set any value you find
+whenever your monthly bill has gone above a specified limit. Note that AWS bills in USD though its dashboard does perform dynamic currency conversion to show an approximation of your charge in the local currency. (The charge to your credit card remains in USD though.) We
+suggest a limit of USD20 but you can set any value you find
 comfortable.  These alerts are useful if you forget to turn a service
 off and leave it running&mdash;AWS will alert you that you're racking
-up unexpected charges.
+up unexpected charges. There are also mobile apps (for [iOS](https://apps.apple.com/us/app/aws-console/id580990573) and [Android](https://play.google.com/store/apps/details?id=com.amazon.aws.console.mobile&hl=en_US)) to monitor and manage EC2 and S3. (The app only manages a subset of AWS services.)
 
 0. Sign on using your IAM administrative user.
 1. Type `budget` in the service search bar at the top of the page.
