@@ -1,15 +1,4 @@
-![Image Description](images/dave-hoefler-vl2uAIdBWJ8-unsplash.jpg ':class=banner-image')
+# Week 7 (Feb 20-26): Reading Break
 
-# Module Title
 
-## Content Header
-Module content here.
-
-## Content Header
-Module content here.
-
-## Content Header  
-Module content here.
-
-## Content Header
-Module content here.
+## No class
