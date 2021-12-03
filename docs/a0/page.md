@@ -1,8 +1,23 @@
-# Introduction
+## Creating userids for GitHub and Amazon Web Services (AWS)
 
-This exercise sets up your cloud accounts on AWS and Azure.
+This assignment guides you through the signup process for GitHub and
+AWS.
 
-# Amazon Web Services
+You will need a GitHub userid to complete the Week&nbsp;1 assignment.
+
+You will need an AWS userid to complete the Week&nbsp;2 assignment.
+
+## Do you already have a GitHub id?
+
+Even though you already have a GitHub userid you may not have set up all
+the features we need for this course:
+
+* GitHub Education
+* GitHub container registry
+* Container registry personal access token
+
+If you have not already set up any of these, skip to the
+appropriate section below.
 
 ## Do you already have an AWS id?
 
@@ -10,12 +25,49 @@ Even though you already have an AWS userid you may not have set up all
 the features we need for this course:
 
 * AWS root user
-* IAM administrative user (& key pair)
-* EC2 ssh key pair
+* IAM administrative user with an active access key
+* At least one ssh key pair for EC2
 * Budget alert
 
 If you have not already set up any of these, skip to the
 appropriate section below.
+
+---
+
+## Sign up for GitHub
+
+We will be using GitHub for a number of purposes:
+
+1. Distribution of and/or grading of various homeworks (including the term project).
+2. Collaboration with team members (including your term project).
+3. Hosting container images.
+
+### Create a GitHub account
+
+1. If you do not have a GitHub account,
+   [create one](https://github.com/join).  We *strongly recommend* setting
+   up Multi-Factor-Authentication (MFA) for this account.
+2. [Configure your Git command-line client](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration).
+3. If you have Multi-Factor Authentication (MFA) for your GitHub account, 
+   [configure your command-line for Github.com with MFA](https://docs.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication).
+
+### Join GitHub Education
+
+Sign up for [GitHub Education](https://education.github.com/students).
+Start with 'Get benefits for students'.
+
+### Activate GitHub Container Registry
+
+[Activate the GitHub Container Registry](https://docs.github.com/en/free-pro-team@latest/packages/guides/enabling-improved-container-support)
+for your GitHub userid.
+
+### Generate a GitHub access token
+
+The final step of setting you GitHub account, generating an access
+token, will be done in Assignment&nbsp;1, as it requires some
+tooling that will be installed in that Assignment.
+
+---
 
 ## Sign up for AWS
 
@@ -23,7 +75,8 @@ If you do not already have an AWS account, go to
 [aws.amazon.com](https://aws.amazon.com/) and click `Create an AWS
 Account`.  You will need a credit card number to complete the
 process. Note that AWS accepts prepaid credit cards, if you do not
-have a Canadian credit card.
+have a Canadian credit card. Prepaid credit cards are also a great way
+to ensure an absolute maximum to your AWS charges for the semester.
 
 See
 [How do I create and activate a new AWS account?](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/)
@@ -54,17 +107,19 @@ Follow Amazon's instructions for
   [Multi Factor Authentication (MFA)](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html)
   on your IAM administrative account.**
 
-### Create an access key pair 
+### Create an access key 
 
-Finally, you need an access key pair for this IAM administrative user. Follow Amazon's instructions to
-[create an access key pair](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html). This key pair will be used with the AWS CLI. Refer to this [gist](https://gist.github.com/overcoil/4d0bf31d8a9c8f4ec6f58b2bd289668f) to configure your AWS CLI. (Creating the second profile "root" for your root AWS account is optional.)
+Finally, you need an access key for this IAM administrative
+user. Follow Amazon's instructions to
+[create an access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html). This
+key will be used with the AWS command-line interface. Refer to this
+[gist to configure Amazon command-line](https://gist.github.com/overcoil/4d0bf31d8a9c8f4ec6f58b2bd289668f). (Creating
+the second profile "root" for your root AWS account is optional.)
 
+## Create an ssh key pair for EC2
 
-
-## Create an EC2 ssh key pair
-
-You will also need an EC2 key pair for SSHing into the master node of
-your EMR Spark cluster. 
+You will also need a key pair for SSHing into Amazon EC2 virtual
+machine instances.
 
 **Perform this step on a private computer (e.g., your personal laptop), not a publicly-shared
   machine (e.g., a CSIL workstation). You will be downloading a private key that will serve as
@@ -114,11 +169,20 @@ getting nasty surprises on your credit card bill.
 ## Set a budget alert
 
 In this final step, you will set up an alert so that AWS emails you
-whenever your monthly bill has gone above a specified limit. Note that AWS bills in USD though its dashboard does perform dynamic currency conversion to show an approximation of your charge in the local currency. (The charge to your credit card remains in USD though.) We
-suggest a limit of USD20 but you can set any value you find
-comfortable.  These alerts are useful if you forget to turn a service
-off and leave it running&mdash;AWS will alert you that you're racking
-up unexpected charges. There are also mobile apps (for [iOS](https://apps.apple.com/us/app/aws-console/id580990573) and [Android](https://play.google.com/store/apps/details?id=com.amazon.aws.console.mobile&hl=en_US)) to monitor and manage EC2 and S3. (The app only manages a subset of AWS services.)
+henever your monthly bill has gone above a specified limit. Note that
+AWS bills in US dollars though its dashboard does perform dynamic currency
+conversion to show an approximation of your charge in the local
+currency. (The charge to your credit card remains in US dollars, though.) We
+suggest a limit of $20 US but you can set any value you find
+comfortable. These alerts are useful if you forget to turn a service
+off and leave it running or if a hacker gains access to your
+account&mdash;AWS will alert you that you're racking up unexpected
+charges.
+
+There are also mobile apps (for
+[iOS](https://apps.apple.com/us/app/aws-console/id580990573) and
+[Android](https://play.google.com/store/apps/details?id=com.amazon.aws.console.mobile&hl=en_US))
+to monitor and manage EC2 and some (but not all) other AWS services.
 
 0. Sign on using your IAM administrative user.
 1. Type `budget` in the service search bar at the top of the page.
@@ -150,28 +214,20 @@ up unexpected charges. There are also mobile apps (for [iOS](https://apps.apple.
 8. In the "Review" step"
    * Review your settings and if correct, click `Create budget`.
 
-   * If you'd like you can set multiple levels of budget alerts. For this assignment, you are required to set at least one.
+If you'd like you can set multiple levels of budget alerts. We ask
+that you set at least one.
 
+---
 
-<img src="./AWS-IAM-id-with-budget.png" alt="Screen shot of budget set for IAM administrative userid" width="800"/>
+## Submission
 
-
-# Microsoft Azure
-
-Refer to the short [gist](https://gist.github.com/overcoil/63f5131fd81a5b8810dcc4374d5e73e0) on setting up your Azure acount. You will be using Azure sparingly in this course so the setup is barebone.
-
-
-# Google Cloud Platform
-
-I have left the setup for GCP as an exercise at this time.
-
-
-# Submission
+BLERG GitHub userid?
 
 Take a screen shot of your Budgets Overview. Your screen shot should
 include both the budget and the IAM userid in the top right corner, as
 highlighted in the following screen shot.  You do not need to add the
 highlights to your screen shot.
 
+<img src="./AWS-IAM-id-with-budget.png/view" alt="Screen shot of budget set for IAM administrative userid" width="800"/>
 
-Submit your screen shot to [Assignment 0](http://www.sfu.ca).
+Submit your screen shot to BLERG

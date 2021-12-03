@@ -1,5 +1,7 @@
 ## Introduction
 
+BLERG See [here](https://dzone.com/articles/container-registriesa-battle-royale) for an introduction to container registries.
+
 **Please refer to the [Exercise 3 FAQ](https://docs.google.com/document/d/1A5-n71llg8PMa_l7O5BG0_kU-A6xGIHLgnsjbLd3emw/edit?usp=sharing) for up-to-date answers on common problems. I will update them continually as new information rolls in.**
 
 This exercise continues from where you left off with AWS a few weeks ago. This exercise introduces a simple containerized micro-services application featuring a `User` table and a `Music` table. The application is

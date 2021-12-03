@@ -1,177 +1,561 @@
 ## Introduction
 
-This exercise sets up a development environment on your Windows, MacOS or Linux laptop/desktop for the remainder of the course. You will be using a mix of Azure and AWS.
+This assignment comprises two parts. First, you will set up a
+development environment on your Windows, macOS or Linux
+laptop/desktop. This will require the installation of several large
+software products, which will take some time. However, this is the
+only assignment that requires large installations and the tools you
+install this week will be used throughout the course.
 
-Upon completing this exercise, you will be ready to handle subsequent exercises and your term project.
+Second, after completing the installations, you will use the installed
+software to run and modify a simple application.
 
-**Please refer to the [Exercise 1 FAQ](https://docs.google.com/document/d/119mmEvvFgcXfsjlZNdnYlXGevLKkXYqK8fCN_t4tPIo/edit?usp=sharing) and [Exercise 1A FAQ](https://docs.google.com/document/d/1ln8JYxFjnpaT5IdrAmKlfgIRaQonj1BGqTbycz-ciEs/edit?usp=sharing) for up-to-date answers on common problems. I will update them continually as new information rolls in.**
+**This assignment has two prerequisites:**
+
+**1. You must have set up a GitHub userid and joined GitHub
+Education---see the instructions for this in the first half of
+Assignment&nbsp;0.**
+
+**2. You will need access to a high-bandwidth Internet connection for
+rapid download of the large installation files.**
+
+## Part 1: Install tools
+
+You will need to setup the appropriate tools on the machine you plan
+to use for this course's assignments and term project. The heavy
+lifting will be typically on the cloud side (AWS or other services)
+but you will need a certain amount of tooling on your computer to
+operate the cloud.
+
+**If you have less than 8GB of RAM on your home machine**, please use the MPCS
+lab in Blusson Hall for the course exercises. Contact the instructor
+for instructions.
+
+### Visual Studio Code (VSC)
+
+We will standardize on
+[Visual Studio Code](https://code.visualstudio.com/) (VSC) for this
+semester. Install the version for your operating system.
+
+A good text editor raises your productivity significantly with syntax
+highlighting, syntax validation/hinting, support for multiple
+files/source trees, integration with version control (Git) and
+numerous other creature comforts. **Do not skip this step.**
+
+### Git
+
+Install Git per
+[the Git community's instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+In many environments (e.g., macOS), Git comes pre-installed; check.
+
+Install [GitHub Desktop](https://desktop.github.com/) as well to
+complement the command-line Git.
+
+We have
+[a course Git summary](https://canvas.sfu.ca/files/13170454/download?download_frd=1).
+(Additional tutorials at
+[DZone Git reference card](https://dzone.com/refcardz/getting-started-git)
+and
+[Matt Harrison's supervisual Git cheatsheet](https://github.com/mattharrison/Git-Supervisual-Cheatsheet/blob/master/gitcheat.png).)
+
+### Docker
+
+Install Docker (available for all systems) and Docker Desktop (if
+available--only for macOS and Windows) from
+[docker.com](https://docs.docker.com/get-docker/).
+
+### The course code repository
+
+**You must have successfully installed Git before starting this
+step.**
+
+**You must have a GitHub userid (see the first part of
+Assignment&nbsp;0) before starting this step.**
+
+All code for the course is in a single code repository, available as a
+template on GitHub.
+
+1. Sign in to GitHub using your userid.
+2. Go to the
+   [`scp756-221/c756-exer` page](https://github.com/scp756-221/c756-exer).
+
+3. Click the `Use this template` button.
+
+4. Fill in the dialogue fields:
+
+   * **Repository name: `c756-exer`**
+   * Description: CMPT 756 course code
+   * Choose "Private" rather than "Public"
+   * Do not check "Include all branches"
+
+5. Click `Create repository from template`.
+
+### The course tools container
+
+**You must have successfully installed Docker before starting this
+step.**
+
+The repository that you just cloned contains the sample and starter
+code for the course assignments. In addition to this code, you
+also need the *course tools*, a Linux command line with all the software
+required for this course. We have packaged these tools as a container.
+You will explore containers and Docker in detail in Assignment&nbsp;3.
+For Assignments&nbsp;1 and 2, you will just call Docker from scripts.
+
+You do not explicitly download or install a container. Instead, you
+run it and if the container *image* (we will clarify this term in
+Assignment&nbsp;3) is not yet downloaded to your machine, Docker will
+first download it. Once the image has been downloaded, Docker will
+retain it in a cache and you will not need to download it the next
+time you run it.
+
+#### Running the course tools container
+
+The tools container is a Linux command-line with a suite of Linux
+commands. Regardless of your machine's operating system,
+most of the commands and scripts you run in this course will be run in
+a Linux environment overlaid on your own operating system.
+
+We can describe the system using the following table:
+
+<table>
+<thead>
+<th>Layer Name</th><th>Location</th><th>OS</th><th>Prompt</th>
+<thead>
+<tbody>
+<tr>
+<td>Guest OS</td><td>Container</td><td>Linux</td><td><code>.../home/k8s...#</code></td>
+</tr>
+<tr>
+<td>Host OS</td><td>Actual machine</td><td>Windows/macOS/Linux/...</td><td><code>... $</code></td>
+</tr>
+</tbody>
+</table>
+
+The `...` in the prompts indicates other information that may appear
+in the prompt prefix.  When we write sample code for you to run in the
+shell, we will simply indicate which operating system to run them in
+by the appropriate suffix: `/home/k8s#` indicates the Guest OS, while
+`$` indicates the Host OS.
+
+We'll get into more details of the above structure in
+Assignment&nbsp;3 but for now this is enough to start.
+
+A final, crucial point about running the course tools container: **The
+current directory must always be the `c756-exer/e-k8s` subdirectory of
+the course code repository when you run it.**
+
+You start the container by running `tools/shell.sh`:
+
+(Note: As this is the first time you will have run the container, its image
+will have to be downloaded. This will be indicated by a message that
+Docker could not find the image locally. As the image is over 2 GiB, it can
+take several minutes to download and expand. This will not happen with
+later invocations, as the image will already be downloaded and remain
+cached on your machine.)
+
+~~~bash
+# Use whatever path you need to get to this directory
+$ cd c756-exer/e-k8s
+$ tools/shell.sh
+...
+Unable to find image 'ghcr.io/scp756-221/c756-tool:...' locally
+...
+/home/k8s# 
+~~~
+
+The `...` sequences in the above indicate passages that will vary with
+your execution.
+
+If the tools container starts up completely, exit it and return to
+the command line of the Host OS:
+
+~~~bash
+/home/k8s# exit
+$
+~~~
+
+There are two exceptions, tools that you run in your Host OS rather
+than from inside the tools container. Both work with source code:
+
+* Visual Studio Code, which you will use to edit source code and YAML
+  files.
+* Git, which you will use to commit source code changes to version control.
 
 
+### Entering your template parameters
 
-## 1. Client tools
+Some of the files in the course repository `c756-exer` are templates,
+generic code that will be instantiated with values specific to youre
+use.  All the files controlling this process are in the directory
+`c756-exer/e-k8s/cluster`. In that directory, we have provided a file
+named `tpl-vars-blank.txt`.
 
-You will need to setup the appropriate tools on the machine you plan to use for this course's exercise, assignments, and project. The heavy lifting will be typically on the cloud side (AWS or Azure) but you will need a certain amount of tooling on your computer to operate the cloud.
+1. In your Host OS, make a copy of `tpl-vars-blank.txt` named
+   `tpl-vars.txt`, in the same directory.
+2. In Visual Studio Code, edit `tpl-vars.txt`:
 
-The submission for this exercise will comprise the version information for these software. (Copy and paste the entire terminal output.) In your submission document, be sure to indicate which platform you used for this exercise in the top box. If you are using a CSIL lab machine for this exercise, most of the packages are installed already. You will still need to configure your account/access.
+   * On the line starting `ZZ-REG-ID=`, append your GitHub userid. For
+     example, if your userid were `div_by_0`, the line would become
+	 `ZZ-REG-ID=div_by_0`. Note that there are **no spaces around the
+	 `=` sign**.
+   * If you have completed your AWS signon, enter your IAM
+     administrative user's access key ID and key value in the
+	 appropriate lines. If you have not completed yoru AWS signon yet,
+	 you can do that next week.
+3. Save the file.
 
-Note that section 1 is the installation; in many case, you will continue with configuration in section 2.
+Next you need to instantiate every template file.  In the tools
+container, run this command:
 
+~~~bash
+/home/k8s# make -f k8s-tpl.mak templates
+tools/process-templates.sh
+/home/k8s#
+~~~
 
-### 1.1 Editor
+**SECURITY NOTE:** (This really should be in blinking red text.) The
+`cluster` directory and all its files should be treated with extreme
+care:
 
-If you are not already using a GUI text editor, install [Atom](https://atom.io/). Other good choices include [Sublime Text](https://www.sublimetext.com/) and [Visual Studio Code](https://code.visualstudio.com/).
+* Do not copy any of its files outside the directory.
+* The directory should be only readable by you.
+* Do not remove any lines from its `.gitignore` file.
+* Do not create any other files in this directory.
+* Do not display any of these files on your terminal using programs such
+  as `cat`. If you want to review their contents, do so in an editor
+  such as Visual Studio Code or `vi` (available in the tools
+  container).
 
-A good text editor raises your productivity significantly with syntax highlighting, syntax validation/hinting, support for multiple files/source trees, integration with version control (git) and numerous other creature comforts. **Do not skip this step.**
+**Your AWS access key is essentially your credit card number---without
+requiring a date or CVV security code.  Treat any file containing it
+as you would a file with your credit card data in plain text.**
 
-### 1.2 Package Manager
+### GitHub access token
 
-If you are not already using a package manager, install the appropriate one for your environment.
+[Create a personal access token (PAT)](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
+for your GitHub account. You will need the three scopes:
+`read:packages`, `write:packages` and `delete:packages`. For increased
+security, we recommend setting a token expiration date so that the
+token becomes unusable a few weeks after this course ends.
 
-| Platform     | Package Manager     |
-| :------------- | :------------- |
-| Windows (10+) | [Chocolately](https://chocolatey.org/)       |
-| MacOS | [Homebrew](https://brew.sh/) |
-| Linux | Take your pick per your distro |
+Save your token in the file
+`c756-exer/e-k8s/cluster/ghcr.io-token.txt`. (To repeat: The `cluster`
+directory is where we place all secure files.)
 
-You will use the corresponding package manager to simplify the install of subsequent packages.
+### Make `cluster` only accessible to you
 
-### 1.3 git
+For security, ensure that the `cluster` directory's
+permissions prohibit anyone else from accessing its files.
 
-Install git per [the git community's instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git). In many environments (e.g., MacOS), git comes pre-installed; check.
+In the tools container:
 
-Install [Github Desktop](https://desktop.github.com/) too to complement the CLI git.
+~~~bash
+/home/k8s# chmod go-rwx cluster
+/home/k8s# chmod go-rwx cluster/*
+~~~
 
-See [here](https://canvas.sfu.ca/files/13170454/download?download_frd=1) for a git cheatsheet. (Additional tutorial at [DZone](https://dzone.com/refcardz/getting-started-git) and a [supervisual cheatsheet by Matt Harrison](https://github.com/mattharrison/Git-Supervisual-Cheatsheet/blob/master/gitcheat.png).)
+### End of installation---possible break time
 
-### 1.4 Docker
+This concludes the installation part of this assignment. You are
+welcome to take a break before starting Part&nbsp;2. The second part
+will not make heavy use of the Internet, so you do not need
+high-bandwidth access.
 
-Install docker & Docker Desktop from [docker.com](https://docs.docker.com/get-docker/). If you have less than 8GB of RAM on your laptop, please upgrade. The alternative is to use CSIL/Blusson.
+## Part 2: Running a simple application
 
-### 1.5 AWS
+In this second part, you will run and modify a simple client-server
+application.  The coding you do will be simple; the point of this
+exercise is to gain familiarity with the tools and applications that
+you will be using for the rest of the course.
 
-Install the AWS CLI per [Amazon's instruction](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
+### The music client-server application
 
-Continue with [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html).
+Cloud-based systems, a main topic of this course, make heavy use of
+client-server designs. In this assignment, we will look at the
+simplest possible form of such a design, with both components running
+on your computer. In future assignments, we will move the server
+component further away, until in Assignment&nbsp;4 it will run in
+the cloud, on AWS under Kubernetes.
 
-### 1.6 Microsoft Azure
+The foundation of client/server designs is a separation of concerns.
+The server provides a *service*, accessed by a standard Application
+Programming Interface (API). The client provides a more intelligible
+interface, customized to the needs of the user:
 
-Install the Azure CLI per [Microsoft's instruction](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+<table>
+<thead>
+<th>Component</th><th>Code</th><th>Location</th><th>Persistent state?</th><th>Instances</th>
+<thead>
+<tbody>
+<tr>
+<td>Client</td><td>Simple</td><td>Local</td><td>No</td><td>Multiple</td>
+</tr>
+<tr>
+<td>Server</td><td>Complex</td><td>Remote</td><td>Yes</td><td>Single</td>
+</tr>
+</tbody>
+</table>
 
-### 1.7 Google Cloud Platform
+The above table describes this simple first application. In future
+lectures and assignments, we will consider much more complicated
+combinations. In particular, a *server* offering a higher-level
+service will often also be a *client* calling another server that
+provides a lower-level service.
 
-Install the gcloud CLI per [Google's instruction](https://cloud.google.com/sdk/docs/install)
+For now though, the above table describes our simple system.
 
-### 1.8 Kubernetes & friends
+### The simple music service
 
-Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and [k9s](https://k9scli.io/).
+For the first few assignments, the client and server will implement a
+simple music service, listing songs and the artists that perform them.
+The actual music will not be stored, only the metadata. Every song
+will be identified by a system-defined universal ID such as
+`6ecfafd0-8a35-4af6-a9e2-cbd79b3abeea`, designed to have a very high
+probability of being unique. The probability of duplication is so low
+in fact that we shall ignore it and assume these IDs are genuinely
+unique.
 
+(You may be wondering, "Why not generate IDs *guaranteed* to be
+unique? Why resort to all this probabilistic stuff?" The short answer
+is that although this would be easy for the simple service in this
+assignment, guaranteeing uniqueness can incur severe inefficiencies in
+high-volume cloud systems. The details will be covered in later
+lectures.)
 
-### 1.9 istio
+The music service supports three basic operations: create, read, and
+delete. The system does *not* support update. In typical use, the
+service will simply accumulate song/artists as new music is released.
 
-Install istioctl per [the istio community's instructions](https://istio.io/latest/docs/ops/diagnostic-tools/istioctl/). Note that you do not need to install the entire istio package; just istioctl will suffice.
+The server accepts requests as specially-formatted HTTP requests.
+These are awkward for human users, so we provide a client implementing
+a simple command-line query interface.
 
-Important: the ``export`` statement needs to be added to your ``.bashrc``.
+### Running the simple music service
 
-Install helm per [the helm community's instructions](https://helm.sh/docs/intro/install/)
+Open up two command-line windows.  In each one, start the tools
+container, remembering that first you have to make `c756-exer/e-k8s`
+the current directory.
 
-### 1.10 Gatling
+In one window, build and run the server:
 
-[Install Gatling](https://gatling.io/open-source/start-testing/),
-using the version appropriate for your system.
+~~~bash
+/home/e-k8s# cd s2/standalone
+/home/e-k8s/s2/standalone# ./builda1.sh
+... build messages ...
+/home/e-k8s/s2/standalone# ./runa1.sh
+... server log messages ...
+~~~
 
-Note the path in which you installed it. You will need it in the next
-step.
+In the other window, build and run the client:
 
-Test that Gatling is compatible with your version of Java by running
-the following from the directory in which Gatling was installed. If
-you have a compatible Java, this will print the Gatling help message:
+~~~bash
+/home/e-k8s# cd mcli
+/home/e-k8s/mcli# make build-mcli
+... build messages ...
+/home/e-k8s/mcli# make run-mcli
+docker container run ...
+
+Command-line interface to music service.
+Enter 'help' for command list.
+'Tab' character autocompletes commands.
+
+mql: 
+~~~
+
+Explore issuing commands via the client.  Start with `read` to list
+all available songs, then create and delete some songs. Use `help` for
+more details.
+
+Watch the output from the server. This is the server's *log*. For
+every request you issue from the client, the server log will display a
+line such as
 
 ~~~
-$ bin/gatling.sh --help
+172.17.0.6 - - [03/Dec/2021 00:57:16] "GET /api/v1/music/ HTTP/1.1" 200 -
+172.17.0.6 - - [03/Dec/2021 00:57:37] "POST /api/v1/music/ HTTP/1.1" 200 -
 ~~~
 
-Upgrade your Java install if this fails and record the path to the new
-`java` for use in the next step.
+recording (left to right) each operation's
 
+* client IP address
+* date
+* time
+* HTTP operation (GET/POST/DELETE)
+* path
+* protocol
+* status code
 
-## 2. Accounts
+We typically are only interested in the operation, path, and status code.
 
-You will likely want to create bookmarks in your browser for the following services. As well, if you aren't using a password manager already, now's the time to get started. Finally, consider why you are *not* using 2FA. Each of these services supports 2FA which elevates the security of your account hugely.
+At some point, run the `test` command.  What do you see in both
+windows? We will return to this result in the next subsection. For
+now, just note this behaviour.
 
-### 2.1 Github
+Once you are comfortable with the service exit the client via the
+`quit` command and the server via `CTRL-C`. Leave the windows
+open---you'll be using them again in a moment.
 
-We will be using github.com in this course for a number of purposes:
-1. Distribution of and/or grading of various homeworks (including the term project).
-2. Collaboration with team members (including your term project).
-3. Practicing the scrum methodology
-4. Hosting of container images
+A note about this version of the music service: Its database is not
+truly persistent. Any changes you make will be thrown away when you
+exit the server. In Assignment&nbsp;4 you will begin using a full
+version of the service that stores the songs persistently on AWS
+DynamoDB.
 
-Instruction:
+### Fixing a defect in a cloud service is hard
 
-1. If you do not have a GitHub account, create an account [here](https://github.com/join).
+As an experienced programmer, you've done the typical defect-removal
+cycle many times:
 
-1. Follow the instructions [here](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration) for the command-line client. See [here](https://docs.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication) to configure your git for github.com with 2FA.
+1. Note that a system's behaviour contradicts its specification.
+2. Look at system diagnostics (from system logs, debug print statements, debugging
+   tools, and other sources) to isolate the source of the defect.
+3. Revise the source code to remove the defect.
+4. Build and run the revised system, verifying that the defect has
+   been removed (and no new defects introduced).
+5. Commit the revision to version control, using a tool such as Git.
 
-1. Sign up on [Github Education](https://education.github.com/students). Start with 'Get benefits for students'.
+This cycle still applies to cloud systems with microservices
+architecture, with an important difference: Getting the system
+diagnostics (Step&nbsp;2) and running the revised system (Step&nbsp;4)
+are tricky. Cloud services are more difficult to debug because they
+are running on remote machines, surrounded by security barriers
+designed to limit access.
 
-1. Activate the Github Container Registry feature by [following the instructions](https://docs.github.com/en/free-pro-team@latest/packages/guides/enabling-improved-container-support).
+In this exercise and the three that follow, we're going to give you
+practice debugging cloud systems. This exercise begins with the
+simplest case, debugging a server running on your local machine. By
+Assignment&nbsp;4, we'll have moved up to debugging a server running
+remotely on AWS.
 
+In each of these exercises, the service will have the same "bug", that
+the `test` command throws an exception in the server and returns a
+`500` status code, indicating
+["Internal Server Error"](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).
+Removing the exception and returning a `200` status code (indicating
+["OK"](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)) will
+be trivial and require no knowledge of Python or even of how the
+server works. **The point of this part of the assignment is to
+practice reading a service's log output and restarting the fixed
+service.** The trivial "bug" is just an excuse to practice this cycle.
 
-### 2.2 Container Registry
+### Fixing a defect in a local service (the easy case)
 
-We will be using containers in this course to streamline development. See [here](https://dzone.com/articles/container-registriesa-battle-royale) for an introduction to container registries.
+For this assignment, we'll start with the easiest case. The server log
+is just the output in its terminal window. The log shows the stack
+traceback from the exception, as well as other information. In
+particular, the first line of server output will have something like
 
-1. If you do not have a docker.com account already, create an account at [docker.com](https://hub.docker.com/signup). Note that this grants you access to both [Docker.com](https://www.docker.com) and [DockerHub](https://www.dockerhub.com), Docker's container registry service. However, we will not be using DockerHub. Due to recent changes by DockerHub to [throttle requests from free accounts](https://www.docker.com/increase-rate-limits), we will be using [GitHub's new container registry feature](https://github.blog/2020-09-01-introducing-github-container-registry/) instead to host our container images. (See [here](https://docs.github.com/en/free-pro-team@latest/packages/guides/migrating-to-github-container-registry-for-docker-images) for more information.)
+~~~
+[2021-12-03 01:17:29,510] ERROR in app: Unique code: c69314133f0dfb2a79c93278335d6c10ed60498c20b03d49168db2344d579d89
+~~~
 
-1. [Create a personal access token (PAT)](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) for your Github account. You will need the three scopes: `read:packages`, `write:packages` and `delete:packages`.
+Ignore the `ERROR` tag---this is just an informational message. The
+unique code you see on the right will differ from the one above and it will
+vary with each assignment.
 
-2. Configure your docker client to use GitHub Container Registry (ghcr.io) using this new token as follows:
+To fix the "bug" this time, you copy the code (the 64 hex characters,
+such as `c69314...579d89` in the above line), open the
+file`c756-exer/e-k8s/s2/standalone/app.py` in Visual Studio Code, and
+paste it between the empty single quotes in the `if` statement of the
+`test()` function.
 
-    ```bash
-    $ export CR_PAT=<your-token>
-    $ echo $CR_PAT | docker login ghcr.io -u <your-github-id> --password-stdin
-    > Login Succeeded
-    ```
+Before:
 
-### 2.3 Cloud Providers
+~~~python
+@bp.route('/test', methods=['GET'])
+def test():
+    if '' != ucode:
+        raise Exception("Test failed")
+    return {}
+~~~
 
-1. Apply for course credits
+After (but use **your code**, not this one):
 
-   Refer to [Exercise 1A](https://canvas.sfu.ca/courses/59479/assignments/577244) for details on applying for student credits. You will apply for all three sets of credits.
+~~~python
+@bp.route('/test', methods=['GET'])
+def test():
+    if 'c69314133f0dfb2a79c93278335d6c10ed60498c20b03d49168db2344d579d89' != ucode:
+        raise Exception("Test failed")
+    return {}
+~~~
 
-2. Configure your cloud CLIs
+### Testing the fix
 
-   1. AWS: Refer [here](https://stackoverflow.com/questions/40515079/access-key-id-and-secret-access-key-for-aws-educate-account) for instruction on configuring your environment to use the Starter account. The important note is that Starter account feature a session token which ages out. You will need to refresh this periodically if your account is idle (~1h of inactivity).
+Save the revised file and (in the tools container) rebuild and rerun
+the server in the server window:
 
-   2. Microsoft Azure: Refer [here](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli) for instruction to sign into Azure. The easiest is the interactive option (at the top of the page). Then set your defaults,
+~~~bash
+/home/e-k8s/s2/standalone# ./builda1.sh
+... build messages ...
+/home/e-k8s/s2/standalone# ./runa1.sh
+... server log messages ...
+~~~
 
-   3. Google Cloud Platform: Set your GCP defaults with `gcloud init`.
+The client didn't change, so you don't have to rebuild it, only rerun
+it in its window:
 
-3. Confirm your credits
+~~~bash
+/home/e-k8s/mcli# make run-mcli
+docker container run ...
 
-   1. AWS: If you are using a starter account, confirm the amount of your available credits.
+Command-line interface to music service.
+Enter 'help' for command list.
+'Tab' character autocompletes commands.
 
-   a. Navigate to https://aws.amazon.com/education/awseducate/
-   b. Click on “Sign in to AWS educate”,
-   c. Enter your email and password,
-   d. Click on “AWS Account” from the top menu,
-   e. On this page, you should see a statement such as: “Your account has an estimated X credits remaining and access will end on Y ,Z.”
-   f. By clicking on the “AWS Educate Starter Account” orange button, you can see your AWS account status.
-   g. Screen-grab this page and submit.
+mql: test
+mql: 
+~~~
 
-   (If you are using a personal account, make a note of this on the top "Cloud Providers" box and skip this step.)
+This time, the server log will simply show a successful call (`200` status),
 
-   2. Microsoft Azure: Explore your account and locate the page that shows your available credits.
-   Start your navigation at the [Azure Portal](https://portal.azure.com). Then find 'Subscriptions' (or navigate [directly](https://portal.azure.com/#blade/Microsoft_Azure_Billing/SubscriptionsBlade)). Click on the entry 'Azure for Students'. You should find a link for "To check your remaining credit...". Navigate to this and screen grab the page showing your available credit.
+~~~
+172.17.0.6 - - [03/Dec/2021 17:49:20] "GET /api/v1/music/test HTTP/1.1" 200 -
+~~~
 
-   (If you are funding your account with a credit card, make a note of this on the top "Cloud Providers" box and skip this step.)
+and the client will have no output, indicating a successful operation.
 
-   3. Google Cloud Platform: Explore your account and locate the page that shows your available credits. Screen grab the page showing your available credit.
+Congratulations!  You've fixed the bug ... this time.
 
-   (If you are funding your account with a credit card, make a note of this on the top "Cloud Providers" box and skip this step.)
+The process was trivial in this case but consider: What might be
+required to read the log from a server running on the other side of
+the world, packaged and isolated in a container, surrounded by
+multiple layers of security preventing unauthorized access? And what
+might be required to get the fixed software running on that remote
+machine?
 
+### Committing and pushing the fix
+
+You've found the defect and tested the fix but one more step remains:
+Committing the fix to version control to make it permanent and visible
+to other team members.
+
+**Note: Your instructor may ask you to use a different front end for
+Git for this step, such as Visual Studio Code or GitHub Desktop.
+The following method uses "Original Gang" plain Git.**
+
+Recall that Git, along with Visual Studio Code, is the only tool that
+you run in your regular *Host OS*:
+
+~~~bash
+$ cd c756-exer/e-k8s/s2/standalone
+c756-exer/e-k8s/s2/standalone $ git add app.py
+c756-exer/e-k8s/s2/standalone $ git commit -m 'Add missing code to "test"'
+c756-exer/e-k8s/s2/standalone $ git push origin
+~~~
+
+### Review of this step
+
+The coding part of this assignment was simple enough: Beginning with a
+basic client-server design, find and fix a defect in the server. In
+coming exercises, we will repeat this cycle of read
+logs-fix-rebuild-test-commit.  As the server becomes more remote and
+more protected, the "read logs" and "rebuild and test" steps will
+require more tooling.
 
 ## Submission
+
+BLERG what and where?
 
 ### Create a PDF
 
@@ -191,4 +575,4 @@ You must name your PDF according to the pattern: **SFU-id**`-e1-submission.pdf` 
 
 ### Canvas submission
 
-Navigate to this exercise and upload the generated PDF.
+Navigate to this assignment and upload the generated PDF.
