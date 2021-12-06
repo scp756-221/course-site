@@ -530,12 +530,10 @@ You've found the defect and tested the fix but one more step remains:
 Committing the fix to version control to make it permanent and visible
 to other team members.
 
-**Note: Your instructor may ask you to use a different front end for
-Git for this step, such as Visual Studio Code or GitHub Desktop.
-The following method uses "Original Gang" plain Git.**
-
-Recall that Git, along with Visual Studio Code, is the only tool that
-you run in your regular *Host OS*:
+In the next assignment, you will go into the details of Git. For now,
+just execute the following commands. Recall that Git, along with
+Visual Studio Code, is the only tool that you run in your
+regular *Host OS*:
 
 ~~~bash
 $ cd c756-exer/e-k8s/s2/standalone

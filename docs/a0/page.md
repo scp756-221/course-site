@@ -113,8 +113,7 @@ Finally, you need an access key for this IAM administrative
 user. Follow Amazon's instructions to
 [create an access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html). This
 key will be used with the AWS command-line interface. Refer to this
-[gist to configure Amazon command-line](https://gist.github.com/overcoil/4d0bf31d8a9c8f4ec6f58b2bd289668f). (Creating
-the second profile "root" for your root AWS account is optional.)
+[gist to configure Amazon command-line](https://gist.github.com/overcoil/4d0bf31d8a9c8f4ec6f58b2bd289668f). (But do not create an access key for your root AWS account.)
 
 ## Create an ssh key pair for EC2
 
