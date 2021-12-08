@@ -60,8 +60,7 @@ and
 
 ### Docker
 
-Install Docker (available for all systems) and Docker Desktop (if
-available--only for macOS and Windows) from
+Install Docker Desktop (for macOS and Windows) or Docker Engine (for Linux) from
 [docker.com](https://docs.docker.com/get-docker/).
 
 ### The course code repository
@@ -201,8 +200,9 @@ named `tpl-vars-blank.txt`.
 	 `=` sign**.
    * If you have completed your AWS signon, enter your IAM
      administrative user's access key ID and key value in the
-	 appropriate lines. If you have not completed yoru AWS signon yet,
+	 appropriate lines. If you have not completed your AWS signon yet,
 	 you can do that next week.
+    BLERG BUT NOT IF WE USE `aws-cred.sh`.
 3. Save the file.
 
 Next you need to instantiate every template file.  In the tools
@@ -457,15 +457,15 @@ vary with each assignment.
 To fix the "bug" this time, you copy the code (the 64 hex characters,
 such as `c69314...579d89` in the above line), open the
 file`c756-exer/e-k8s/s2/standalone/app.py` in Visual Studio Code, and
-paste it between the empty single quotes in the `if` statement of the
-`test()` function.
+paste it between the single quotes in the `if` statement of the
+`test()` function, replacing whatever is between them:
 
-Before:
+Before (the 64-character code may differ from this or even just be `''`):
 
 ~~~python
 @bp.route('/test', methods=['GET'])
 def test():
-    if '' != ucode:
+    if '1e0715252b48ed14858ae1ce646d67195183ffb8f9dc02d73c82323d8d75f482' != ucode:
         raise Exception("Test failed")
     return {}
 ~~~
@@ -554,6 +554,8 @@ require more tooling.
 ## Submission
 
 BLERG what and where?
+
+BLERG Include CI result from own page.
 
 ### Create a PDF
 
