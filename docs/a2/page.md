@@ -136,7 +136,7 @@ mql:
 
 Try a few commands, reading the music list, perhaps adding or deleting a song. (No changes that you might have made to the song list in Assignment&nbsp;1 will be available, as this is a completely different instance.)
 
-Once you are verified that the music system is running, try the `test` command.  It will cause a failure because the required SHA code for Assignment&nbsp;2 differs from the one required in Assignmment&nbsp;1.
+Once you have verified that the music system is running, try the `test` command.  It will cause a failure because the required SHA code for Assignment&nbsp;2 differs from the one required in Assignmment&nbsp;1.
 
 Terminate the music service by entering the `shutdown` command in the music client. 
 
