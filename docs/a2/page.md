@@ -184,4 +184,15 @@ The cost of these improvements will be more elaborate security requirements. Con
 
 ## Part 2
 
-BLERG George lists some Katacoda Git scenarios.
+Do Scenarios&nbsp;1--6 of the [Katacoda Git exercises](https://www.katacoda.com/courses/git). You only need to sign on with your email---you do not need to pay anything.
+
+When you've completed the scenarios, practice your knowledge by:
+
+1. Committing the change you made to `app.py` in Part&nbsp;1.
+2. Pushing that change to your GitHub account.
+
+## Submission
+
+BLERG What to submit?
+
+BLERG A2 CI badge?
