@@ -80,6 +80,16 @@ Now that the instance is running, we need to build the music server and run it t
    ... files transferred ...
   ~~~
 
+  If you see the message and input prompt (with different values for the address and fingerprint):
+
+  ~~~bash
+  The authenticity of host 'ec2-35-162-179-25.us-west-2.compute.amazonaws.com (35.162.179.25)' can't be established.
+  ECDSA key fingerprint is SHA256:HJ5/KcAAVadyTNp/OL00V9j8ue/+spC5nU1tmUCSim0.
+  Are you sure you want to continue connecting (yes/no/[fingerprint])?
+  ~~~
+
+  answer `yes`. The message simply indicates that you have never connected to this machine before.
+
 2. Sign on to the remote instance:
 
   ~~~bash
@@ -88,7 +98,7 @@ Now that the instance is running, we need to build the music server and run it t
   [ec2-user@ip-172-31-25-98 ~]$ 
   ~~~
 
-The window is now showing a terminal session on *the remote Amazon instance*, not your machine. (The `ip-172-31-25-98` portion of the prompt will vary with the IP address of your particular instance.)
+  The window is now showing a terminal session on *the remote Amazon instance*, not your machine. (The `ip-172-31-25-98` portion of the prompt will vary with the IP address of your particular instance.)
 
 3. Build and start the music service on this remote instance:
 
@@ -155,7 +165,7 @@ Amazon is charging you by the minute for running the EC2 instance, so as soon as
   ~~~
 
 2. In the Amazon Console Instance summary, select `Terminate instance` from the `Instance state` dropdown menu.  Click `Terminate` to confirm.
-3. Verify that the instance was actually terminated by going to the instanfe list and wait until the *Instance state* shows `Terminated`. You may have to refresh the display a few times to see it.
+3. Verify that the instance was actually terminated by going to the instance list and wait until the *Instance state* shows `Terminated`. You may have to refresh the display a few times to see it.
 
 ### Reflecting and looking ahead
 
