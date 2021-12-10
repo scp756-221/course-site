@@ -115,9 +115,10 @@ commands. Regardless of your machine's operating system,
 most of the commands and scripts you run in this course will be run in
 a Linux environment overlaid on your own operating system.
 
-We can describe the system using the following table:
+We can summarize these different layers in a table:
 
 <table>
+<caption>Layers when running the tools container</caption>
 <thead>
 <th>Layer Name</th><th>Location</th><th>OS</th><th>Prompt</th>
 <thead>
@@ -284,6 +285,7 @@ Programming Interface (API). The client provides a more intelligible
 interface, customized to the needs of the user:
 
 <table>
+<caption>Structure of a simple client-server application</caption>
 <thead>
 <th>Component</th><th>Code</th><th>Location</th><th>Persistent state?</th><th>Instances</th>
 <thead>
