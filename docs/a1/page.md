@@ -21,23 +21,24 @@ rapid download of the large installation files.**
 
 ## Part 1: Install tools
 
-You will need to setup the appropriate tools on the machine you plan
-to use for this course's assignments and term project. The heavy
+You will need to setup the appropriate tools on your own laptop for 
+this course's assignments and term project. The heavy
 lifting will be typically on the cloud side (AWS or other services)
-but you will need a certain amount of tooling on your computer to
+but you will nonetheless need a certain amount of tooling on your computer to
 operate the cloud.
 
-**If you have less than 8GB of RAM on your home machine**, please use the MPCS
-lab in Blusson Hall for the course exercises. Contact the instructor
-for instructions.
+**If you have less than 8GB of RAM on your own machine**, you should use the MPCS
+lab instead (while accepting some degradation). Please inform the instructor
+for allowances and/or specific instructions.
 
 ### Visual Studio Code (VSC)
 
 We will standardize on
 [Visual Studio Code](https://code.visualstudio.com/) (VSC) for this
-semester. Install the version for your operating system.
+semester. Install the version for your operating system. You are not required to use it but 
+it will be the reference tool.
 
-A good text editor raises your productivity significantly with syntax
+A good editor/IDE raises your productivity significantly with syntax
 highlighting, syntax validation/hinting, support for multiple
 files/source trees, integration with version control (Git) and
 numerous other creature comforts. **Do not skip this step.**
@@ -49,7 +50,9 @@ Install Git per
 In many environments (e.g., macOS), Git comes pre-installed; check.
 
 Install [GitHub Desktop](https://desktop.github.com/) as well to
-complement the command-line Git.
+complement the command-line Git. Also configure GitHub Desktop's integration (under Preferences) to use your chosen editor.
+
+
 
 We have
 [a course Git summary](https://canvas.sfu.ca/files/13170454/download?download_frd=1).
@@ -72,7 +75,7 @@ step.**
 **You must have a GitHub userid (see the first part of
 Assignment&nbsp;0) before starting this step.**
 
-All code for the course is in a single code repository, available as a
+All code for the course is in a single code repository (a mono-repo) that has been setup as a
 template on GitHub.
 
 1. Sign in to GitHub using your userid.
@@ -98,25 +101,33 @@ step.**
 The repository that you just cloned contains the sample and starter
 code for the course assignments. In addition to this code, you
 also need the *course tools*, a Linux command line with all the software
-required for this course. We have packaged these tools as a container.
-You will explore containers and Docker in detail in Assignment&nbsp;3.
+required for this course. We have packaged these tools as a container. (Or more accurately, an image.)
+You will explore Docker and containers in detail in Assignment&nbsp;3.
 For Assignments&nbsp;1 and 2, you will just call Docker from scripts.
 
-You do not explicitly download or install a container. Instead, you
-run it and if the container *image* (we will clarify this term in
-Assignment&nbsp;3) is not yet downloaded to your machine, Docker will
-first download it. Once the image has been downloaded, Docker will
-retain it in a cache and you will not need to download it the next
-time you run it.
+You do not explicitly download or install a container. Rather, Docker automatically
+downloads and caches each container you use. Thus, you only need to
+reference an image (typically via a pull or run) and the container *image* (we will clarify this term in
+Assignment&nbsp;3) will be retrieved as required by Docker.
 
 #### Running the course tools container
 
-The tools container is a Linux command-line with a suite of Linux
-commands. Regardless of your machine's operating system,
-most of the commands and scripts you run in this course will be run in
-a Linux environment overlaid on your own operating system.
+**
+WARNING: for students working on Apple Silicon (e.g., M1/Pro/Max) machines, bear in mind you are working on 
+hardware whose [software support is rapidly evolving](https://docs.docker.com/desktop/mac/apple-silicon/). Please inform the teaching team (via email) that you are using Apple Silicon hardware.
 
-We can describe the system using the following table:
+The tools container was developed in anticipation of the ARM
+architecture (as opposed to the x86 architecture of the prior generation) but the ARM-variant of the container is untested as we did not have access to Apple Silicon hardware. Please be patient and work with the teaching team should any problem arise.
+**
+
+
+The tools container is a collection of Linux command-line tools in ready-to-use form. It is provided to 
+level-set all students to a known good state (e.g., all tools are available and ready-to-use). I recommend
+each student to switch to a direct install of the tools into the native OS when one is comfortable with and can work out the specifics required.
+
+To be clear, regardless of your machine's host operating system, you will be working in a Linux environment when you are working inside this container. To differentiate
+between your host environment (e.g., MacOS, Windows WSL2 Linux, native Linux) from the container environment (Linux), we will use
+the following convention:
 
 <table>
 <thead>
@@ -133,25 +144,26 @@ We can describe the system using the following table:
 </table>
 
 The `...` in the prompts indicates other information that may appear
-in the prompt prefix.  When we write sample code for you to run in the
-shell, we will simply indicate which operating system to run them in
+in the prompt prefix. (This may differ significanlty in the Host OS if you have customized
+your environment heavily.)  When we introduce sample commands for you to run in the
+shell, we will simply indicate which environment to run them in
 by the appropriate suffix: `/home/k8s#` indicates the Guest OS, while
 `$` indicates the Host OS.
 
 We'll get into more details of the above structure in
 Assignment&nbsp;3 but for now this is enough to start.
 
-A final, crucial point about running the course tools container: **The
-current directory must always be the `c756-exer/e-k8s` subdirectory of
-the course code repository when you run it.**
+A final, crucial point on starting the course tools container: **Always start the container from the `c756-exer/e-k8s` subdirectory of
+the course code repository.**
 
-You start the container by running `tools/shell.sh`:
+To start the container, run `tools/shell.sh` as follows:
+
 
 (Note: As this is the first time you will have run the container, its image
-will have to be downloaded. This will be indicated by a message that
-Docker could not find the image locally. As the image is over 2 GiB, it can
-take several minutes to download and expand. This will not happen with
-later invocations, as the image will already be downloaded and remain
+will be be downloaded. This will be indicated by a message that
+Docker could not find the image locally. The image is large (>2 GB) and can
+take several minutes depending upon the speed of your Internet service. This download is not needed on
+subsequent invocations (unless you explicitly purge it), as the image will already be downloaded and remain
 cached on your machine.)
 
 ~~~bash
@@ -175,19 +187,20 @@ the command line of the Host OS:
 $
 ~~~
 
-There are two exceptions, tools that you run in your Host OS rather
-than from inside the tools container. Both work with source code:
+### Native Tools
 
-* Visual Studio Code, which you will use to edit source code and YAML
-  files.
-* Git, which you will use to commit source code changes to version control.
+There are two tools that you will run in your Host OS rather
+than from inside the tools container. Both are for handling "source code":
+
+* Visual Studio Code, which you will use to edit code of one form or another: scripts, YAML, etc.
+* Git, which you will use to commit code changes to version control.
 
 
 ### Entering your template parameters
 
-Some of the files in the course repository `c756-exer` are templates,
-generic code that will be instantiated with values specific to youre
-use.  All the files controlling this process are in the directory
+Some of the files in the course repository `c756-exer` are templates:
+generic code that will be instantiated with values specific to each student. 
+All the files controlling this process are in the directory
 `c756-exer/e-k8s/cluster`. In that directory, we have provided a file
 named `tpl-vars-blank.txt`.
 
@@ -200,9 +213,9 @@ named `tpl-vars-blank.txt`.
 	 `ZZ-REG-ID=div_by_0`. Note that there are **no spaces around the
 	 `=` sign**.
    * If you have completed your AWS signon, enter your IAM
-     administrative user's access key ID and key value in the
-	 appropriate lines. If you have not completed yoru AWS signon yet,
-	 you can do that next week.
+     administrative user's access key and secret key in the
+	 appropriate lines. If you have not completed your AWS signon yet,
+	 you can do that next week. 
 3. Save the file.
 
 Next you need to instantiate every template file.  In the tools
@@ -215,12 +228,12 @@ tools/process-templates.sh
 ~~~
 
 **SECURITY NOTE:** (This really should be in blinking red text.) The
-`cluster` directory and all its files should be treated with extreme
+`cluster` directory and all its files should be treated with extra
 care:
 
 * Do not copy any of its files outside the directory.
 * The directory should be only readable by you.
-* Do not remove any lines from its `.gitignore` file.
+* Do not remove any lines from its `.gitignore` file. This file protects you from inadvertent exposure of various secrets.
 * Do not create any other files in this directory.
 * Do not display any of these files on your terminal using programs such
   as `cat`. If you want to review their contents, do so in an editor
@@ -273,15 +286,15 @@ you will be using for the rest of the course.
 
 Cloud-based systems, a main topic of this course, make heavy use of
 client-server designs. In this assignment, we will look at the
-simplest possible form of such a design, with both components running
+simplest possible form of such a design, where both components are running
 on your computer. In future assignments, we will move the server
 component further away, until in Assignment&nbsp;4 it will run in
 the cloud, on AWS under Kubernetes.
 
 The foundation of client/server designs is a separation of concerns.
-The server provides a *service*, accessed by a standard Application
-Programming Interface (API). The client provides a more intelligible
-interface, customized to the needs of the user:
+The server provides a *service*, accessed by a pre-defined Application
+Programming Interface (API). The client in turn provides a more intelligible
+interface, tailored to the needs of the client's operator:
 
 <table>
 <thead>
@@ -298,18 +311,18 @@ interface, customized to the needs of the user:
 </table>
 
 The above table describes this simple first application. In future
-lectures and assignments, we will consider much more complicated
-combinations. In particular, a *server* offering a higher-level
-service will often also be a *client* calling another server that
-provides a lower-level service.
+lectures and assignments (and in real-world scenarios), you will encounter more complicated
+combinations. As well, one component within a system may be both
+a client (using a lower-level service) and a server (providing some 
+service/facility to other component).
 
 For now though, the above table describes our simple system.
 
 ### The simple music service
 
-For the first few assignments, the client and server will implement a
-simple music service, listing songs and the artists that perform them.
-The actual music will not be stored, only the metadata. Every song
+For the first few assignments, the client and server together implement a
+simple music service that stores and retrieves songs and the artists who performed them.
+(The actual music media file is not stored, only the metadata.) Every song
 will be identified by a system-defined universal ID such as
 `6ecfafd0-8a35-4af6-a9e2-cbd79b3abeea`, designed to have a very high
 probability of being unique. The probability of duplication is so low
@@ -320,7 +333,7 @@ unique.
 unique? Why resort to all this probabilistic stuff?" The short answer
 is that although this would be easy for the simple service in this
 assignment, guaranteeing uniqueness can incur severe inefficiencies in
-high-volume cloud systems. The details will be covered in later
+high-volume cloud systems. The details may be covered in later
 lectures.)
 
 The music service supports three basic operations: create, read, and
@@ -381,7 +394,7 @@ recording (left to right) each operation's
 * client IP address
 * date
 * time
-* HTTP operation (GET/POST/DELETE)
+* HTTP operation (GET/POST/DELETE/etc)
 * path
 * protocol
 * status code
@@ -392,19 +405,19 @@ At some point, run the `test` command.  What do you see in both
 windows? We will return to this result in the next subsection. For
 now, just note this behaviour.
 
-Once you are comfortable with the service exit the client via the
-`quit` command and the server via `CTRL-C`. Leave the windows
+Once you are comfortable with the service, terminate each component: the client using the
+`quit` command; the server via `CTRL-C`. But keep the two windows
 open---you'll be using them again in a moment.
 
-A note about this version of the music service: Its database is not
-truly persistent. Any changes you make will be thrown away when you
-exit the server. In Assignment&nbsp;4 you will begin using a full
+A note about this version of the music service: its data is not
+truly persistent. All daa is thrown away when the server exits. 
+In Assignment&nbsp;4 you will begin using a full
 version of the service that stores the songs persistently on AWS
 DynamoDB.
 
 ### Fixing a defect in a cloud service is hard
 
-As an experienced programmer, you've done the typical defect-removal
+As an experienced programmer, you have likely use the typical defect-removal
 cycle many times:
 
 1. Note that a system's behaviour contradicts its specification.
@@ -422,7 +435,7 @@ are tricky. Cloud services are more difficult to debug because they
 are running on remote machines, surrounded by security barriers
 designed to limit access.
 
-In this exercise and the three that follow, we're going to give you
+In this assignment (and the three to follow), we're going to give you
 practice debugging cloud systems. This exercise begins with the
 simplest case, debugging a server running on your local machine. By
 Assignment&nbsp;4, we'll have moved up to debugging a server running
@@ -437,7 +450,7 @@ Removing the exception and returning a `200` status code (indicating
 be trivial and require no knowledge of Python or even of how the
 server works. **The point of this part of the assignment is to
 practice reading a service's log output and restarting the fixed
-service.** The trivial "bug" is just an excuse to practice this cycle.
+service.** The trivial "bug" is at most a [MacGuffin](https://en.wikipedia.org/wiki/MacGuffin) to practice this cycle.
 
 ### Fixing a defect in a local service (the easy case)
 
@@ -452,10 +465,10 @@ particular, the first line of server output will have something like
 
 Ignore the `ERROR` tag---this is just an informational message. The
 unique code you see on the right will differ from the one above and it will
-vary with each assignment.
+vary for each assignment/student.
 
-To fix the "bug" this time, you copy the code (the 64 hex characters,
-such as `c69314...579d89` in the above line), open the
+To fix the "bug" this time, copy the code (the 64 hex characters, in this case
+the sequence `c69314...579d89`), open the
 file`c756-exer/e-k8s/s2/standalone/app.py` in Visual Studio Code, and
 paste it between the empty single quotes in the `if` statement of the
 `test()` function.
@@ -515,14 +528,14 @@ This time, the server log will simply show a successful call (`200` status),
 
 and the client will have no output, indicating a successful operation.
 
-Congratulations!  You've fixed the bug ... this time.
+Congratulations!  You've fixed the bug.
 
 The process was trivial in this case but consider: What might be
-required to read the log from a server running on the other side of
-the world, packaged and isolated in a container, surrounded by
-multiple layers of security preventing unauthorized access? And what
+required to read the log from a server running remotely (e.g., on the other side of
+the world), packaged and isolated in a container, surrounded by
+multiple layers of security providing very narrow access? And what
 might be required to get the fixed software running on that remote
-machine?
+machine? And what would you need to do if you didn't know the nature/fix of problem?
 
 ### Committing and pushing the fix
 
