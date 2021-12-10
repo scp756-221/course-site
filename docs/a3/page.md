@@ -1,307 +1,229 @@
 ## Introduction
 
-BLERG See [here](https://dzone.com/articles/container-registriesa-battle-royale) for an introduction to container registries.
+In Part&nbsp;1 of this assignment, you will once again run the music service on an EC2 instance but with an important difference: Instead of tediously transferring source files  to the remote instance, building the service there, and then running it, you will simply pull down a previously-built container and run it on the instance. This will simplify the build process but make it a bit harder to get the server logs.
 
-**Please refer to the [Exercise 3 FAQ](https://docs.google.com/document/d/1A5-n71llg8PMa_l7O5BG0_kU-A6xGIHLgnsjbLd3emw/edit?usp=sharing) for up-to-date answers on common problems. I will update them continually as new information rolls in.**
+In Part&nbsp;2, you will explore further features of containers and the `docker` command.
 
-This exercise continues from where you left off with AWS a few weeks ago. This exercise introduces a simple containerized micro-services application featuring a `User` table and a `Music` table. The application is
-organized as a suite of three microservices and one external PaaS service:
+**This assignment has several prerequistes:**
 
-* `cmpt756s1` (or just `s1`) reads, updates, and writes the `User` table by calling `cmpt756db`
-* `cmpt756s2` (or just `s2`)  reads, updates, and writes the `Music` table by calling `cmpt756db`
-* `cmpt756db` (or just `db`), the low-level database interface, calls
-  DynamoDB to record the data
-* AWS DynamoDB, an external PaaS service, stores the application's data in pre-defined tables
+**1. You must have obtained a GHCR access token and saved it in `cluster/ghcr.io-token.txt`.  See Assignment&nbsp;0 for details.**
 
-The three microservices run inside a container-hosting environment.
+**2. You must have completed the Docker exercises previously assigned.**
 
-* Each microservice is a freestanding Python program, calling each
-  other via REST interfaces implemented over HTTP.
-* Each Python program is encapsulated into a Docker container images.
+## Part&nbsp;1: Running a container on a remote EC2 instance
 
-Bear in mind the application uses DynamoDB key-value store which runs on AWS. The `cmpt756db`
-service will have to establish connections to Amazon to read
-and write the two tables.
+Rather than building the music service on the remote instance, in this exercise we will pull a previously-built container image from the GitHub Container Registry (GHCR).  But first, the image must be built and pushed to GHCR.
 
-You will be using this application throughout this course as a representative application to explore various techniques and approaches to working with cloud-native application.
+Because this assignment is about using the `docker` command, we will be using the command directly, rather than calling it inside a predefined shell script or Makefile. This will give you some familiarity with the many options the command requires. To avoid typing these long commands in, with the attendant typos, copy the commands from this file and paste them into the appropriate terminal window.
 
-The following diagram illustrates all the components of the final application. This exercise will focus in on a subset of the application: just the two microservices `s1` and `db`.
+When you paste a command into the terminal window, be sure to edit the personalized arguments before pressing `Return`:
 
-![Block diagram with local computer, cluster, and AWS, with applications on each](../e-graf/System-diagram.png)
+* `REGID` must be replaced with your GitHub userid.
+* `KEY-FILE` must be replaced with the name of the file in your `~/.ssh` directory containing the AWS key used to sign on to EC2 instances.
+* `EC2-DNS-NAME` must be replaced with the Public IPv4 DNS name of the EC2 instance.  See Assignment&nbsp;2 for how to locate that name and copy it into your clipboard.
 
-## 1. CloudFormation tutorial
+### Building and pushing the container image to the GitHub registry
 
-Read thru AWS' [doc](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/GettingStarted.Walkthrough.html). In AWS terminology, _stacks_ represent a set of resources (e.g., users, machines, databases, etc) that you manage atomically.
+Begin by switching to the correct directory:
 
-AWS CloudFormation is one of several options provided by Amazon to implement _infrastructure as code_ (IaC). (See [OpsWork](https://aws.amazon.com/opsworks/) and [Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/).) CloudFormation is less prescriptive while the other options are targeted at specific types of applications.
-
-Each public cloud vendor have their own comparable technology ([GCP's Deployment Manager](https://cloud.google.com/deployment-manager), [Azure Resource Manager](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview)). There are also open-source options including [Terraform](https://www.terraform.io/) which support multiple cloud technologies.
-
-
-## 2. Containers
-
-In this exercise, you will practice running services manually. We will be using Docker for this. If you are unfamiliar or require a review of Docker, refer to this [architectural overview](https://docs.docker.com/get-started/overview/#docker-architecture).
-
-You will exercise these services by building these container images, saving (pushing) them into a container registry and running the images.
-
-
-1. Start by pulling the code for this exercise and refer to the ``e-k8s`` subdirectory:
-
-```bash
-$ git clone https://github.com/scp-2021-jan-cmpt-756/sfu-cmpt756.211
-```
-
-We will be using a very small amount of material here. For clarity, this is an
-abbreviated description of the material that you will touch in Exercise 4.
-
-| directory/file | Note |
-|-|-|
-| e-k8s/s1/ | the User service |
-| e-k8s/db/ | the database writer service |
-| e-k8s/postman/ | the API definition collection |
-| e-k8s/cluster/ | material for working with a Kubernetes cluster |
-| e-k8s/logs | all output files are collected here |
-| e-k8s/tools | misc tools to prepare repo content (makefiles) for use |
-| e-k8s/docker.mak | instantiated makefile to work with Docker |
-
-The exercises for 756 is organized around a set of makefile to simplify and to introduce the various tools. If you aren't familiar with makefile or the make tool, refer [here](https://www.gnu.org/software/make/manual/html_node/Introduction.html).
-
-
-2. Fill in the required values in the template variable file
-
-Copy the file `cluster/tpl-vars-blank.txt` to `cluster/tpl-vars.txt`
-and fill in all the required values in `tpl-vars.txt`.  These include
-things like your AWS keys, your GitHub signon, and other identifying
-information.  See the comments in that file for details.
-
-Beware that each of the values you supply must **not** contain any spaces (which will break the script). This is
-a possibility for JAVA_HOME or your Gatling install directory where a directory along the path may have a space.
-You will need to either escape the space or move the content.
-
-**Important: if you are using an AWS starter account, be sure to fill in the session token. The starter account's session token  expires periodically (about an hour) so you will need to reinstantiate the templates periodically. If you are using a standard account, leave the field empty.**
-
-
-3. Instantiate the templates
-
-Once you have filled in `tpl-vars.txt`, run
-
-~~~
-$ make -f k8s-tpl.mak templates
+~~~bash
+/home/k8s# cd s2/standalone
 ~~~
 
-**Whenever you update your session token, update `cluster/tpl-vars.txt` and re-run the command above to propagage the change into your environment.**
+Build the Assignment&nbsp;3 version of the music service with the following command:
 
-This will check that all the programs you will need have been
-installed and are in the search path.  If any program is missing,
-install it before proceeding.
+~~~bash
+/home/k8s/s2/standalone# docker image build --build-arg ASSIGN=a3 -t s2-standalone:v0.75 .
+~~~
 
-The script will then generate the instantiated makefiles (as indicated above) that you can use to operate your environment.
+Check that the image was created by listing all images named `s2-standalone` on your machine:
 
-**Note:** This is the *only* time you will call `k8s-tpl.mak`
-directly. Do not call/use the `-tpl.mak` files.
+~~~bash
+/home/k8s/s2/standalone# docker image ls s2-standalone
+REPOSITORY      TAG       IMAGE ID       CREATED         SIZE
+s2-standalone   v0.75     ...            ...             230MB
+.... [perhaps others] ...
+~~~
 
+Pushing the image to the GitHub registry is a three-step process. First, you have to log in to the GitHub container registry:
 
-## 3. Setup DynamoDB tables
+~~~bash
+/home/k8s/s2/standalone# cat ../../cluster/ghcr.io-token.txt | docker login ghcr.io -u REGID --password-stdin
+~~~
 
-The db service requires the creation of some DynamoDB tables. This setup is done using AWS Cloudformation.
+You only need to do this occasionally---a login lasts for days until it times out.
 
-Run the following command from the `e-k8s/cluster` folder (being careful to append your SFU-ID):
+Second, you need to tag the image with the registry to which you want to push it:
 
-```
-aws cloudformation create-stack --stack-name db-<SFU-ID> --template-body file://cloudformationdynamodb.json
-```
+~~~bash
+/home/k8s/s2/standalone# docker image tag s2-standalone:v0.75 ghcr.io/REGID/s2-standalone:v0.75
+~~~
 
-If you are already familiar with Cassandra or another key-value store, DynamoDB will be very easy to pick up. See [here](https://aws.amazon.com/getting-started/hands-on/create-nosql-table/) for a quick intro.
+Now that the image is tagged with its destination registry, you can push it to that registry:
 
+~~~bash
+/home/k8s/s2/standalone# docker image push ghcr.io/REGID/s2-standalone:v0.75
+... Messages for twelve or more layers ...
+v0.75: digest: sha256:... size: ....
+~~~
 
-## 4. Setup Postman environment
+The container image is now on GitHub's servers, available to be pulled to any machine in the world by anyone who has a GHCR personal access token authorized for that image.
 
-Navigate to [Postman](https://www.postman.com) and create an account. (We will be using Postman to quickly exercise the API
-provided by the containers to verify their correction operation.) Download and install the desktop client. (You can use the web client though that requires the installation of a supporting plug-in.)
+### Pulling the container image to an EC2 instance
 
-Import `postman/S1-user.postman_coll.json` and `postman/DB.postman_coll.json` from the repo into your account. Your account will look similar to this (you can ignore the S2 service):
+As in Assignment&nbsp;2, start up an EC2 instance.  Use the same AMI (Page&nbsp;1), instance type (Page&nbsp;2), and security group (Page&nbsp;6).
 
-![Three collections imported with all API calls available](postman-imported-coll.png)
+Once it is created, transfer the required files. Although you do not have to transfer the source files to the instance, you still have to transfer the access token required to log in to GHCR and the data file used by the service. Run the following:
 
-You can use Postman directly to initiate requests by filling in a request per the API contract in section 7 below. Alternately, Postman can [generate the appropriate code/command-line](https://learning.postman.com/docs/sending-requests/generate-code-snippets/) for other tools. In particular, it supports [curl](https://en.wikipedia.org/wiki/CURL) which can be used from a Linux shell.
+~~~bash
+/home/k8s/s2/standalone# ./transfer-for-run.sh ~/.ssh/KEY-FILE ec2-user EC2-DNS-NAME
+~~~
 
+Once the files are transferred to the instance, sign on to it using `signon.sh`.
 
-You can also choose to use curl directly to invoke the API.
+On the EC2 instance, you will also need to log in to GHCR. The command you use is almost the same as the one you ran locally, only differing in the path to the GHCR access token:
 
+~~~bash
+[ec2-user@ip-172-31-12-116 ~]$ cat ghcr.io-token.txt | docker login ghcr.io -u REGID --password-stdin
+~~~
 
-## 5. Run the services
+After signing on, a single command pulls the container image, packaging all the executable code for the music service, and executes it:
 
+~~~bash
+[ec2-user@ip-172-31-12-116 ~]$ docker container run -d --rm -p 30001:30001 -v $PWD:/data --name s2 ghcr.io/REGID/s2-standalone:v0.75
+Unable to find image 'ghcr.io/.../s2-standalone:v0.75' locally
+v0.75: Pulling from .../s2-standalone
+... Layers pulled and expanded ...
+Status: Downloaded newer image for ghcr.io/tedkirkpatrick/s2-standalone:v0.75
+....
+[ec2-user@ip-172-31-12-116 ~]$ 
+~~~
 
-1. Build your images:
+Note that we don't see the output from the service as it starts.  We ran the container in "detached" mode (`-d` option), in the background with no connection to our terminal.
+We can use another command to check that the container is running:
 
-```script
-make -f docker.mak s1
-```
+~~~bash
+ec2-user@ip-172-31-12-116 ~]$ docker container ls
+CONTAINER ID   IMAGE                                        COMMAND                 CREATED         STATUS         PORTS
+be4c48e6b9ed   ghcr.io/.../s2-standalone:v0.75              "python app.py 30001"   4 minutes ago   Up 4 minutes   8000/
+~~~
 
-If you examine `docker.mak`, you will find that the pseudo-target `s1` ultimately reduces down to:
+If the container's status reads, `Up [period of time]`, it has started successfully and is still running.
 
-```script
-docker build -t ghcr.io/<registry-id>/cmpt756s1:e3 s1
-docker push ghcr.io/<registry-id>/cmpt756s1:e3
-```
+That's it!  The music service is now running on EC2.  Run `mcli` on your own machine, passing it the address of this instance (see Assignment&nbsp;2 for details), and verify that the service is running.
 
-(There are parameter substitutions which may obfuscated but you can see the final command as issued in your terminal.)
+### ... But how will we get the logs?
 
-Refer to the documentation for [build](https://docs.docker.com/engine/reference/commandline/run/) and [push](https://docs.docker.com/engine/reference/commandline/push/). Note that we are using GitHub's container registry (`ghcr.io`) and not the typical DockerHub.
+Running a remote container in detached mode with no terminal output is clean and is amenable to automated execution but it does make one part of our job harder:  How will we get the logs when we need to debug the server code?
 
-Repeat this for db with `make -f docker.mak db`.
+In `mcli` on your own machine, enter the `test` command:
 
-2. Run your images:
+~~~bash
+mql: test
+Non-successfuls status code: 500
+~~~
 
-```script
-make -f docker.mak deploy
-```
+Our familiar "bug" is present in this server but to fix it we will need to see the logs and get our unique code. How do we read them?
 
-which reduces to the two commands:
+Docker provides the `logs` command to get the logs from a detached container.  On the EC2 instance, enter:
 
-```script
-docker run -t --publish hport:cport --detach --name s1 ghcr.io/<registry-id>/cmpt756s1:e3
-docker run -t \
-		-e AWS_REGION="us-...-2" \
-		-e AWS_ACCESS_KEY_ID="AK.....PQBTYA" \
-		-e AWS_SECRET_ACCESS_KEY="wKh......R71kWpEqwYPWx6U+" \
-		-e AWS_SESSION_TOKEN="...." \
-            --publish hport:cport --detach --name db ghcr.io/<registry-id>/cmpt756db:e3
-```
+~~~bash
+[ec2-user@ip-172-31-12-116 ~]$ docker container logs s2
+[2021-12-10 01:51:58,036] ERROR in app: Unique code: ...code...
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+...
+~~~
 
-This looks worse than it really is so be sure to read up the [docker run documentation](https://docs.docker.com/engine/reference/commandline/run/).
+where `s2` is the name we assigned the container when we created it via the `--name` parameter of `docker container run`. This is the log we saw in the previous exercises, with the unique code on the first line.
 
-(The important element is in the second `docker run` where your various secret/tokens are injected via the `-e` option. When you update your `tpl-vars.txt` and re-run `make -f k8s-tpl.mak templates`, your new token is updated.)
+**Background:** With some work, you could configure the `docker` client on your local machine to pull the logs directly from the remote EC2 instance. But that is tricky---more security permissions---so we'll just use the client directly on the EC2 instance. When we move to Kubernetes in the next assignment however, running the client directly on the remote instance will not be an option.
 
-I also highlight the 'hport:cport' as a mapping of the port from the container's host (your machine) to the container. For this exercise, we map the ports directly with no translation.
+### Fixing the bug
 
-Finally, each service (s1 and db) is mapped to a distinct port in this assignment and use docker's internal local host for each service (refer [`s1/appd.py`](https://github.com/scp-2021-jan-cmpt-756/sfu-cmpt756.211/blob/master/e-k8s/s1/appd.py), line 35). In this fashion, the services occupy different ports & readily interact with each other without the need for a cluster. Don't worry if this doesn't make sense just yet... it will further along in the course.
+After the previous two assignments, the fix-rebuild-test run-commit cycle should be getting familiar.  The difference this time is that you will rebuild the service on your own machine, push it to the GitHub container repository, pull it to the remote instance, and run it there.
 
-3. You can examine your running containers with [``docker container ls``](https://docs.docker.com/engine/reference/commandline/container_ls/); stop one with [``docker container kill``](https://docs.docker.com/engine/reference/commandline/container_kill/); and destroy one with [``docker container rm``](https://docs.docker.com/engine/reference/commandline/container_rm/). Practice stopping, destroying and restarting your containers. When you are ready to continue, ensure that you have the two services up and running by checking ``docker container ls``. If you have Docker Desktop installed, it includes [a handy Dashboard](https://docs.docker.com/desktop/dashboard/) to do the same and more.
+1. *On your local machine*, edit `app-a3.py`.  This is the same sequence you did in previous exercises, just using the unique code for this exercise.
+2. *On your local machine*, build the container image using the same command you used above.
+3. *On your local machine*, tag and push the rebuilt image to `ghcr.io` using the same command you used above. However, you won't need to log in to `ghcr.io` again, as your prior login will still apply.
+4. *On the remote machine*, pull and run the rebuilt image.  This time, you will have to force docker to pull the image.  The remote machine already  has a local copy of the image `ghcr.io/REGID/s2-standalone:v0.75` and by default assumes that is up to date.  We add the `--pull always` argument to force docker to pull the rebuilt image from GHCR:
 
-The makefile is setup to automate the execution of some commands.
+   ~~~bash
+   [ec2-user@ip-172-31-12-116 ~]$ docker container run --pull always -d --rm -p 30001:30001 -v $PWD:/data --name s2 ghcr.io/REGID/s2-standalone:v0.75
+   ~~~
 
-Use `scratch` to stop the containers. (You still need to `docker rm` to dispose of the containers.)
+Test the revised service by issuing `test` from your local copy of `mcli`. 
 
-```script
-$ make -f docker.mak scratch
-```
+Check the logs from this instance:
 
-Note how the makefile uses `docker ps` to look up the container id and pass it to a subsequent `docker stop`.
+~~~bash
+[ec2-user@ip-172-31-12-116 ~]$ docker container logs s2
+...
+208.78.41.77 - - [10/Dec/2021 18:34:47] "GET /api/v1/music/test HTTP/1.1" 200 -
+...
+~~~
 
+This time there should be no stack trace and the call to `/api/v1/music/test HTTP/1.1` should return a `200` status code, indicating success.
 
-4. Navigate to the [DynamoDB Console](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ConsoleDynamoDB.html) and verify that you have the two tables (user & music). Do a screen capture of each empty table.
+**Tip:** If you're still getting the error code, you may have forgotten to issue the `docker image tag` command after rebuilding the image.  Without that command, you will have inadvertently pushed the *old* image to GHCR and pulled it down to the remote instance, getting exactly the same version you had the first time.
 
-5. Create 3 users by using service S1 and save away their user_id. A successful call will return a `user_id` suitable for referencing this user subsequently.
+If the success code is reported, the "bug" has been fixed.  Commit and push the revised source code.
 
-```
-{"user_id":"23539348-1e9a-451b-938f-bdd41cd90ced"}
-```
+### Terminate the EC2 instance
 
+Once you are done with all the above steps, terminate the EC2 instance.  **You will accumulate charges until the instance is terminated.** See Assignment&nbsp;2 for details.
 
-6. Login to the service by using service S1 and insert a previously-saved `user_id` into the request's body. Save away the returned login context.
-```
-{
-	"uid": <a previously saved user_id>
-}
-```
+### Reflecting and looking ahead
 
-(Note that this is a toy example of an authentication service; it's not appropriate for anything other than course exercises.)
+Using container technology simplified some things and made others more complex.
 
+Simpler operations:
 
-## 6. Test API operation
+* **Building locally, running remotely:** We didn't have to transfer all the build files.  Instead, we could build the executable locally, then transfer it to the remote machine packaged up in a container.  Our build environment is only a few files but most production systems are *much* bigger. This is significant simplification.
 
-1. Delete 1 of your 3 users by referencing its user_id and using a login context. Save the URL for this deletion operation and do a screen capture of the User table from DynamoDB after the deletion.
+More complicated operations:
 
+* **Getting the logs:** Getting the logs from a detached container requires a new command, `docker container logs`, that works with container technology. This is more work than simply glancing at a terminal window.
+* **Granting access to GHCR:** Because GHCR is centralized and globally visible, we had to restrict access to our image via use of an access token. That token had to be transferred to the remote instance to enable it to pull the image from GHCR.
 
-2. Update the record for 1 of your 2 remaining users and using a login context. Save the URL for this update operation and do a screen capture of the User table from DynamoDB after the update.
+Same operations:
 
+* **Data files:** We still had to send the data files to the remote change, same as we did for Assignment&nbsp;2.
+* **Managing the remote instance:** We had to do the same AWS operations to crate and terminate the remote instance as we did in Assignment&nbsp;2.
 
-## 7. Service Specification
+In the next assignment, we will use Kubernetes. We will see that it manages the remote instances and pulls the images, while its security requirements make GHCR access harder.
 
-Following is the specification for the S1 and DB endpoints included with this exercise's sample code.
+### Repository stores versus container (image) registries
 
-Version: v1
+The distinctions between GitHub and GHCR and between Git repositories ("repos") and container images can be confusing, so we've summarized them in this table:
 
-Service: Users
+<table>
+<caption>Repository stores versus container (image)<sup>a</sup> registries</caption>
+<thead>
+<th>Purpose</th>                     <th>Name</th>  <th>Address</th>     <th>Contents</th>        <th>Sample push</th>         <th>Sample pull</th>
+<thead>
+<tbody>
+<tr>
+<td>Developing source code</td>      <td>GitHub<sup>b</sup></td><td><code>github.com</code></td><td>Git repositories</td><td><code>git push</code></td>   <td><code>git pull</code></td>
+</tr>
+<tr>
+<td>Distributing executable code</td><td>GHCR<sup>c</sup></td>  <td><code>ghcr.io</code></td>   <td>container images</td><td><code>docker image push</code></td><td><code>docker image pull<sup>d</sup></code></td>
+</tr>
+</tbody>
+</table>
 
-Visibility: Public
+**Notes:**
 
-Domain: Users
+<sup>a</sup> Although these are universally called "container registries" they in fact store container *images*. The images become containers when they are pulled from the registry and run via commands such as `docker container run`.
 
-Serialized Data/Content-Type: json/xml
+<sup>b</sup> Other development platforms include [GitLab](https://about.gitlab.com/) and [BitBucket](https://bitbucket.org/product), as well as internal tools installed and run within large organizations.
 
-| API                                 | Description     | Request Body/Parameters                                      | Response Body                                            | HTTP Response Code | Error Codes | Request Example                            | Response Example                 |
-| ----------------------------------- | --------------- | ------------------------------------------------------------ | -------------------------------------------------------- | ------------------ | ----------- | ------------------------------------------ | -------------------------------- |
-| PUT - /api/v1/user/login            | Login           | JSON:{"uid": user_id}                                        | Hash of user context suitable for passing to other calls | 200                | 500         | PUT https://host:30000/api/v1/user/login    | {“UserContext”: “<somehash>”}    |
-| PUT - /api/v1/user/logoff           | Logoff          | JSON: {"jwt": token}                                         | None                                                     | 200                | 500         | PUT https://host:30000/api/v1/user/logoff   | { Message: ok }                  |
-| PUT - /api/v1/user/user_id    | UPDATE one user | Body:  { Email: string, Fname: string }                      | OK response                                              | 200                | 500         | PUT https://host:30000/api/v1/user/5f761f85-53df-4e72-8414-9fe0d58779d1    | { Message: ok }                  |
-| POST - /api/v1/user/                | CREATE one user | Body:  { Email: string, Fname: string Lname: string } Params: None | { “uid”: string }                                        | 200                | 500         | POST https://host:30000/api/v1/user         | { ResponseMetadata: { … etc. } } |
-| DELETE - /api/v1/user/user_id | DELETE one user |                                                              | JSON of response from aws                                | 200                | 500         | DELETE https://host:30000/api/v1/user/5f761f85-53df-4e72-8414-9fe0d58779d1 | { ResponseMetadata: { … etc. } } |
-| GET - /api/v1/user/user_id    | GET one user    |                                                              | JSON of User entity                                      | 200                | 500         | GET https://host:30000/api/v1/user/5f761f85-53df-4e72-8414-9fe0d58779d1    | {User Object}                    |
+<sup>c</sup> Other container registries include [Docker Hub](https://hub.docker.com/) and [Red Hat Quay](https://quay.io/), as well as registries run by all the major cloud vendors ([Amazon ECR](https://aws.amazon.com/ecr/), [Google Container Registry](https://cloud.google.com/container-registry), [Microsoft Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/), [Alibaba Container Registry](https://www.alibabacloud.com/help/product/60716.htm), [IBM Cloud Container Registry](https://cloud.ibm.com/docs/Registry)).
 
+<sup>d</sup> The `docker image pull` command is implicitly invoked by `docker container run` if the image to be run is not already present on the local machine. In that case, the image is pulled from the registry before running.
 
-Version: v1
-
-Service: Datastore
-
-Visibility: Private
-
-Domain: Datastore
-
-Serialized Data/Content-Type: json/xml
-
-| API                                | Description      | Request Body/Parameters                           | Response Body        | HTTP Response Code | Error Codes | Request Example                                              | Response Example                                             |
-| ---------------------------------- | ---------------- | ------------------------------------------------- | -------------------- | ------------------ | ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| GET - /api/v1/datastore/read       | Read an object   | Param: object-type, object-key                    | JSON of aws response | 200                | 500         | GET https://host:30002/api/v1/datastore/read?objtype=user&objkey=123 | {   "Count": 1,   "Items": [     {       "email": "sholmes@bakers.org",       "fname": "Sherlock",       "lname": "Holmes",       "user_id": "9b235bcb-0d10-415f-ab9f-9ce23da2a119"     }   ],   "ResponseMetadata": {     "HTTPHeaders": {       "connection": "keep-alive",       "content-length": "165",       "content-type": "application/x-amz-json-1.0",       "date": "Sat, 12 Sep 2020 18:16:15 GMT",       "server": "Server",       "x-amz-crc32": "196980578",       "x-amzn-requestid": "AOGKN903DF66VLU3GEBEEO8DK3VV4KQNSO5AEMVJF66Q9ASUAAJG"     },     "HTTPStatusCode": 200,     "RequestId": "AOGKN903DF66VLU3GEBEEO8DK3VV4KQNSO5AEMVJF66Q9ASUAAJG",     "RetryAttempts": 0   },   "ScannedCount": 1 } |
-| POST - /api/v1/datastore/write     | Write an object  | Body: objtype, object-key(s)                      | ID of new entity     | 200                | 500         | POST https://host:30002/api/v1/datastore/write                | {   "user_id": "9b235bcb-0d10-415f-ab9f-9ce23da2a119" }      |
-| DELETE =  /api/v1/datastore/delete | Delete an object | Param: objtype, object-key                        | JSON of aws response | 200                | 500         | DELETE https://host:30000/api/v1/datastore/delete?objtype=user&objkey=123 | {   "ResponseMetadata": {     "HTTPHeaders": {       "connection": "keep-alive",       "content-length": "2",       "content-type": "application/x-amz-json-1.0",       "date": "Sat, 12 Sep 2020 18:13:04 GMT",       "server": "Server",       "x-amz-crc32": "2745614147",       "x-amzn-requestid": "N7R6LO93FFBDH1A5GRRL55LBS7VV4KQNSO5AEMVJF66Q9ASUAAJG"     },     "HTTPStatusCode": 200,     "RequestId": "N7R6LO93FFBDH1A5GRRL55LBS7VV4KQNSO5AEMVJF66Q9ASUAAJG",     "RetryAttempts": 0   } } |
-| PUT  - /api/v1/datastore/update    | Update an object | Params: objtype, objkey <br />Body: object-key(s) | JSON of aws response | 200                | 500         | PUT https://host:30002/api/v1/datastore/update?objtype=user&objkey=<string> | {   "ResponseMetadata": {     "HTTPHeaders": {       "connection": "keep-alive",       "content-length": "2",       "content-type": "application/x-amz-json-1.0",       "date": "Sat, 12 Sep 2020 18:13:04 GMT",       "server": "Server",       "x-amz-crc32": "2745614147",       "x-amzn-requestid": "N7R6LO93FFBDH1A5GRRL55LBS7VV4KQNSO5AEMVJF66Q9ASUAAJG"     },     "HTTPStatusCode": 200,     "RequestId": "N7R6LO93FFBDH1A5GRRL55LBS7VV4KQNSO5AEMVJF66Q9ASUAAJG",     "RetryAttempts": 0   } } |
-
-
-
-
-Note that the docker.host.internal pseudo-name is used for calling the DB service from the User service. As we're using Docker directly, Docker provides this to reference itself.
-
-
-
-## 8. Container registry & repository
-
-A Docker image captures an application and the environment required by the application to run. A container is a running instance of an image. However, in many context where the subtlety is not crucial, the two terms are interchangeable.
-
-In particular, the term container is used generically to refer to the category of 'environment encapsulation' technology of which docker (note the lowercase) is the most popular. (Uppercase Docker refers to the company founded to commercialize the (lowercase) docker technology.) There are many container technologies available today: [rkt](https://coreos.com/rkt/) (pronounced as 'rocket'), [Mesos](http://mesos.apache.org/documentation/latest/mesos-containerizer/), [LXC](https://linuxcontainers.org/lxc/introduction/), [containerd](https://containerd.io/), etc.
-
-A container registry is a service responsible for hosting (storing) images. Such a service may be either public or private. In this term, we use GitHub's own recently launched container registry; it is presently in pre-release state so expect some potential hiccups.
-
-Tagging is a confusing aspect of Docker since it is a convention (that you can deviate from) and also a feature that is implemented/enforced differently by different registry. See this [blog post](https://www.freecodecamp.org/news/an-introduction-to-docker-tags-9b5395636c2a/) for the lowdown.
-
-
-1. Visit your GitHub account and locate the container registry. [Login](https://github.com) and navigate to 'Your repositories' (upper right-hand corner). Now select the 'Packages' tab in the secondary menu bar.
-
-2. The terminologies within GitHub are confusing because of the way the container registry feature is fitted inside their platform. The container registry inside GitHub is held inside their Packages tab. Each individual package here corresponds to one container repository.
-
-3. Do a screen shot of your GitHub container registry of this view.
-
+## Part&nbsp;2: Exploring containers and `docker`
 
 ## Submission
-
-### Create a PDF
-
-Make a copy of the [submission template](https://docs.google.com/document/d/1gpRq616PPwe232HpAOmLLvIbc7opiljVIE8DEWnEfJg/edit?usp=sharing)(GDoc format).
-
-Fill in:
-
-a. The header box at the top of the document.
-
-b. Content from the steps above.
-
-Generate a PDF when you are done.
-
-You must name your PDF according to the pattern: **SFU-student-no**`-e3-submission.pdf` where **SFU-student-no** is the  numeric id (typicall 30...) assigned to you upon entering SFU. Unfortunately, you will be penalized for incorrect filename because of cascading dependencies for a large class.
-
-
-**A penalty will be assessed for failure to name your submission appropriately.**
-
-### Canvas submission
-
-Navigate to this exercise and upload the generated PDF.
