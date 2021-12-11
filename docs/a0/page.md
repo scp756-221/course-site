@@ -16,8 +16,7 @@ the features we need for this course:
 * GitHub container registry
 * Container registry personal access token
 
-If you have not already set up any of these, skip to the
-appropriate section below.
+To set up each of these, proceed to the appropriate section below.
 
 ## Do you already have an AWS id?
 
@@ -29,8 +28,7 @@ the features we need for this course:
 * At least one ssh key pair for EC2
 * Budget alert
 
-If you have not already set up any of these, skip to the
-appropriate section below.
+To set up each of these, proceed to the appropriate section below.
 
 ---
 
