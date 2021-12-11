@@ -43,7 +43,7 @@ highlighting, syntax validation/hinting, support for multiple
 files/source trees, integration with version control (Git) and
 numerous other creature comforts. **Do not skip this step.**
 
-### Git
+### Git & GitHub Desktop
 
 Install Git per
 [the Git community's instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
@@ -61,13 +61,12 @@ We have
 and
 [Matt Harrison's supervisual Git cheatsheet](https://github.com/mattharrison/Git-Supervisual-Cheatsheet/blob/master/gitcheat.png).)
 
-### Docker
+### Docker Desktop/Docker
 
-Install Docker (available for all systems) and Docker Desktop (if
-available--only for macOS and Windows) from
-[docker.com](https://docs.docker.com/get-docker/).
+Install Docker Desktop/Docker from
+[docker.com](https://docs.docker.com/get-docker/). For MacOS and Windows, it will be Docker Desktop which includes a convenient dashboard. For Linux, it will be plain Docker.
 
-### The course code repository
+### Course code repo instance
 
 **You must have successfully installed Git before starting this
 step.**
@@ -93,7 +92,7 @@ template on GitHub.
 
 5. Click `Create repository from template`.
 
-### The course tools container
+### Course tools container
 
 **You must have successfully installed Docker before starting this
 step.**
@@ -196,18 +195,18 @@ than from inside the tools container. Both are for handling "source code":
 * Git, which you will use to commit code changes to version control.
 
 
-### Entering your template parameters
+### Instantiate configuration template
 
-Some of the files in the course repository `c756-exer` are templates:
-generic code that will be instantiated with values specific to each student. 
+Some files within the course repository `c756-exer` are templates:
+generic files that must be filled in with values specific to each student. 
 All the files controlling this process are in the directory
-`c756-exer/e-k8s/cluster`. In that directory, we have provided a file
-named `tpl-vars-blank.txt`.
+`c756-exer/e-k8s/cluster`. Look for the file `tpl-vars-blank.txt` in this directory.
 
 1. In your Host OS, make a copy of `tpl-vars-blank.txt` named
    `tpl-vars.txt`, in the same directory.
-2. In Visual Studio Code, edit `tpl-vars.txt`:
-
+2. Start up Visual Studio Code and open this directory.
+3. Use the Explorer (upper-left tool on the left-hand-side toolbar) and the browser just to its right to locate `tpl-vars.txt` that you just created.
+4. Open and edit it:
    * On the line starting `ZZ-REG-ID=`, append your GitHub userid. For
      example, if your userid were `div_by_0`, the line would become
 	 `ZZ-REG-ID=div_by_0`. Note that there are **no spaces around the
@@ -256,10 +255,10 @@ Save your token in the file
 `c756-exer/e-k8s/cluster/ghcr.io-token.txt`. (To repeat: The `cluster`
 directory is where we place all secure files.)
 
-### Make `cluster` only accessible to you
+### Secure `cluster`
 
 For security, ensure that the `cluster` directory's
-permissions prohibit anyone else from accessing its files.
+permissions prohibit anyone else from accessing its contents.
 
 In the tools container:
 
@@ -268,21 +267,21 @@ In the tools container:
 /home/k8s# chmod go-rwx cluster/*
 ~~~
 
-### End of installation---possible break time
+### Coffee Break 
 
 This concludes the installation part of this assignment. You are
 welcome to take a break before starting Part&nbsp;2. The second part
-will not make heavy use of the Internet, so you do not need
+does not use much of the Internet so you do not need
 high-bandwidth access.
 
-## Part 2: Running a simple application
+## Part 2: Run a simple application
 
 In this second part, you will run and modify a simple client-server
 application.  The coding you do will be simple; the point of this
 exercise is to gain familiarity with the tools and applications that
 you will be using for the rest of the course.
 
-### The music client-server application
+### Client-server application
 
 Cloud-based systems, a main topic of this course, make heavy use of
 client-server designs. In this assignment, we will look at the
@@ -318,10 +317,10 @@ service/facility to other component).
 
 For now though, the above table describes our simple system.
 
-### The simple music service
+### The simple music application
 
 For the first few assignments, the client and server together implement a
-simple music service that stores and retrieves songs and the artists who performed them.
+simple music application that stores and retrieves songs and the artists who performed them.
 (The actual music media file is not stored, only the metadata.) Every song
 will be identified by a system-defined universal ID such as
 `6ecfafd0-8a35-4af6-a9e2-cbd79b3abeea`, designed to have a very high
@@ -344,9 +343,9 @@ The server accepts requests as specially-formatted HTTP requests.
 These are awkward for human users, so we provide a client implementing
 a simple command-line query interface.
 
-### Running the simple music service
+### Running the music application
 
-Open up two command-line windows.  In each one, start the tools
+Open up two terminal windows: one each for the client and the server.  In each one, start the tools
 container, remembering that first you have to make `c756-exer/e-k8s`
 the current directory.
 
@@ -405,24 +404,24 @@ At some point, run the `test` command.  What do you see in both
 windows? We will return to this result in the next subsection. For
 now, just note this behaviour.
 
-Once you are comfortable with the service, terminate each component: the client using the
+Once you are comfortable with the application, terminate each component: the client using the
 `quit` command; the server via `CTRL-C`. But keep the two windows
 open---you'll be using them again in a moment.
 
-A note about this version of the music service: its data is not
-truly persistent. All daa is thrown away when the server exits. 
+A note about this version of the music application: its data is not
+truly persistent. All data is thrown away when the server exits. 
 In Assignment&nbsp;4 you will begin using a full
-version of the service that stores the songs persistently on AWS
+version of the service that stores its data persistently on AWS
 DynamoDB.
 
 ### Fixing a defect in a cloud service is hard
 
-As an experienced programmer, you have likely use the typical defect-removal
-cycle many times:
+As a programmer, you have likely follow the typical defect-removal
+cycle:
 
-1. Note that a system's behaviour contradicts its specification.
-2. Look at system diagnostics (from system logs, debug print statements, debugging
-   tools, and other sources) to isolate the source of the defect.
+1. Observe a system's behaviour contradicts its specification.
+2. Inspect system diagnostics (from system logs, debug print statements, debugging
+   tools, and other sources) to identity the source of the defect.
 3. Revise the source code to remove the defect.
 4. Build and run the revised system, verifying that the defect has
    been removed (and no new defects introduced).
@@ -441,33 +440,32 @@ simplest case, debugging a server running on your local machine. By
 Assignment&nbsp;4, we'll have moved up to debugging a server running
 remotely on AWS.
 
-In each of these exercises, the service will have the same "bug", that
+In each of these exercises, the service has the same "bug": that
 the `test` command throws an exception in the server and returns a
 `500` status code, indicating
 ["Internal Server Error"](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).
 Removing the exception and returning a `200` status code (indicating
 ["OK"](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)) will
-be trivial and require no knowledge of Python or even of how the
+be trivial and require no deep understanding of Python or even of how the
 server works. **The point of this part of the assignment is to
 practice reading a service's log output and restarting the fixed
 service.** The trivial "bug" is at most a [MacGuffin](https://en.wikipedia.org/wiki/MacGuffin) to practice this cycle.
 
-### Fixing a defect in a local service (the easy case)
+### Fixing defect in a local service (the Easiest Case)
 
-For this assignment, we'll start with the easiest case. The server log
+This assignment encompasses the Easiest Case where the service is local to you. The server log
 is just the output in its terminal window. The log shows the stack
 traceback from the exception, as well as other information. In
-particular, the first line of server output will have something like
+particular, look for a line of output similar to this:
 
 ~~~
 [2021-12-03 01:17:29,510] ERROR in app: Unique code: c69314133f0dfb2a79c93278335d6c10ed60498c20b03d49168db2344d579d89
 ~~~
 
 Ignore the `ERROR` tag---this is just an informational message. The
-unique code you see on the right will differ from the one above and it will
-vary for each assignment/student.
+unique code you see will differ from the one above as it varies for each assignment/student.
 
-To fix the "bug" this time, copy the code (the 64 hex characters, in this case
+To fix this "bug", copy the code (the 64 hex characters, in this case
 the sequence `c69314...579d89`), open the
 file`c756-exer/e-k8s/s2/standalone/app.py` in Visual Studio Code, and
 paste it between the empty single quotes in the `if` statement of the
@@ -495,7 +493,7 @@ def test():
 
 ### Testing the fix
 
-Save the revised file and (in the tools container) rebuild and rerun
+Save the revised file (in Visual Studio Code) and (in the tools container) rebuild/rerun
 the server in the server window:
 
 ~~~bash
@@ -505,7 +503,7 @@ the server in the server window:
 ... server log messages ...
 ~~~
 
-The client didn't change, so you don't have to rebuild it, only rerun
+The client didn't change, so you don't need to update (rebuild) it, only rerun
 it in its window:
 
 ~~~bash
@@ -537,7 +535,7 @@ multiple layers of security providing very narrow access? And what
 might be required to get the fixed software running on that remote
 machine? And what would you need to do if you didn't know the nature/fix of problem?
 
-### Committing and pushing the fix
+### Committing the fix
 
 You've found the defect and tested the fix but one more step remains:
 Committing the fix to version control to make it permanent and visible
