@@ -146,20 +146,18 @@ machine instances.
 
 On your machine, do the following:
 
-1. Choose a location to store your private key. You can either create a directory for storing this or use ssh's default hidden directory (~/.ssh). If you choose to create a directory, set the access modes so
-   that only you have access. In Linux/macOS, the command is
+1. Save the key file in ssh's default hidden directory (`~/.ssh`)
+2. Set the access modes on the key file so that only you have access:
 
    ~~~
-   chmod go-rwx <DIRNAME>
+   $ chmod go-rwx <KEYFILENAME>
    ~~~
 
-2. Move the key file from the download directory to your chosen directory location.
-3. Set the access modes on the key file so that only you have access.
-4. Set the access modes on the key file so that even you cannot
-   modify it. In Linux/macOS, the command is
+3. Set the access modes on the key file so that even you cannot
+   modify it:
 
    ~~~
-   chmod u-w <KEYFILENAME>
+   $ chmod u-w <KEYFILENAME>
    ~~~
 
 You're almost done! There's one more step, which will help you avoid

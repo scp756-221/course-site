@@ -6,7 +6,7 @@ continue to run the client on your local machine. This will be your
 first example of of the client and server running on
 different machines.
 
-Second, you will explore the features of the Git version control system.
+Second, you will explore the features of git, GitHub Desktop and GitHub.
 
 **This assignment has two prerequsites:**
 
@@ -17,7 +17,7 @@ Second, you will explore the features of the Git version control system.
 
 ## Part 1: Running an Amazon EC2 instance
 
-In this part you will repeat the build-debug-fix-test-commit cycle that you performed in Assignment&nbsp;1, only this time the server will be running in the cloud, on a remote instance of an Amazon EC2 virtual machine.
+In this part you will repeat the build-debug-fix-test-commit cycle that you performed in Assignment&nbsp;1, only this time the server will be running in the cloud, on a remote instance of an Amazon EC2 virtual machine. Note the point of this step is to arrive at an EC2 instance while providing some visibility into the EC2 service for students who are either unfamiliar with the concept of virtualization or cloud service. The steps provided are far from optimal but adequate for this. 
 
 ### Setting up your AWS credentials
 
@@ -42,8 +42,8 @@ Your first step is to start an EC2 instance. You will do this through the AWS Co
 2. In the search bar at the top of the page, enter `EC2` and press Return.
 3. In the top right, select `Oregon` from the menu of regions.
 3. Click on `Launch instances`, in the upper right.
+5. From the list, click on `Select` for the entry labelled `Deep Learning AMI (Amazon Linux 2) Version 55.0` with the ami id of `ami-0a100c9a1c22dd744`.  Note: We chose this machine image as a matter of convenient (this image happens to have all the tools we need already) and not because we are performing any deep learning in this exercise.
 4. **Step 1 Page:** In the search bar, enter `deep learning` and press return.
-5. From the list, click on `Select` for the entry labelled `Deep Learning AMI (Amazon Linux 2) Version 55.0`.  Note: We will not be doing deep learning in this exercise. This configuration just happens to have all the tools we need already installed.
 6. **Step 2 Page:** Click the check box to the left of the row with `t1.micro`. Then click on the label `6. Configure Security Group` at the top of the page. (We are skipping Steps 3--5.)
 7. **Step 6 Page:** In the `Configure Security Group` dialogue:
    0. Select `Create a new security group` (it is the default).
@@ -65,13 +65,16 @@ Your first step is to start an EC2 instance. You will do this through the AWS Co
 12. Click on the instance ID link (it will look like `i-0fada0697f42aed7e`).  This will bring up the instance summary.
 13. Locate the `Public IPv4 DNS` entry, mid-right of the page. It will look like `ec2-34-210-56-181.us-west-2.compute.amazonaws.com`. Don't do anything with it for now.
 
-You have just instantiated a Linux virtual machine in one of Amazon's Oregon datacentres.  The machine you started isn't very powerful and won't cost much to run but it is sufficient for this exercise.
+You have just instantiated a virtual machine running Linux in one of Amazon's Oregon datacentres.  The hardware for your machine is rather weak (~1 CPU core with ~0.5GB of RAM) and doesn't cost much to run (USD0.02/h which works out about CAD0.60/day). But it is more than sufficient for this exercise.
 
 ### Build and run the music server
 
 Now that the instance is running, we need to build the music server and run it there.
 
+
 0. In the Amazon instance summary, locate the instance ID again and this time, click the copy icon ("overlapping squares") to the left of the name.  This will copy the long name into your copy buffer.
+
+1. Eliminate the step 1 below and proceed to step 2 to sign-on.
 1. In the tools container, enter the following commands, where `KEY-FILE` is the name you gave to your key file (including the `.pem` extension) saved in Assignment&nbsp;0 and `EC2-DNS-NAME` is pasted in from the copy you just made:
 
    ~~~bash
@@ -99,6 +102,11 @@ Now that the instance is running, we need to build the music server and run it t
   ~~~
 
   The window is now showing a terminal session on *the remote Amazon instance*, not your machine. (The `ip-172-31-25-98` portion of the prompt will vary with the IP address of your particular instance.)
+
+2.5 As the service has no requirement of any secret, the repo is usable as is right from the a git clone:
+
+$ git clone https://github.com/student-id/scp756-exer.git
+$ cd scp756-exer/s2/standalone
 
 3. Build and start the music service on this remote instance:
 
@@ -142,11 +150,23 @@ Terminate the music service by entering the `shutdown` command in the music clie
 
 ### Find and fix the "bug"
 
-Use the same sequence of steps that you used in Assignment&nbsp;1 to locate and fix the bug, with the difference that you are editing the service code on your **local** machine but building it on the **remote** machine:
+You will follow a similar sequence of steps as from Assignment&nbsp;1 to locate and fix the bug. However, this time around, you will use GitHub Desktop instead to 'operate' git. 
 
 1. *On the remote machine*, locate the required code in the output from the music service.
 2. *On your local machine, in your Host OS*, add the code to `app.py` using Visual Studio Code.
+
+0. Launch GitHub Desktop...
+   -add the repo
+   -observe the visual diff that GitHub Desktop provides
+   -commit the code to the local repo
+   -check the student's GitHub repo does not contain this fix
+   -push the code up to the student's own copy of the repo
+   -recheck the student's GitHub repo now to confirm the fix
+
+3. eliminate step 3 below
 3. *On your local machine, in the tools container*, rerun `./transfer.sh` with the same arguments as last time. This will transfer the revised code to the remote machine.
+
+3. $ git pull
 4. *On the remote machine*, rerun `./builda2.sh`.
 5. *On the remote machine*, rerun `./runa2.sh`.
 6. *On your local machine, in the tools container*, in the `mcli` client try the `test` command. It should now work, with no error status code displayd by the client and with no traceback in the server log.
@@ -154,7 +174,7 @@ Use the same sequence of steps that you used in Assignment&nbsp;1 to locate and 
 
 ### Terminate the EC2 instance
 
-Amazon is charging you by the minute for running the EC2 instance, so as soon as you're done with this part of the assignment, terminate the instance:
+As Amazon is charging you by the minute for running the EC2 instance, you will want to dispose of the instance as soon as reasonable. On the other hand, keep in mind the absolute charges involved. As this instance is very small and cheap (USD0.02/h), you may wish to explore the mobile apps ([iOS](https://apps.apple.com/us/app/aws-console/id580990573) & [Android](https://play.google.com/store/apps/details?id=com.amazon.aws.console.mobile&hl=en_US)) to monitor and manage your resources.
 
 1. If you are still signed in to the remote instance, exit it:
 
@@ -164,15 +184,16 @@ Amazon is charging you by the minute for running the EC2 instance, so as soon as
   /home/k8s/s2/standalone# 
   ~~~
 
-2. In the Amazon Console Instance summary, select `Terminate instance` from the `Instance state` dropdown menu.  Click `Terminate` to confirm.
-3. Verify that the instance was actually terminated by going to the instance list and wait until the *Instance state* shows `Terminated`. You may have to refresh the display a few times to see it.
+2. If you wish to terminate the instance from the web console, start from the Amazon Console Instance summary and select `Terminate instance` from the `Instance state` dropdown menu.  Click `Terminate` to confirm.
+
+3. Verify that the instance was actually terminated by going to the instanfe list and wait until the *Instance state* shows `Terminated`. You may have to refresh the display a few times to see it.
 
 ### Reflecting and looking ahead
 
 Running the service remotely required much more work than was required to run it locally in Assignment&nbsp;1. The extra work fell under three categories:
 
-1. Configuring and starting a remote machine.
-2. Transferring the source files to the remote machine.
+1. Configuring and starting a remote machine. This is something that may be streamlined by process and/or improved tooling. 
+2. Transferring the source files to the remote machine. 
 3. Security to ensure that attackers cannot charge their use of AWS to your account.
 
 The next two assignments will focus on technologies that address the first two issues ... but require even more stringent security measures:
