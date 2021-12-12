@@ -469,7 +469,7 @@ unique code you see will differ from the one above as it varies for each assignm
 
 To fix this "bug", copy the code (the 64 hex characters, in this case
 the sequence `c69314...579d89`), open the
-file`c756-exer/e-k8s/s2/standalone/app.py` in Visual Studio Code, and
+file`c756-exer/e-k8s/s2/standalone/app-a1.py` in Visual Studio Code, and
 paste it between the single quotes in the `if` statement of the
 `test()` function, replacing whatever is between them:
 
@@ -550,7 +550,7 @@ regular *Host OS*:
 
 ~~~bash
 $ cd c756-exer/e-k8s/s2/standalone
-c756-exer/e-k8s/s2/standalone $ git add app.py
+c756-exer/e-k8s/s2/standalone $ git add app-a1.py
 c756-exer/e-k8s/s2/standalone $ git commit -m 'Add missing code to "test"'
 c756-exer/e-k8s/s2/standalone $ git push origin
 ~~~

@@ -153,7 +153,7 @@ Terminate the music service by entering the `shutdown` command in the music clie
 You will follow a similar sequence of steps as from Assignment&nbsp;1 to locate and fix the bug. However, this time around, you will use GitHub Desktop instead to 'operate' git. 
 
 1. *On the remote machine*, locate the required code in the output from the music service.
-2. *On your local machine, in your Host OS*, add the code to `app.py` using Visual Studio Code.
+2. *On your local machine, in your Host OS*, add the code to `app-a2.py` using Visual Studio Code.
 
 0. Launch GitHub Desktop...
    -add the repo
@@ -186,7 +186,7 @@ As Amazon is charging you by the minute for running the EC2 instance, you will w
 
 2. If you wish to terminate the instance from the web console, start from the Amazon Console Instance summary and select `Terminate instance` from the `Instance state` dropdown menu.  Click `Terminate` to confirm.
 
-3. Verify that the instance was actually terminated by going to the instanfe list and wait until the *Instance state* shows `Terminated`. You may have to refresh the display a few times to see it.
+3. Verify that the instance was actually terminated by going to the instance list and wait until the *Instance state* shows `Terminated`. You may have to refresh the display a few times to see it.
 
 ### Reflecting and looking ahead
 
@@ -209,7 +209,7 @@ Do Scenarios&nbsp;1--6 of the [Katacoda Git exercises](https://www.katacoda.com/
 
 When you've completed the scenarios, practice your knowledge by:
 
-1. Committing the change you made to `app.py` in Part&nbsp;1.
+1. Committing the change you made to `app-a2.py` in Part&nbsp;1.
 2. Pushing that change to your GitHub account.
 
 ## Submission
