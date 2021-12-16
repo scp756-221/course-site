@@ -441,6 +441,7 @@ The Kubernetes command is awkward and you have to repeat it every time you want 
 8. Leave the S2 pod by pressing `Escape` (again).
 9. Scroll to the database pod, whose name starts with `cmpt756db`, and use the same steps as above to view its log.
 10. Leave the database log scrolling for now.
+11. When you want to leave k9s, press `:` to enter command mode and in the command line enter `q`  followed by `Return`.
 
 To complete setting up the music service, we need to start DynamoDB and load it with initial data:
 
@@ -454,7 +455,7 @@ Watch the k9s log to see the lines where the loader calls the database to load t
 127.0.0.6 - - [15/Dec/2021 17:56:32] "POST /api/v1/datastore/load HTTP/1.1" 200 -
 ~~~
 
-where `datastore` is the service and `load` is the operation, in disctinction to `health` and `readiness`, the automated checks from Kubernetes.
+where `datastore` is the service and `load` is the operation, in distinction to `health` and `readiness`, the automated checks from Kubernetes.
 
 To test that all these pieces are now working, we need to start the music client. In a separate (third) window, run the client,
 where `EXTERNAL-IP` is the long DNS name you found in the section, "Tunneling into your cluster in the cloud", such as
