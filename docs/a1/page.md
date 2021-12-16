@@ -225,6 +225,16 @@ tools/process-templates.sh
 /home/k8s#
 ~~~
 
+You also need to commit one file created by the instantiation process. In your Host OS,
+
+~~~bash
+$ cd .../c756-exer/s2/standalone
+$ git add README.md
+$ git commit -m 'Instantiate CI badges'
+~~~
+
+where `...` is whatever directory path takes you to `c756-exer`.
+
 **SECURITY NOTE:** (This really should be in blinking red text.) The
 `cluster` directory and all its files should be treated with extra
 care:
