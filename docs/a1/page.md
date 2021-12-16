@@ -151,7 +151,7 @@ by the appropriate suffix: `/home/k8s#` indicates the Guest OS, while
 We'll get into more details of the above structure in
 Assignment&nbsp;3 but for now this is enough to start.
 
-A final, crucial point on starting the course tools container: **Always start the container from the `c756-exer/e-k8s` subdirectory of
+A final, crucial point on starting the course tools container: **Always start the container from the `c756-exer/` directory of
 the course code repository.**
 
 To start the container, run `tools/shell.sh` as follows:
@@ -166,7 +166,7 @@ cached on your machine.)
 
 ~~~bash
 # Use whatever path you need to get to this directory
-$ cd c756-exer/e-k8s
+$ cd ..../c756-exer
 $ tools/shell.sh
 ...
 Unable to find image 'ghcr.io/scp756-221/c756-tool:...' locally
@@ -199,7 +199,7 @@ than from inside the tools container. Both are for handling "source code":
 Some files within the course repository `c756-exer` are templates:
 generic files that must be filled in with values specific to each student. 
 All the files controlling this process are in the directory
-`c756-exer/e-k8s/cluster`. Look for the file `tpl-vars-blank.txt` in this directory.
+`c756-exer/cluster`. Look for the file `tpl-vars-blank.txt` in this directory.
 
 1. In your Host OS, make a copy of `tpl-vars-blank.txt` named
    `tpl-vars.txt`, in the same directory.
@@ -251,7 +251,7 @@ security, we recommend setting a token expiration date so that the
 token becomes unusable a few weeks after this course ends.
 
 Save your token in the file
-`c756-exer/e-k8s/cluster/ghcr.io-token.txt`. (To repeat: The `cluster`
+`c756-exer/cluster/ghcr.io-token.txt`. (To repeat: The `cluster`
 directory is where we place all secure files.)
 
 ### Secure `cluster`
@@ -346,26 +346,26 @@ a simple command-line query interface.
 ### Running the music application
 
 Open up two terminal windows: one each for the client and the server.  In each one, start the tools
-container, remembering that first you have to make `c756-exer/e-k8s`
+container, remembering that first you have to make `c756-exer/`
 the current directory.
 
 In one window, build and run the server:
 
 ~~~bash
-/home/e-k8s# cd s2/standalone
-/home/e-k8s/s2/standalone# ./builda1.sh
+/home/k8s# cd s2/standalone
+/home/k8s/s2/standalone# ./builda1.sh
 ... build messages ...
-/home/e-k8s/s2/standalone# ./runa1.sh
+/home/k8s/s2/standalone# ./runa1.sh
 ... server log messages ...
 ~~~
 
 In the other window, build and run the client:
 
 ~~~bash
-/home/e-k8s# cd mcli
-/home/e-k8s/mcli# make build-mcli
+/home/k8s# cd mcli
+/home/k8s/mcli# make build-mcli
 ... build messages ...
-/home/e-k8s/mcli# make run-mcli
+/home/k8s/mcli# make run-mcli
 docker container run ...
 
 Command-line interface to music service.
@@ -467,7 +467,7 @@ unique code you see will differ from the one above as it varies for each assignm
 
 To fix this "bug", copy the code (the 64 hex characters, in this case
 the sequence `c69314...579d89`), open the
-file`c756-exer/e-k8s/s2/standalone/app-a1.py` in Visual Studio Code, and
+file`c756-exer/s2/standalone/app-a1.py` in Visual Studio Code, and
 paste it between the single quotes in the `if` statement of the
 `test()` function, replacing whatever is between them:
 
@@ -497,9 +497,9 @@ Save the revised file (in Visual Studio Code) and (in the tools container) rebui
 the server in the server window:
 
 ~~~bash
-/home/e-k8s/s2/standalone# ./builda1.sh
+/home/k8s/s2/standalone# ./builda1.sh
 ... build messages ...
-/home/e-k8s/s2/standalone# ./runa1.sh
+/home/k8s/s2/standalone# ./runa1.sh
 ... server log messages ...
 ~~~
 
@@ -507,7 +507,7 @@ The client didn't change, so you don't need to update (rebuild) it, only rerun
 it in its window:
 
 ~~~bash
-/home/e-k8s/mcli# make run-mcli
+/home/k8s/mcli# make run-mcli
 docker container run ...
 
 Command-line interface to music service.
@@ -547,10 +547,10 @@ Visual Studio Code, is the only tool that you run in your
 regular *Host OS*:
 
 ~~~bash
-$ cd c756-exer/e-k8s/s2/standalone
-c756-exer/e-k8s/s2/standalone $ git add app-a1.py
-c756-exer/e-k8s/s2/standalone $ git commit -m 'Add missing code to "test"'
-c756-exer/e-k8s/s2/standalone $ git push origin
+$ cd c756-exer/s2/standalone
+c756-exer/s2/standalone $ git add app-a1.py
+c756-exer/s2/standalone $ git commit -m 'Add missing code to "test"'
+c756-exer/s2/standalone $ git push origin
 ~~~
 
 ### Review of this step
