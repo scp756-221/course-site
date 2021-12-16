@@ -1,6 +1,6 @@
 ## Introduction
 
-In Part&nbsp;1 of this assignment, you will once again run the music service on an EC2 instance but with an important difference: Instead of tediously transferring source files  to the remote instance, building the service there, and then running it, you will simply pull down a previously-built container and run it on the instance. This will simplify the build process but make it a bit harder to get the server logs.
+In Part&nbsp;1 of this assignment, you will once again run the music service on an EC2 instance but with an important difference: Instead of installing the service (download & build), you will pull down a containerized copy of the service and run it on the instance. This will reduce the amount of work but make it a bit harder to get to the server logs.
 
 In Part&nbsp;2, you will explore further features of containers and the `docker` command.
 
@@ -12,11 +12,9 @@ In Part&nbsp;2, you will explore further features of containers and the `docker`
 
 ## Part&nbsp;1: Running a container on a remote EC2 instance
 
-Rather than building the music service on the remote instance, in this exercise we will pull a previously-built container image from the GitHub Container Registry (GHCR).  But first, the image must be built and pushed to GHCR.
+Rather than building the music service on the remote instance, in this exercise we will pull a containerized copy of the service from the GitHub Container Registry (GHCR).  But first, the image must be built and pushed to GHCR.
 
-Because this assignment is about using the `docker` command, we will be using the command directly, rather than calling it inside a predefined shell script or Makefile. This will give you some familiarity with the many options the command requires. To avoid typing these long commands in, risking errors due to mis-typing, copy the commands from this file and paste them into the appropriate terminal window.
-
-However, when you paste a command into the terminal window, **you must edit the personalized arguments before pressing `Return`:**
+Because this assignment is about using the `docker` command, we will be using the command directly, rather than calling it inside a predefined shell script or Makefile. This will give you some familiarity with the many options the command requires. While you may be inclined to copy/paste/hit return for the commands presented below. pay attention to the command. Doing so will help you to understand what is happening. As well in most cases, you need **to tailor the command with personalized parameters before pressing `Return`:**
 
 * `REGID` must be replaced with your GitHub userid.
 * `KEY-FILE` must be replaced with the name of the file in your `~/.ssh` directory containing the AWS key used to sign on to EC2 instances.
@@ -67,19 +65,65 @@ Now that the image is tagged with GHCR as its destination registry, you can push
 v0.75: digest: sha256:... size: ....
 ~~~
 
-The container image is now on GitHub's servers, available to be pulled to any machine in the world by anyone who has a GHCR personal access token authorized for that image.
+The container image is now on GitHub's servers, available to be pulled to any machine in the world by anyone who has a GHCR personal access token authorized for that image. Navigate to `https://github.com/YOUR-GITHUB-ID?tab=packages` to confirm the image's existence. By default,  images are set for private access upon creation. You can change this by navigating to the image and changing the "Package settings".
 
 ### Pulling the container image to an EC2 instance
 
-As in Assignment&nbsp;2, start up an EC2 instance.  Use the same AMI (Page&nbsp;1), instance type (Page&nbsp;2), and security group (Page&nbsp;6).
-
-Once it is created, transfer the required files. Although you do not have to transfer the source files to the instance, you still have to transfer the access token required to log in to GHCR and the data file used by the service. Run the following:
+In Assignment&nbsp;2, you used the web console to start up an EC2 instance. From this point on, you will use the AWS CLI instead.
 
 ~~~bash
-/home/k8s/s2/standalone# ./transfer-for-run.sh ~/.ssh/KEY-FILE ec2-user EC2-DNS-NAME
+# pull down the CLI shortcuts
+$ cd ~
+$ git clone https://github.com/overcoil/c756-quickies
+$ cd c756-quickies
+$ cp .aws-a ~/
+$ cp .aws-off ~/
+$ cp .ec2.mak ~/
+$ cd ~
+
+# insert your security group, subnet ID and key
+$ vi ~/.ec2.mak
 ~~~
 
-Once the files are transferred to the instance, sign on to it using `signon.sh`.
+~~~bash
+# activate these CLI shortcuts
+$ source ~/.aws-a
+~~~
+
+Now you can launch and stop instances very easily with the `erun`, `eps` and `ekill` shortcuts.
+
+There is also an `essh` shortcut that will log you into the machine too.
+
+Review the script to work out how the hand-off works between the commands/targets. (Hint: it uses up-ip.log to transfer the IP address between commands.)
+
+~~~bash
+# launch the EC2 instance
+$ erun
+...
+
+# inspect the IP address of the instance you launched
+$ cat up-ip.log
+A.B.C.D
+~~~
+
+You can use `eps` to examine the instances you have running. Examine the alias to work out the output.
+
+~~~bash
+# check your instances
+$ eps
+i-01099e36520cd6e22 t2.xlarge running 2021-12-14T00:09:18+00:00 34.217.34.207 furious_varahamihira
+~~~
+
+(Finally, experiment with `ekill` to terminate your instance. Try a few cycles of `erun`+`eps`+`ekill` and examine the output.)
+
+~~~bash
+# copy the data and CR token over
+$ scp -i ~/.ssh/YOUR-KEY ./music.csv ec2-user@A.B.C.D:/home/ec2-user/
+$ scp -i ~/.ssh/YOUR-KEY ../../cluster/ghcr.io-token.txt ec2-user@A.B.C.D:/home/ec2-user/
+
+# then login
+$ essh
+~~~
 
 On the EC2 instance, you will also need to log in to GHCR. The command you use is almost the same as the one you ran locally, only differing in the path to the GHCR access token:
 
@@ -87,7 +131,7 @@ On the EC2 instance, you will also need to log in to GHCR. The command you use i
 [ec2-user@ip-172-31-12-116 ~]$ cat ghcr.io-token.txt | docker login ghcr.io -u REGID --password-stdin
 ~~~
 
-After signing on, a single command pulls the container image, packaging all the executable code for the music service, and executes it (the `$PWD` in the following command is a shell variable---you do not have to replace it):
+After signing on, a single command pulls the container image  and launches it (the `$PWD` in the following command is a shell variable---you do not have to replace it):
 
 ~~~bash
 [ec2-user@ip-172-31-12-116 ~]$ docker container run -d --rm -p 30001:30001 -v $PWD:/data --name s2 ghcr.io/REGID/s2-standalone:v0.75
@@ -143,7 +187,7 @@ where `s2` is the name we assigned the container when we created it via the `--n
 
 ### Fixing the bug
 
-After the previous two assignments, the fix-rebuild-test run-commit cycle should be getting familiar.  The difference this time is that you will rebuild the service on your own machine, push it to the GitHub container repository, pull it to the remote instance, and run it there.
+After the previous two assignments, the fix-rebuild-test run-commit cycle should be getting familiar.  The difference this time is that you will update the package from your development machine, push it up to the GitHub container repository, and pull it from the remote instance, and run it there.
 
 1. *On your local machine*, edit `app-a3.py`.  This is the same sequence you did in previous exercises, just using the unique code for this exercise.
 2. *On your local machine*, build the container image using the same command you used above.
@@ -173,7 +217,20 @@ If the success code is reported, the "bug" has been fixed.  Commit and push the 
 
 ### Terminate the EC2 instance
 
-Once you are done with all the above steps, terminate the EC2 instance.  **You will accumulate charges until the instance is terminated.** See Assignment&nbsp;2 for details.
+Once you are done with all the above steps, terminate the EC2 instance.  **You will accumulate charges until the instance is terminated.** Use the CLI:
+
+~~~bash
+# check your instances
+$ eps
+i-01099e36520cd6e22 t2.xlarge running 2021-12-14T00:09:18+00:00 34.217.34.207 furious_varahamihira
+
+# kill the one 
+$ ekill i-01099e36520cd6e22
+
+# or kill everything
+$ epurge
+~~~
+
 
 ### Reflecting and looking ahead
 
@@ -181,7 +238,7 @@ Using container technology simplified some things and made others more complex.
 
 Simpler operations:
 
-* **Building locally, running remotely:** We didn't have to transfer all the build files.  Instead, we could build the executable locally, then transfer it to the remote machine packaged up in a container.  Our build environment is only a few files but most production systems are *much* bigger. This is significant simplification.
+* **Building locally, running remotely:** We didn't have to transfer/build the service.  Instead, we could package the service somewhere convenient (e.g. locally) and transfer it to the remote machine via an intermediary (as a container on a CR). The effort to build our service is relatively simplistic but most production systems are *much* bigger. This is significant simplification.
 
 More complicated operations:
 
@@ -191,7 +248,7 @@ More complicated operations:
 Same operations:
 
 * **Data files:** We still had to send the data files to the remote instance, same as we did for Assignment&nbsp;2.
-* **Managing the remote instance:** We had to do the same AWS operations to create and terminate the remote instance as we did in Assignment&nbsp;2.
+* **Managing the remote instance:** You've learned how to start-up an EC2 instance rapidly via the CLI. This is a meaningful improvement on Assignment&nbsp;2 but it is still tedious to manage machines.
 
 In the next assignment, we will use Kubernetes. We will see that it manages the remote machine instances and pulls the images, while its security requirements make GHCR access harder.
 
@@ -319,10 +376,10 @@ The container metadata specifies the directories that the container will read wh
 
 We'll demonstrate this by starting the music service with a different initial list of songs.  So far, whenever we have started the service, it has read the file `music.csv` to get its list of songs.  The `s2/standalone` directory has a subdirectory, `odd`, with a distinct `music.csv` providing a different initial list.
 
-Start the music service, mapping its `/data` directory to `s2/standalone/odd` rather than `st/standalone`:
+Start the music service, mapping its `/data` directory to `s2/standalone/odd` rather than `s2/standalone`:
 
 ~~~bash
-/home/k8s# docker container run -it --rm -v $HWD/s2/standalone/odd:/data -p 30001:30001 --name s2 s2-standalone:v0.75
+/home/k8s# docker container run -it --rm -v $PWD/s2/standalone/odd:/data -p 30001:30001 --name s2 s2-standalone:v0.75
 [2021-12-11 00:21:31,034] ERROR in app: Unique code: f189212871ce7d0e6c4f5101c14b6a288d7c92509dd231473d2c135f281a162e
  * Serving Flask app "app" (lazy loading)
  * Environment: production
@@ -338,10 +395,7 @@ Similar possibilities of mapping can be applied to network ports using the `-p` 
 
 ### Image history, layers, and the overlay filesystem
 
-BLERG:  George, I have some ideas for this but this assignment is already quite long and it's taken too long to write.
-
-* Would you like a section on layers?
-* Would you like to delete an earlier section to make room for this and keep the assignment at this length?
+You will explore Docker layers and the UnionFS in a future assignment after the reading break.
 
 ## Submission
 
