@@ -111,13 +111,11 @@ Assignment&nbsp;3) will be retrieved as required by Docker.
 
 #### Running the course tools container
 
-**
-WARNING: for students working on Apple Silicon (e.g., M1/Pro/Max) machines, bear in mind you are working on 
-hardware whose [software support is rapidly evolving](https://docs.docker.com/desktop/mac/apple-silicon/). Please inform the teaching team (via email) that you are using Apple Silicon hardware.
+**WARNING: for students working on Apple Silicon (e.g., M1/Pro/Max) machines, bear in mind you are working on 
+hardware whose [software support is rapidly evolving](https://docs.docker.com/desktop/mac/apple-silicon/). Please inform the teaching team (via email) that you are using Apple Silicon hardware.**
 
-The tools container was developed in anticipation of the ARM
-architecture (as opposed to the x86 architecture of the prior generation) but the ARM-variant of the container is untested as we did not have access to Apple Silicon hardware. Please be patient and work with the teaching team should any problem arise.
-**
+**The tools container was developed in anticipation of the ARM
+architecture (as opposed to the x86 architecture of the prior generation) but the ARM-variant of the container is untested as we did not have access to Apple Silicon hardware. Please be patient and work with the teaching team should any problem arise.**
 
 
 The tools container is a collection of Linux command-line tools in ready-to-use form. It is provided to 
