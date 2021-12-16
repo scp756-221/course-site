@@ -92,6 +92,12 @@ template on GitHub.
 
 5. Click `Create repository from template`.
 
+#### Downloading the course code to your machine
+
+You have copied the course repo into your central GitHub account.  Next you need to download a copy of that repo to your machine, a Git operation called *cloning*.
+
+BLERG need description here.  If done in command line, they need their GitHub token, which they don't have till later in this exercise.  Can they do it instead using GitHub Desktop? They can sign in directly via `gh auth login` which defaults to Web-based browser flow.  But `gh` is not currently installed in tools container.
+
 ### Course tools container
 
 **You must have successfully installed Docker before starting this
