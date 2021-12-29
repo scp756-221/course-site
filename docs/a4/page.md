@@ -65,6 +65,8 @@ In the first three assignments, we worked exclusively in the `c756-exer/s2/stand
 |logs/ | all output files are collected here |
 |tools/ | misc tools to prepare repo content (makefiles) for use |
 |gatling/ | Gatling load tester---for Exercise 5 onward |
+|profiles/ | files defining any personal bash or Git command aliases you use |
+|gcloud/ | tools for running the Google cloud command-line |
 | --- | --- |
 |{cmusic.sh, dmusic.sh, duser.sh} | scripts to drive the API |
 | --- | --- |
