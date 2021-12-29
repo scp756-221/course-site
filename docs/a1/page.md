@@ -282,6 +282,12 @@ In the tools container:
 /home/k8s# chmod go-rwx cluster/*
 ~~~
 
+### (Optional) Configuring bash and Git aliases
+
+*This section is optional.*
+
+If you have frequently-used bash aliases or Git configuration options that you would like to use in the tools container, you can define them in this environment by creating files `bash_aliases` or `gitconfig` in the subdirectory `profiles`. See `profiles/README.md` for the details.
+
 ### Coffee Break 
 
 This concludes the installation part of this assignment. You are
