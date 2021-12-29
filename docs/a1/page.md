@@ -498,7 +498,8 @@ Before (the 64-character code may differ from this or even just be `''`):
 ~~~python
 @bp.route('/test', methods=['GET'])
 def test():
-    if '1e0715252b48ed14858ae1ce646d67195183ffb8f9dc02d73c82323d8d75f482' != ucode:
+    if ('1e0715252b48ed14858ae1ce646d67195183ffb8f9dc02d73c82323d8d75f482' !=
+            ucode):
         raise Exception("Test failed")
     return {}
 ~~~
@@ -508,7 +509,8 @@ After (but use **your code**, not this one):
 ~~~python
 @bp.route('/test', methods=['GET'])
 def test():
-    if 'c69314133f0dfb2a79c93278335d6c10ed60498c20b03d49168db2344d579d89' != ucode:
+    if ('c69314133f0dfb2a79c93278335d6c10ed60498c20b03d49168db2344d579d89' !=
+            ucode):
         raise Exception("Test failed")
     return {}
 ~~~
