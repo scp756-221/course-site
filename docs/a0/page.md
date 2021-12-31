@@ -45,7 +45,7 @@ We will be using GitHub for a number of purposes:
 1. If you do not have a GitHub account,
    [create one](https://github.com/join).  We *strongly recommend* setting
    up Multi-Factor-Authentication (MFA) for this account.
-2. [Configure your Git command-line client](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration).
+2. [Configure your Git command-line client](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration).  **You must use the short form of your SFU email address for this. (This is typically a 5-6 letter sequence following by a number of digits.)** This is to disambiguate between students in the future.
 3. If you have Multi-Factor Authentication (MFA) for your GitHub account, 
    [configure your command-line for Github.com with MFA](https://docs.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication).
 
@@ -216,13 +216,13 @@ that you set at least one.
 
 ## Submission
 
-BLERG GitHub userid?
+Create a PDF file with the following:
 
-Take a screen shot of your Budgets Overview. Your screen shot should
+1. Screen shot of your Budgets Overview. Your screen shot should
 include both the budget and the IAM userid in the top right corner, as
 highlighted in the following screen shot.  You do not need to add the
 highlights to your screen shot.
 
 <img src="./AWS-IAM-id-with-budget.png/view" alt="Screen shot of budget set for IAM administrative userid" width="800"/>
 
-Submit your screen shot to BLERG
+Submit the file to [Assignment 0](https://coursys.sfu.ca/2022sp-cmpt-757-g1/+a0/) in CourSys.
