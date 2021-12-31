@@ -223,6 +223,6 @@ include both the budget and the IAM userid in the top right corner, as
 highlighted in the following screen shot.  You do not need to add the
 highlights to your screen shot.
 
-<img src="https://github.com/scp756-221/course-site/blob/main/docs/a0/AWS-IAM-id-with-budget.png" alt="Screen shot of budget set for IAM administrative userid" width="800"/>
+<img src="https://github.com/scp756-221/course-site/blob/main/docs/a0/AWS-IAM-id-with-budget.png?raw=true" alt="Screen shot of budget set for IAM administrative userid" width="800"/>
 
 Submit the file to [Assignment 0](https://coursys.sfu.ca/2022sp-cmpt-757-g1/+a0/) in CourSys.
