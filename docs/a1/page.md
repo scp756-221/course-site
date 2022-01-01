@@ -563,7 +563,7 @@ machine? And what would you need to do if you didn't know the nature/fix of prob
 
 You've found the defect and tested the fix but one more step remains:
 Committing the fix to version control to make it permanent and visible
-to other team members.
+to the world.
 
 In the next assignment, you will go into the details of Git. For now,
 just execute the following commands. Recall that Git, along with
@@ -588,26 +588,17 @@ require more tooling.
 
 ## Submission
 
-BLERG what and where?
+Create a PDF file and provide the following:
 
-BLERG Include CI result from own page.
+1. Screen-capture of a terminal session showing the `c756-tool` container image. Use `docker image | grep c756` to retrieve this. (Aside: for students on MacOS or Windows, go to your Docker Desktop tray and bring up Dashboard/Images and compare the content.)
 
-### Create a PDF
+2. Screen-capture of a terminal session with your git commit. You can use `git log` to retrieve the history. 
 
-Make a copy of the [submission template](https://docs.google.com/document/d/10kVl3R5tMVgxqdzO0QAXcRRxxRcWcGcdQnlPqvBT6WE/edit?usp=sharing)(GDoc format).
+3. Screen-capture of a terminal session with the permission of your cluster directory. You can use `ls -la cluster` from the `c756-exer` folder.
 
-Fill in:
+4. Your unique code for the error in the s2 application.
 
-a. The header box at the top of the document.
+5. URL of the line of code with the fix in your Github repo's copy of `c756-exer/s2/standalone/app-a1.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
 
-b. Content from the steps above.
 
-Generate a PDF when you are done.
-
-You must name your PDF according to the pattern: **SFU-id**`-e1-submission.pdf` where **SFU-id** is the portion of your email address preceding `@sfu.ca`. Unfortunately, you will be penalized for incorrect filename because of cascading dependencies for a large class.
-
-**A penalty will be assessed for failure to name your submission appropriately.**
-
-### Canvas submission
-
-Navigate to this assignment and upload the generated PDF.
+Submit the file to [Assignment 1](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a1/) in CourSys.
