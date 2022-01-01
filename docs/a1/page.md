@@ -599,6 +599,8 @@ Create a PDF file and provide the following:
 4. Your unique code for the error in the s2 application.
 
 5. URL of the line of code with the fix in your Github repo's copy of `c756-exer/s2/standalone/app-a1.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
+![AWS Image](https://github.com/scp756-221/course-site/blob/main/docs/a1/github-permalink.png?raw=true)
+
 
 
 Submit the file to [Assignment 1](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a1/) in CourSys.
