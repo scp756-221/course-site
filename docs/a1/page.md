@@ -79,7 +79,7 @@ template on GitHub.
 
 1. Sign in to GitHub using your userid.
 2. Go to the
-   [`scp756-221/c756-exer` page](https://github.com/scp756-221/c756-exer).
+   [page for `scp756-221/c756-exer`](https://github.com/scp756-221/c756-exer).
 
 3. Click the `Use this template` button.
 
@@ -96,7 +96,19 @@ template on GitHub.
 
 You have copied the course repo into your central GitHub account.  Next you need to download a copy of that repo to your machine, a Git operation called *cloning*.
 
-BLERG need description here.  If done in command line, they need their GitHub token, which they don't have till later in this exercise.  Can they do it instead using GitHub Desktop? They can sign in directly via `gh auth login` which defaults to Web-based browser flow.  But `gh` is not currently installed in tools container.
+In the Web page for your repository,
+
+1. Click the green `Code` button, producing a dropdown dialogue.
+2. Check that the `HTTPS` tab is checked (it is the default).
+3. Click the "copy" icon (the overlapping boxes) to copy the URL into your clipboard.
+4. In a command line window, `cd` to the parent directory where you will put all your CMPT&nbsp; 756
+   materials and type, where `URL` is the pasted value of the URL in your clipboard:
+
+   ~~~bash
+   ... $ git clone URL
+   ~~~
+
+You now have a copy of the course code repository on your local machine, linked to the copy on your GitHub account.
 
 ### Course tools container
 
@@ -163,12 +175,12 @@ the course code repository.**
 To start the container, run `tools/shell.sh` as follows:
 
 
-(Note: As this is the first time you will have run the container, its image
+**Note:** As this is the first time you will have run the container, its image
 will be be downloaded. This will be indicated by a message that
-Docker could not find the image locally. The image is large (>2 GB) and can
+Docker could not find the image locally. The image is large (>2&nbsp;GB) and can
 take several minutes depending upon the speed of your Internet service. This download is not needed on
 subsequent invocations (unless you explicitly purge it), as the image will already be downloaded and remain
-cached on your machine.)
+cached on your machine.
 
 ~~~bash
 # Use whatever path you need to get to this directory
@@ -191,7 +203,7 @@ the command line of the Host OS:
 $
 ~~~
 
-### Native Tools
+### Tools that run on your host operating system 
 
 There are two tools that you will run in your Host OS rather
 than from inside the tools container. Both are for handling "source code":
@@ -286,7 +298,7 @@ In the tools container:
 
 *This section is optional.*
 
-If you have frequently-used bash aliases or Git configuration options that you would like to use in the tools container, you can define them in this environment by creating files `bash_aliases` or `gitconfig` in the subdirectory `profiles`. See `profiles/README.md` for the details.
+If you have frequently-used bash aliases or Git configuration options that you would like to use in the tools container, you can define them in this environment by editing files `bash_aliases` or `gitconfig` in the subdirectory `profiles`. See `profiles/README.md` for the details.
 
 ### Coffee Break 
 

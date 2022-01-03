@@ -23,14 +23,9 @@ In this part you will repeat the build-debug-fix-test-commit cycle that you perf
 
 If you set up your AWS credentials in Assignment&nbsp;1 and instantiated the templated code, you can skip this subsection.
 
-If you have obtained your AWS credentials but not yet configured your system, you will do it in this section.
-
-BLERG CHECK
-
-In the tools container, update the AWS credentials and instantiate the templates.  The parameter `AWS-CRED` is the path to the AWS credential file you downloaded in the AWS section of Assignment&nbsp;0:
+If you have obtained your AWS credentials since you completed Assignment&nbsp;1, you need to add them to the template variables file now. Update the AWS credentials in `cluster/tpl-vars.txt` and then re-instantiate the templates in the tools container:
 
 ~~~bash
-/home/e-k8s# tools/aws-cred.sh AWS-CRED
 /home/e-k8s# make -f k8s-tpl.mak templates
 ~~~
 
@@ -71,50 +66,42 @@ You have just instantiated a virtual machine running Linux in one of Amazon's Or
 
 Now that the instance is running, we need to build the music server and run it there.
 
+1. In the Amazon instance summary, locate the instance ID again and this time, click the copy icon ("overlapping squares") to the left of the name.  This will copy the long name into your copy buffer.
 
-0. In the Amazon instance summary, locate the instance ID again and this time, click the copy icon ("overlapping squares") to the left of the name.  This will copy the long name into your copy buffer.
-
-1. Eliminate the step 1 below and proceed to step 2 to sign-on.
-1. In the tools container, enter the following commands, where `KEY-FILE` is the name you gave to your key file (including the `.pem` extension) saved in Assignment&nbsp;0 and `EC2-DNS-NAME` is pasted in from the copy you just made:
+2. In the tools container, enter the following commands, where `KEY-FILE` is the name you gave to your key file (including the `.pem` extension) saved in Assignment&nbsp;0 and `EC2-DNS-NAME` is pasted in from the copy you just made:
 
    ~~~bash
-   /home/e-k8s# cd s2/standalone/
-   /home/k8s/s2/standalone# ./transfer.sh ~/.ssh/KEY-FILE ec2-user EC2-DNS-NAME
-   ... files transferred ...
-  ~~~
+   /home/k8s/s2/standalone# ./signon.sh ~/.ssh/KEY-FILE ec2-user EC2-DNS-NAME
+   ... login output ...
+   [ec2-user@ip-172-31-25-98 ~]$
+   ~~~
 
-  If you see the message and input prompt (with different values for the address and fingerprint):
-
-  ~~~bash
-  The authenticity of host 'ec2-35-162-179-25.us-west-2.compute.amazonaws.com (35.162.179.25)' can't be established.
-  ECDSA key fingerprint is SHA256:HJ5/KcAAVadyTNp/OL00V9j8ue/+spC5nU1tmUCSim0.
-  Are you sure you want to continue connecting (yes/no/[fingerprint])?
-  ~~~
-
-  answer `yes`. The message simply indicates that you have never connected to this machine before.
-
-2. Sign on to the remote instance:
-
-  ~~~bash
-  /home/k8s/s2/standalone# ./signon.sh ~/.ssh/KEY-FILE ec2-user EC2-DNS-NAME
-  ... login output ...
-  [ec2-user@ip-172-31-25-98 ~]$ 
-  ~~~
-
-  The window is now showing a terminal session on *the remote Amazon instance*, not your machine. (The `ip-172-31-25-98` portion of the prompt will vary with the IP address of your particular instance.)
-
-2.5 As the service has no requirement of any secret, the repo is usable as is right from the a git clone:
-
-$ git clone https://github.com/student-id/scp756-exer.git
-$ cd scp756-exer/s2/standalone
-
-3. Build and start the music service on this remote instance:
+   If you see the message and input prompt (with different values for the address and fingerprint):
 
    ~~~bash
-   [ec2-user@ip-172-31-25-98 ~]$ ./builda2.sh
+   The authenticity of host 'ec2-35-162-179-25.us-west-2.compute.amazonaws.com (35.162.179.25)' can't be established.
+   ECDSA key fingerprint is SHA256:HJ5/KcAAVadyTNp/OL00V9j8ue/+spC5nU1tmUCSim0.
+   Are you sure you want to continue connecting (yes/no/[fingerprint])?
+   ~~~
+
+   answer `yes`. The message simply indicates that you have never connected to this machine before.
+
+   The window is now showing a terminal session on *the remote Amazon instance*, not your machine. (The `ip-172-31-25-98` portion of the prompt will vary with the IP address of your particular instance.)
+
+3. Clone the repo by doing the following, where `REGID` is your GitHub userid:
+
+   ~~~bash
+   [ec2-user@ip-172-31-25-98 ~]$ git clone https://github.com/REGID/c756-exer.git
+   [ec2-user@ip-172-31-25-98 ~]$ cd c756-exer/s2/standalone
+   ~~~
+
+4. Build and start the music service on this remote instance:
+
+   ~~~bash
+   [ec2-user@ip-172-31-25-98 ~/c756-exer/s2/standalone]$ ./builda2.sh
    ... lengthy build output ...
    Successfully tagged s2-standalone:v0.5
-   [ec2-user@ip-172-31-25-98 ~]$ ./runa2.sh
+   [ec2-user@ip-172-31-25-98 ~/c756-exer/s2/standalone]$ ./runa2.sh
    [2021-12-07 00:47:38,204] ERROR in app: Unique code: bb6f4ceb0082f107f759d61a861600ec6b7266c18ffb0d6ca3b42c27df2fa6f4
     * Serving Flask app "app" (lazy loading)
     * Environment: production
@@ -153,24 +140,29 @@ Terminate the music service by entering the `shutdown` command in the music clie
 You will follow a similar sequence of steps as from Assignment&nbsp;1 to locate and fix the bug. However, this time around, you will use GitHub Desktop instead to 'operate' git. 
 
 1. *On the remote machine*, locate the required code in the output from the music service.
+
 2. *On your local machine, in your Host OS*, add the code to `app-a2.py` using Visual Studio Code.
 
-0. Launch GitHub Desktop...
-   -add the repo
-   -observe the visual diff that GitHub Desktop provides
-   -commit the code to the local repo
-   -check the student's GitHub repo does not contain this fix
-   -push the code up to the student's own copy of the repo
-   -recheck the student's GitHub repo now to confirm the fix
+3. Launch GitHub Desktop and:
 
-3. eliminate step 3 below
-3. *On your local machine, in the tools container*, rerun `./transfer.sh` with the same arguments as last time. This will transfer the revised code to the remote machine.
+   * Add the repo
+   * Observe the visual diff that GitHub Desktop provides
+   * Commit the code to the local repo
+   * Check that your own GitHub repo does not contain this fix
+   * Push the code up to your own copy of the repo
+   * Recheck that your GitHub repo now has the fix
 
-3. $ git pull
-4. *On the remote machine*, rerun `./builda2.sh`.
-5. *On the remote machine*, rerun `./runa2.sh`.
-6. *On your local machine, in the tools container*, in the `mcli` client try the `test` command. It should now work, with no error status code displayd by the client and with no traceback in the server log.
-7. You will commit the revision and push it in the next section, where you do further work with Git.
+4. *On the remote machine*, pull the
+   revised code down from GitHub (note the directory) :
+
+   ~~~bash
+   [ec2-user@ip-172-31-25-98 ~/c756-exer]$ git pull
+   ~~~
+
+5. *On the remote machine*, rerun `./builda2.sh`.
+6. *On the remote machine*, rerun `./runa2.sh`.
+7. *On your local machine, in the tools container*, in the `mcli` client try the `test` command. It should now work, with no error status code displayd by the client and with no traceback in the server log.
+8. You will commit the revision and push it in the next section, where you do further work with Git.
 
 ### Terminate the EC2 instance
 
@@ -184,7 +176,7 @@ As Amazon is charging you by the minute for running the EC2 instance, you will w
   /home/k8s/s2/standalone# 
   ~~~
 
-2. If you wish to terminate the instance from the web console, start from the Amazon Console Instance summary and select `Terminate instance` from the `Instance state` dropdown menu.  Click `Terminate` to confirm.
+2. If you wish to terminate the instance from the Web console, start from the Amazon Console Instance summary and select `Terminate instance` from the `Instance state` dropdown menu.  Click `Terminate` to confirm.
 
 3. Verify that the instance was actually terminated by going to the instance list and wait until the *Instance state* shows `Terminated`. You may have to refresh the display a few times to see it.
 
