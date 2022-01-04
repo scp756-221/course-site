@@ -204,13 +204,14 @@ Continue with [GitHub Desktop Docs, Part 3: Contributing to projects with GitHub
 
 Follow the instructions there to:
 
-1. Create a repo with the name "Created-in-GitHub" in your GitHub account and pull it down to your laptop.
+1. Create a **public** repo with the name "Created-in-GitHub" in your GitHub account and clone it down to your laptop.
 
     1. Create the file `file.txt` as follows:
     ```bash
     $ uname -a > file.txt
     ```
-    2. Commit and push this up to GitHub.
+    2. Add `file.txt` and commit this into your local repo **using the git CLI**. Work out how to write a long multi-line commit comment for this.
+    2. Push this up to GitHub **using the git CLI**.
 
 
 2. Create a repo with the name "Created-in-git" on your laptop and push it up to GitHub.
@@ -219,23 +220,18 @@ Follow the instructions there to:
     ```bash
     $ docker info > file.txt
     ```
-    2. Commit and push this up to GitHub.
+    2. Add `file.txt` and commit this into your local repo **using GitHub Desktop**. Write a long multi-line commit comment for this.
+    3. Push this up to GitHub using GitHub Desktop. **Be sure to set this as a public repo.**
 
 
-3. Experiment with creating/updating files in your laptop and viewing/committing them as well as pushing them back up to GitHub. As a start:
-    1. Modify the file `file.txt` 
-    2. Use GitHub Desktop to visualize the changes made
-    3. Commit the file to your local repo
-    4. Check for changes on GitHub
-    5. Push the changes to GitHub
-    6. Check for changes on GitHub
+3. Beyond the scenarios of step 1 and 2 above, experiment with creating branches and tags from the CLI and/or GitHub Desktop.
 
 
 When you've completed the scenarios above, repeat the process of fixing the service:
 
 1. Committing the change you made to `app-a2.py` in Part&nbsp;1 **with one change**: write a long multi-line commit comment via GitHub Desktop.
 
-2. Pushing that change to your GitHub account.
+2. Push this change to your GitHub account.
 
 ## Submission
 
