@@ -43,7 +43,7 @@ highlighting, syntax validation/hinting, support for multiple
 files/source trees, integration with version control (Git) and
 numerous other creature comforts. **Do not skip this step.**
 
-### Git & GitHub Desktop
+### Git and GitHub Desktop
 
 Install Git per
 [the Git community's instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
