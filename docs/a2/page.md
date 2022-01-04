@@ -17,7 +17,7 @@ Second, you will explore the features of git, GitHub Desktop and GitHub.
 
 ## Part 1: Running an Amazon EC2 instance
 
-In this part you will repeat the build-debug-fix-test-commit cycle that you performed in Assignment&nbsp;1, only this time the server will be running in the cloud, on a remote instance of an Amazon EC2 virtual machine. Note the point of this step is to arrive at an EC2 instance while providing some visibility into the EC2 service for students who are either unfamiliar with the concept of virtualization or cloud service. The steps provided are far from optimal but adequate for this. 
+In this part you will repeat the build-debug-fix-test-commit cycle of Assignment&nbsp;1 with one difference. This time the server will be running in the cloud, on an Amazon EC2 virtual machine ("instance"). Note the point of Part 1 is to arrive at an EC2 instance while providing some visibility into the EC2 service for students who are either unfamiliar with the concept of virtualization or cloud service. Thus, the steps provided far from optimal but adequate for this. 
 
 ### Setting up your AWS credentials
 
@@ -60,7 +60,7 @@ Your first step is to start an EC2 instance. You will do this through the AWS Co
 12. Click on the instance ID link (it will look like `i-0fada0697f42aed7e`).  This will bring up the instance summary.
 13. Locate the `Public IPv4 DNS` entry, mid-right of the page. It will look like `ec2-34-210-56-181.us-west-2.compute.amazonaws.com`. Don't do anything with it for now.
 
-You have just instantiated a virtual machine running Linux in one of Amazon's Oregon datacentres.  The hardware for your machine is rather weak (~1 CPU core with ~0.5GB of RAM) and doesn't cost much to run (USD0.02/h which works out about CAD0.60/day). But it is more than sufficient for this exercise.
+You have just instantiated a virtual machine running Linux in one of Amazon's Oregon datacentres.  The hardware for this machine is rather weak (~1 CPU core with ~0.5GB of RAM) and doesn't cost much to run (USD0.02/h which works out about CAD0.60/day). But it is more than sufficient for this exercise.
 
 ### Build and run the music server
 
@@ -166,7 +166,7 @@ You will follow a similar sequence of steps as from Assignment&nbsp;1 to locate 
 
 ### Terminate the EC2 instance
 
-As Amazon is charging you by the minute for running the EC2 instance, you will want to dispose of the instance as soon as reasonable. On the other hand, keep in mind the absolute charges involved. As this instance is very small and cheap (USD0.02/h), you may wish to explore the mobile apps ([iOS](https://apps.apple.com/us/app/aws-console/id580990573) & [Android](https://play.google.com/store/apps/details?id=com.amazon.aws.console.mobile&hl=en_US)) to monitor and manage your resources.
+As Amazon is charging by the minute for the EC2 instance, you will want to dispose of the instance as soon as reasonable. On the other hand, keep in mind the absolute charges involved. As this instance is very small and cheap (USD0.02/h), you may wish to explore the mobile apps ([iOS](https://apps.apple.com/us/app/aws-console/id580990573) & [Android](https://play.google.com/store/apps/details?id=com.amazon.aws.console.mobile&hl=en_US)) to observe and manage your resources.
 
 1. If you are still signed in to the remote instance, exit it:
 
@@ -182,9 +182,9 @@ As Amazon is charging you by the minute for running the EC2 instance, you will w
 
 ### Reflecting and looking ahead
 
-Running the service remotely required much more work than was required to run it locally in Assignment&nbsp;1. The extra work fell under three categories:
+Running the service remotely required more work than was required when you were running it locally in Assignment&nbsp;1. The extra work fell under three categories:
 
-1. Configuring and starting a remote machine. This is something that may be streamlined by process and/or improved tooling. 
+1. Configuring and starting a remote machine. (This is something that may be streamlined by process and/or improved tooling.)
 2. Transferring the source files to the remote machine. 
 3. Security to ensure that attackers cannot charge their use of AWS to your account.
 
@@ -199,13 +199,55 @@ The cost of these improvements will be more elaborate security requirements. Con
 
 Do Scenarios&nbsp;1--6 of the [Katacoda Git exercises](https://www.katacoda.com/courses/git). You only need to sign on with your email---you do not need to pay anything.
 
-When you've completed the scenarios, practice your knowledge by:
+Continue with [GitHub Desktop Docs, Part 3: Contributing to projects with GitHub Desktop](https://docs.github.com/en/desktop/installing-and-configuring-github-desktop/overview/getting-started-with-github-desktop#part-3-contributing-to-projects-with-github-desktop)
 
-1. Committing the change you made to `app-a2.py` in Part&nbsp;1.
+
+Follow the instructions there to:
+
+1. Create a repo with the name "Created-in-GitHub" in your GitHub account and pull it down to your laptop.
+
+    1. Create the file `file.txt` as follows:
+    ```bash
+    $ uname -a > file.txt
+    ```
+    2. Commit and push this up to GitHub.
+
+
+2. Create a repo with the name "Created-in-git" on your laptop and push it up to GitHub.
+
+    1. Create the file `file.txt` as follows:
+    ```bash
+    $ docker info > file.txt
+    ```
+    2. Commit and push this up to GitHub.
+
+
+3. Experiment with creating/updating files in your laptop and viewing/committing them as well as pushing them back up to GitHub. As a start:
+    1. Modify the file `file.txt` 
+    2. Use GitHub Desktop to visualize the changes made
+    3. Commit the file to your local repo
+    4. Check for changes on GitHub
+    5. Push the changes to GitHub
+    6. Check for changes on GitHub
+
+
+When you've completed the scenarios above, repeat the process of fixing the service:
+
+1. Committing the change you made to `app-a2.py` in Part&nbsp;1 **with one change**: write a long multi-line commit comment via GitHub Desktop.
+
 2. Pushing that change to your GitHub account.
 
 ## Submission
 
-BLERG What to submit?
+Create a PDF file and provide the following:
 
-BLERG A2 CI badge?
+1. URL of your GitHub repo "Created-in-GitHub"
+
+2. URL Of your GitHub repo "Created-in-git"
+
+3. Screen-capture of a terminal session with the git commit that correct the problem. You can use `git log` to retrieve the history. 
+
+4. URL of the line of code with the fix in your Github repo's copy of `c756-exer/s2/standalone/app-a1.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
+![AWS Image](https://github.com/scp756-221/course-site/blob/main/docs/a1/github-permalink.png?raw=true)
+
+Submit the file to [Assignment 2](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a1/) in CourSys.
