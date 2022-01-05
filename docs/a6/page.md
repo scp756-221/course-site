@@ -1,3 +1,5 @@
+# Assignment 6&mdash;Using GPU from AWS EC2
+
 ## Introduction
 
 In this assignment you will explore the range of speedups enabled by
