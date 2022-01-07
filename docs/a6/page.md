@@ -52,7 +52,7 @@ speedup for several net configurations.
 
 ### Controlling costs
 
-In this assignment, you will run some of the more expensive EC2 instances, costing US$&nbsp;0.526&nbsp;/&nbsp;hr and more. You can minimize your expenses by planning the assignment. Review the whole assignment completely before executing any commands, so that you know the assignment's structure and steps before you start.
+In this assignment, you will use some of the more expensive EC2 instances, costing US$&nbsp;0.526&nbsp;/&nbsp;hr and more. You can minimize your expenses by planning the assignment. Review the whole assignment completely before executing any commands, so that you know the assignment's structure and steps before you start.
 
 ## Manage EC2 instances using the command line
 
@@ -487,7 +487,7 @@ Once you have all the data, you can terminate this instance, as you will not be 
 
 ## Step 4: Compare with a different architecture
 
-As a final step, we will gather timings from an instance running a different CPU architecture, the [AArch64 architecture](https://en.wikipedia.org/wiki/AArch64), more commonly referred to by the shorter "ARM64" or even just "ARM".
+As a final step, we will gather timings from an instance running a completely different CPU architecture. Up to now, you have been using an "Intel x86" processor. You will now switch to an "ARM" processor or more accurately an [AArch64](https://en.wikipedia.org/wiki/AArch64) processor.
 
 ### Amazon's Graviton ARM processor and `g5g.2xlarge` instance
 
@@ -557,7 +557,7 @@ After the initial throwaway run, train *NaiveNet* for the same width values as y
 
 ## Cleanup and cost control
 
-Once you have gathered all the above timings, terminate the ARM instance.  The surest way to guarantee that you have no instances running in the background is to run the `epurge` command, which terminates *all* your EC2 instances in the current region:
+Once you have gathered all the above timings, terminate the ARM instance.  The surest way to guarantee that you have no instances running in the background is to run the `epurge` command, which terminates *all* EC2 instances in the current region:
 
 ~~~bash
 /home/k8s# epurge
@@ -566,31 +566,31 @@ Once you have gathered all the above timings, terminate the ARM instance.  The s
 i-0735372c21aca9b7e g4dn.xlarge shutting-down 54.191.192.143 fervent_lichterman
 ~~~
 
-## Is this realistic?  Our future of diverse processors
+## Is this realistic?  Our future of heterogeneous cores
 
-Cloud providers are moving to a diverse range of processor architectures, with Amazon aggressively leading.  When we ran this exercise just a year ago, in Spring 2021, AWS's machine learning-focused instances only featured x86 CPUS and Nvidia GPUs. Just one year later, Spring 2022, AWS offers two general CPU architectures (x86 and ARM) and *four* architectures featuring specialized forms of massive parallelism (NVidia GPU, Intel Habana Gaudi, AWS Inferentia, and AWS Tranium).
+Amazon is aggressively expanding their cloud offering across a diverse range of processor architectures.  When we ran this assignment just a year ago, in Spring 2021, AWS's machine learning-focused instances only featured x86 CPUS and Nvidia GPUs. Just one year later, Spring 2022, AWS offers two general CPU architectures (x86 and ARM) and *four* architectures featuring specialized forms of massive parallelism (NVidia GPU, Intel Habana Gaudi, AWS Inferentia, and AWS Tranium).
 
 Although other cloud providers are not moving as quickly in this direction, focused on x86 as their general CPU
-architecture and Nvidia GPUs for massive parallelism, they are also increasing their architectural diversity.
-Google is adding Google TPUs, Apple is converting to the
+architecture and Nvidia GPUs for massive parallelism, the computing industry as a whole are increasing their architectural diversity.
+Google is adding Google TPUs, Apple is aggressively migrating to their
 [ARM-based M1 processor design](https://en.wikipedia.org/wiki/Apple_M1),
-and other vendors are adopting the [RISC V](https://en.wikipedia.org/wiki/RISC-V) architecture.  It seems
+and yet other vendors are adopting the [RISC V](https://en.wikipedia.org/wiki/RISC-V) architecture.  It seems
 inevitable that we will see increasing diversity of processors. Effective system design will require matching
 your application requirements to the strengths, weaknesses, and costs of the multiple architectural
 families&mdash;the skills developed in this assignment.
 
 ## Analysis
 
-Our analysis in this assignment is not intended to be definitive or detailed. This sort of test is an initial exploration to determine what factors *might* be worth further investigation and what architectural choices might not apply. We are not looking for regression analyses but simply for general guidelines. In practice, results such as these would guide further, more detailed work, including multiple runs rather than the single runs we made.
+Our analysis in this assignment is not intended to be definitive or detailed. This assignment is an initial exploration to determine what factors *might* be worth further investigation and what architectural choices might not apply. We are not looking for regression analyses but simply for general guidelines. In practice, results such as these would guide further, more detailed work, including multiple runs rather than the single runs we made.
 
-Our intent here is just to give some experience of the kinds of issues that arise when matching an application to the machine architectures offered by a given cloud provider.
-
-Answer the questions in BLERG.
+Our intent here is to give some exposure to the kinds of issues that arise when matching an application to the machine architectures offered by a given cloud provider.
 
 ## Submission
 
-Create a PDF file and include the following:
+Make a copy of the [submission template](https://docs.google.com/document/d/1ThMnCbFrnjF5SVCCEGRPBgsK4wlFTzThbfN7NjlwxgQ/edit?usp=sharing).
 
-1. TODO
+Fill in the two tables and answer the questions.
+
+Generate a PDF of this for your submission.
 
 Submit the file to [Assignment 6](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a6/) in CourSys.
