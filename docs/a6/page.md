@@ -1,3 +1,5 @@
+# Assignment 6&mdash;Using GPU from AWS EC2
+
 ## Introduction
 
 In this assignment you will explore the range of speedups enabled by
@@ -585,26 +587,10 @@ Our intent here is just to give some experience of the kinds of issues that aris
 
 Answer the questions in BLERG.
 
-## Report submission 
+## Submission
 
-BLERG Use PDF below?
+Create a PDF file and include the following:
 
-### Create a PDF
+1. TODO
 
-Make a copy of the [submission template](https://docs.google.com/document/d/1uKqm4ScpwXQns-T2E7eIgLof2i3_L_weeheCxKuO3Nc/edit?usp=sharing)(GDoc format).
-
-Fill in:
-
-a. The header box at the top of the document.
-
-b. Your analysis
-
-Generate a PDF when you are done.
-
-You must name your PDF according to the pattern: **SFU-student-no**`-a2-submission.pdf` where **SFU-student-no** is the  numeric id (typically 30...) assigned to you upon entering SFU. Unfortunately, you will be penalized for incorrect filename because of cascading dependencies for a large class.
-
-**A penalty will be assessed for failure to name your submission appropriately.**
-
-### Canvas submission
-
-Navigate to this assignment and upload the generated PDF.
+Submit the file to [Assignment 6](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a6/) in CourSys.

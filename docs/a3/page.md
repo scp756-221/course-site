@@ -1,6 +1,8 @@
+# Assignment 3&mdash;Docker & containers
+
 ## Introduction
 
-In Part&nbsp;1 of this assignment, you will once again run the music service on an EC2 instance but with an important difference: Instead of installing the service (download & build), you will pull down a containerized copy of the service and run it on the instance. This will reduce the amount of work but make it a bit harder to get to the server logs.
+In Part&nbsp;1 of this assignment, you will again run the music service on an EC2 instance but with an important difference: instead of installing the service (download & build), you will run a containerized copy of the service. This will reduce the amount of work but make it a bit harder to get to the server logs.
 
 In Part&nbsp;2, you will explore further features of containers and the `docker` command.
 
@@ -12,9 +14,9 @@ In Part&nbsp;2, you will explore further features of containers and the `docker`
 
 ## Part&nbsp;1: Running a container on a remote EC2 instance
 
-Rather than building the music service on the remote instance, in this exercise we will pull a containerized copy of the service from the GitHub Container Registry (GHCR).  But first, the image must be built and pushed to GHCR.
+Rather than building the music service on the remote instance, in this exercise we will pull a containerized copy of the service from GitHub Container Registry (GHCR).  But first, the image must be built and pushed to GHCR.
 
-Because this assignment is about using the `docker` command, we will be using the command directly, rather than calling it inside a predefined shell script or Makefile. This will give you some familiarity with the many options the command requires. While you may be inclined to copy/paste/hit return for the commands presented below. pay attention to the command. Doing so will help you to understand what is happening. As well in most cases, you need **to tailor the command with personalized parameters before pressing `Return`:**
+Because this assignment is about using the `docker` command, we will be using the command directly, rather than calling it inside a predefined shell script or Makefile. This will give you some familiarity with the many options the command requires. **While you may be inclined to copy/paste/hit return for the commands presented below, resist the urge. Instead, type the command yourself into your terminal. Doing so will help with memorizing and recall what is happening. Additionally, you need to tailor the command in most cases with custom parameters before pressing `Return`:**
 
 * `REGID` must be replaced with your GitHub userid.
 * `KEY-FILE` must be replaced with the name of the file in your `~/.ssh` directory containing the AWS key used to sign on to EC2 instances.
@@ -31,7 +33,7 @@ Begin by switching to the correct directory:
 Build the Assignment&nbsp;3 version of the music service with the following command:
 
 ~~~bash
-/home/k8s/s2/standalone# docker image build --build-arg ASSIGN=a3 -t s2-standalone:v0.75 .
+/home/k8s/s2/standalone# docker image build --platform linux/amd64 --build-arg ASSIGN=a3 -t s2-standalone:v0.75 .
 ~~~
 
 Check that the image was created by listing all images named `s2-standalone` on your machine:
@@ -65,7 +67,7 @@ Now that the image is tagged with GHCR as its destination registry, you can push
 v0.75: digest: sha256:... size: ....
 ~~~
 
-The container image is now on GitHub's servers, available to be pulled to any machine in the world by anyone who has a GHCR personal access token authorized for that image. Navigate to `https://github.com/YOUR-GITHUB-ID?tab=packages` to confirm the image's existence. By default,  images are set for private access upon creation. You can change this by navigating to the image and changing the "Package settings".
+The container image is now on GitHub's servers, available to be pulled to any machine in the world by anyone who has a GHCR personal access token authorized for that image. Navigate to `https://github.com/YOUR-GITHUB-ID?tab=packages` to confirm the image's existence. By default, images are set for private access upon creation. You can change this by navigating to the image and changing the "Package settings".
 
 ### Pulling the container image to an EC2 instance
 
@@ -90,7 +92,7 @@ $ vi ~/.ec2.mak
 $ source ~/.aws-a
 ~~~
 
-Now you can launch and stop instances very easily with the `erun`, `eps` and `ekill` shortcuts.
+Now you can launch and stop instances very quickly with the `erun`, `eps` and `ekill` shortcuts.
 
 There is also an `essh` shortcut that will log you into the machine too.
 
@@ -128,26 +130,26 @@ $ essh
 On the EC2 instance, you will also need to log in to GHCR. The command you use is almost the same as the one you ran locally, only differing in the path to the GHCR access token:
 
 ~~~bash
-[ec2-user@ip-172-31-12-116 ~]$ cat ghcr.io-token.txt | docker login ghcr.io -u REGID --password-stdin
+[ec2-user@ip-172-31-12-116/ec2 ~]$ cat ghcr.io-token.txt | docker login ghcr.io -u REGID --password-stdin
 ~~~
 
 After signing on, a single command pulls the container image  and launches it (the `$PWD` in the following command is a shell variable---you do not have to replace it):
 
 ~~~bash
-[ec2-user@ip-172-31-12-116 ~]$ docker container run -d --rm -p 30001:30001 -v $PWD:/data --name s2 ghcr.io/REGID/s2-standalone:v0.75
+[ec2-user@ip-172-31-12-116/ec2 ~]$ docker container run -d --rm -p 30001:30001 -v $PWD:/data --name s2 ghcr.io/REGID/s2-standalone:v0.75
 Unable to find image 'ghcr.io/.../s2-standalone:v0.75' locally
 v0.75: Pulling from .../s2-standalone
 ... Layers pulled and expanded ...
 Status: Downloaded newer image for ghcr.io/tedkirkpatrick/s2-standalone:v0.75
 ....
-[ec2-user@ip-172-31-12-116 ~]$ 
+[ec2-user@ip-172-31-12-116/ec2 ~]$ 
 ~~~
 
 Note that we don't see the output from the service as it starts.  We ran the container in "detached" mode (`-d` option), in the background with no connection to our terminal.
 We can use another command to check that the container is running:
 
 ~~~bash
-ec2-user@ip-172-31-12-116 ~]$ docker container ls
+[ec2-user@ip-172-31-12-116/ec2 ~]$ docker container ls
 CONTAINER ID   IMAGE                                        COMMAND                 CREATED         STATUS         PORTS
 be4c48e6b9ed   ghcr.io/.../s2-standalone:v0.75              "python app.py 30001"   4 minutes ago   Up 4 minutes   8000/
 ~~~
@@ -172,7 +174,7 @@ Our familiar "bug" is present in this server but to fix it we will need to see t
 Docker provides the `logs` command to get the logs from a detached container.  On the EC2 instance, enter:
 
 ~~~bash
-[ec2-user@ip-172-31-12-116 ~]$ docker container logs s2
+[ec2-user@ip-172-31-12-116/ec2 ~]$ docker container logs s2
 [2021-12-10 01:51:58,036] ERROR in app: Unique code: ...code...
  * Serving Flask app "app" (lazy loading)
  * Environment: production
@@ -183,7 +185,7 @@ Docker provides the `logs` command to get the logs from a detached container.  O
 
 where `s2` is the name we assigned the container when we created it via the `--name` parameter of `docker container run`. This is the log we saw in the previous exercises, with the unique code on the first line.
 
-**Background:** With some work, you could configure the `docker` client on your local machine to pull the logs directly from the remote EC2 instance. But that is tricky---more security permissions---so we'll just use the client directly on the EC2 instance. When we move to Kubernetes in the next assignment however, running the client directly on the remote instance will not be an option.
+**Aside:** With some work, you could configure the `docker` client on your local machine to pull the logs directly from the remote EC2 instance. But that is tricky---more security permissions---so we'll just use the client directly on the EC2 instance. When we move to Kubernetes in the next assignment however, running the client directly on the remote instance will not be an option.
 
 ### Fixing the bug
 
@@ -195,7 +197,7 @@ After the previous two assignments, the fix-rebuild-test run-commit cycle should
 4. *On the remote machine*, pull and run the rebuilt image.  This time, you will have to force docker to pull the image.  The remote machine already  has a local copy of the image `ghcr.io/REGID/s2-standalone:v0.75` and by default assumes that is up to date.  We add the `--pull always` argument to force docker to pull the rebuilt image from GHCR:
 
    ~~~bash
-   [ec2-user@ip-172-31-12-116 ~]$ docker container run --pull always -d --rm -p 30001:30001 -v $PWD:/data --name s2 ghcr.io/REGID/s2-standalone:v0.75
+   [ec2-user@ip-172-31-12-116/ec2 ~]$ docker container run --pull always -d --rm -p 30001:30001 -v $PWD:/data --name s2 ghcr.io/REGID/s2-standalone:v0.75
    ~~~
 
 Test the revised service by issuing `test` from your local copy of `mcli`. 
@@ -203,7 +205,7 @@ Test the revised service by issuing `test` from your local copy of `mcli`.
 Check the logs from the rebuilt service:
 
 ~~~bash
-[ec2-user@ip-172-31-12-116 ~]$ docker container logs s2
+[ec2-user@ip-172-31-12-116/ec2 ~]$ docker container logs s2
 ...
 208.78.41.77 - - [10/Dec/2021 18:34:47] "GET /api/v1/music/test HTTP/1.1" 200 -
 ...
@@ -238,17 +240,17 @@ Using container technology simplified some things and made others more complex.
 
 Simpler operations:
 
-* **Building locally, running remotely:** We didn't have to transfer/build the service.  Instead, we could package the service somewhere convenient (e.g. locally) and transfer it to the remote machine via an intermediary (as a container on a CR). The effort to build our service is relatively simplistic but most production systems are *much* bigger. This is significant simplification.
+* **Building locally, running remotely:** We didn't have to transfer/build the service.  Instead, we packaged the service somewhere convenient (e.g. on your laptop) and transfer it to the remote machine via an intermediary (as a container in a container registry). While the effort to build our service is relatively simplistic,  most production systems are *much* more complex/involved. Removing this build step is a significant simplification.
 
 More complicated operations:
 
 * **Getting the logs:** Getting the logs from a detached container requires a new command, `docker container logs`, that works with container technology. This is more work than simply glancing at a terminal window.
-* **Granting access to GHCR:** Because GHCR is centralized and globally visible, we had to restrict access to our image via use of an access token. That token had to be transferred to the remote instance to enable it to pull the image from GHCR.
+* **Granting access to GHCR:** Because GHCR is centralized and globally visible, access to our image is controlled via the use of an access token. That token had to be transferred to the remote instance to enable it to pull the image from GHCR.
 
 Same operations:
 
 * **Data files:** We still had to send the data files to the remote instance, same as we did for Assignment&nbsp;2.
-* **Managing the remote instance:** You've learned how to start-up an EC2 instance rapidly via the CLI. This is a meaningful improvement on Assignment&nbsp;2 but it is still tedious to manage machines.
+* **Managing the remote instance:** You've learned how to start-up an EC2 instance rapidly via the AWS CLI. This is a meaningful improvement on Assignment&nbsp;2 but it is still tedious especially once you need more than one machine and/or using multiple regions.
 
 In the next assignment, we will use Kubernetes. We will see that it manages the remote machine instances and pulls the images, while its security requirements make GHCR access harder.
 
@@ -273,7 +275,7 @@ The distinctions between GitHub and GHCR and between Git repositories ("repos") 
 
 **Notes:**
 
-<sup>a</sup> Although these are universally called "container registries" they in fact store container *images*. The images become containers when they are pulled from the registry and run via commands such as `docker container run`.
+<sup>a</sup> Although these are universally called "container registries" they in fact store container *images*. An image becomes a container when it is loaded into memory and executed with a `docker container run`.
 
 <sup>b</sup> Other development platforms include [GitLab](https://about.gitlab.com/) and [BitBucket](https://bitbucket.org/product), as well as internal tools installed and run within large organizations.
 
@@ -291,11 +293,12 @@ Perform all these subections in the tools container on your own machine.
 
 A huge number of calls to run containers begin `docker container run -it --rm ...`.  What do those parameters do?  What happens if they are omitted?
 
-We'll start with `-it`.  The sequence is in fact two options coalesced, `-i` ("interactive") and `-t` ("allocate a pseudo-TTY"). They are almost always used together.  When both used, they connect the container to the current terminal for input.
+We'll start with `-it`.  The sequence is in fact two options coalesced, `-i` ("interactive") and `-t` ("allocate a pseudo-TTY"). They are almost always used together.  When both used, they connect the container to your terminal for input.
 
 Try running the music service without them:
 
 ~~~bash
+# note you are skipping the -it option
 /home/k8s# docker container run --rm -v $HWD/s2/standalone:/data -p 30001:30001 s2-standalone:v0.75
 ~~~
 
@@ -304,12 +307,13 @@ It actually works, though we don't recommend doing this in production.
 Shut down the running service by entering `^C` and now test the client without `-it`:
 
 ~~~bash
+# note you are skipping the -it option
 /home/k8s# docker container run --rm --name mcli mcli:v0.8 python3 mcli.py 0.0.0.0 30001 | more
 ~~~
 
 Whoops!  The client attempts to read input but without the `-it` options no terminal exists.  The result is simply an infinite sequence of end-of-file (EOF) inputs. We added the `| more` pipe to prevent the client from filling your window with hundreds of lines of `*** Unknown syntax: EOF`.
 
-Exit `more` by entring `q` at its `--More--` prompt.
+Exit `more` by entering `q` at its `--More--` prompt.
 
 The client container continues to run in the background, so you have to kill it:
 
@@ -329,6 +333,7 @@ The `--rm` option (note the two leading `-` characters---this is a single option
 Try running the music service without `--rm` (but with `-it`, of course):
 
 ~~~bash
+# note you are skipping the --rm option
 /home/k8s# docker container run -it -v $HWD/s2/standalone:/data -p 30001:30001 --name s2 s2-standalone:v0.75
 ....
 ~~~
@@ -399,4 +404,13 @@ You will explore Docker layers and the UnionFS in a future assignment after the 
 
 ## Submission
 
-BLERG
+Create a PDF file and provide the following:
+
+1. Screen-capture of a terminal session with the git commit that correct the problem. You can use `git log` to retrieve the history. 
+
+2. URL of the line of code with the fix in your Github repo's copy of `c756-exer/s2/standalone/app-a3.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
+![AWS Image](https://github.com/scp756-221/course-site/blob/main/docs/a1/github-permalink.png?raw=true)
+
+3. What are some risks for using/running a container image based solely on its container registry tag? How does this compare with what you did here in this assignment  with a Dockerfile that you build/tag/pushed?
+ 
+Submit the file to [Assignment 3](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a3/) in CourSys.

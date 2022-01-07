@@ -1,3 +1,5 @@
+# Assignment 2&mdash;AWS EC2 & git
+
 ## Introduction
 
 This assignment comprises two parts.  First, you will start an Amazon
@@ -224,9 +226,6 @@ Follow the instructions there to:
     3. Push this up to GitHub using GitHub Desktop. **Be sure to set this as a public repo.**
 
 
-3. Beyond the scenarios of step 1 and 2 above, experiment with creating branches and tags from the CLI and/or GitHub Desktop.
-
-
 When you've completed the scenarios above, repeat the process of fixing the service:
 
 1. Committing the change you made to `app-a2.py` in Part&nbsp;1 **with one change**: write a long multi-line commit comment via GitHub Desktop.
@@ -246,4 +245,6 @@ Create a PDF file and provide the following:
 4. URL of the line of code with the fix in your Github repo's copy of `c756-exer/s2/standalone/app-a2.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
 ![AWS Image](https://github.com/scp756-221/course-site/blob/main/docs/a1/github-permalink.png?raw=true)
 
-Submit the file to [Assignment 2](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a1/) in CourSys.
+5. What are some potential difficulties or obstacles for building the service? What potential solutions can you offer for handling these?
+ 
+Submit the file to [Assignment 2](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a2/) in CourSys.
