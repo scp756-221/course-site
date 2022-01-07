@@ -406,15 +406,11 @@ You will explore Docker layers and the UnionFS in a future assignment after the 
 
 Create a PDF file and provide the following:
 
-1. URL of your GitHub repo "Created-in-GitHub"
+1. Screen-capture of a terminal session with the git commit that correct the problem. You can use `git log` to retrieve the history. 
 
-2. URL Of your GitHub repo "Created-in-git"
-
-3. Screen-capture of a terminal session with the git commit that correct the problem. You can use `git log` to retrieve the history. 
-
-4. URL of the line of code with the fix in your Github repo's copy of `c756-exer/s2/standalone/app-a2.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
+2. URL of the line of code with the fix in your Github repo's copy of `c756-exer/s2/standalone/app-a3.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
 ![AWS Image](https://github.com/scp756-221/course-site/blob/main/docs/a1/github-permalink.png?raw=true)
 
-5. What are some potential difficulties or obstacles for building the service on your EC2 instance? What potential solutions can you offer for handling these?
+3. What are some risks for using/running a container image based solely on its container registry tag? How does this compare with what you did here in this assignment  with a Dockerfile that you build/tag/pushed?
  
 Submit the file to [Assignment 3](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a3/) in CourSys.
