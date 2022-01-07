@@ -68,7 +68,7 @@ and
 Install Docker Desktop/Docker from
 [docker.com](https://docs.docker.com/get-docker/). For MacOS and Windows, it will be Docker Desktop which includes a convenient dashboard. For Linux, it will be plain Docker.
 
-### Course code repo instance
+### Generate course code repo instance
 
 **You must have successfully installed Git before starting this
 step.**
@@ -76,27 +76,18 @@ step.**
 **You must have a GitHub userid (see the first part of
 Assignment&nbsp;0) before starting this step.**
 
-All code for the course is in a single code repository (a mono-repo) that has been setup as a
-template on GitHub.
+All code for the course is in a single code repository (a mono-repo) that has been setup as an assignment in the GitHub Education Classroom.
 
 1. Sign in to GitHub using your userid.
-2. Go to the
-   [page for `scp756-221/c756-exer`](https://github.com/scp756-221/c756-exer).
+2. Sign in to [GitHub Education](https://education.github.com/) using the same userid. 
+3. Accept the assignment via this [link](https://classroom.github.com/a/1YFBko6w)
+4. Wait while a copy of the repo is generated for you.
+5. Bookmark the URL of your copy of the repo http://github.com/scp756-221/assignments-YOUR-GITHUB-ID. As the repo resides in this class' organization, you will not see it listed under "Your repositories". But you will find it at the left-hand margin of your [GitHub home page]](https://github.com) after you sign in.
 
-3. Click the `Use this template` button.
-
-4. Fill in the dialogue fields:
-
-   * **Repository name: `c756-exer`**
-   * Description: CMPT 756 course code
-   * Choose "Private" rather than "Public"
-   * Do not check "Include all branches"
-
-5. Click `Create repository from template`.
 
 #### Downloading the course code to your machine
 
-You have copied the course repo into your central GitHub account.  Next you need to download a copy of that repo to your machine, a Git operation called *cloning*.
+You now have a copy of the assignment repo in your GitHub account.  Next you need to download a copy of it to your machine in an Git operation called *cloning*.
 
 In the Web page for your repository,
 
