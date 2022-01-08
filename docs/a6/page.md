@@ -176,6 +176,9 @@ in these machines, maximum utilization is 200%. In a few
 moments, you will see that training a PyTorch neural net can consume
 nearly the full utilization of the machine.
 
+**Only watch and record the topmost line of the `top` display. Ignore the
+other lines.**
+
 Press `q` to exit `top`.
 
 ### Query GPU utilization
@@ -410,12 +413,20 @@ The two limit types affect the training differently:
 ## Step 1: Train the naive net
 
 Train the simple net, *NaiveNet*, on both the CPU (with the `--cpu` option) and the
-GPU (without that option).
-For nets that compute an epoch quickly, specify
-around 5 epochs to help accurately estimate the time / epoch.  For nets that train more slowly, 1 epoch
-is enough. Do not worry about how
-accurate the net is---we are only concerned with relative speeds.  Record
-the time / epoch for each case. Also record the typical values of the
+GPU (without that option).  Some guidelines for the test runs in the next three steps:
+
+1. For nets that compute an epoch quickly, specify around 5 epochs to help
+  accurately estimate the time / epoch.  For nets that train more slowly, 1 epoch
+  is enough. Remember that you can always stop a run via `^C` if it's taking too long and record the average
+  time for all epochs completed so far.
+  
+2. Do not worry about how accurate a net is.  In this assignment, we are only concerned with
+   relative speeds.
+
+3. **The first time you run any net on the GPU, do a single-epoch run (`--ecount 1`) and
+  ignore the results.**  The first GPU run includes set up time, which we do not want to consider. Then start a second run to get actual times and utilizations.
+
+Record the time / epoch for the naive net on the CPU and the GPU. Also record the typical values of the
 five performance measures (host CPU utilization, host memory allocation, GPU utilization, GPU
 memory bandwidth utlization, GPU memory allocation---but recall that for allocations, we're only concerned if they are above or below 90%) listed above. The precise values of these
 measures will fluctuate; simply record a value that seems close to the
@@ -473,7 +484,7 @@ ever be very good---but it will make the net bigger.
 **Stop. Think. What effects do you expect to see as the net size
   increases? Which factor is likely to be limit performance for the CPU?  For the GPU?**
 
-Run the tests on the CPU and GPU, using the widths specified in Table&nbsp;2 of the BLERG document.  Enter your results in the x86 columns of that table.
+Run the tests on the CPU and GPU, using the widths specified in Table&nbsp;2 of the BLERG document.  Enter your results in the x86 columns of that table.  **You do not need to do any throwaway runs for different widths.  You only need to do a throwaway run for the first-ever time you run NaiveNet on the GPU.**
 
 To save time, run these tests for a single training epoch and record the epoch time and allocation and utilization statistics for that run.
 
