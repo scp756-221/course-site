@@ -368,57 +368,8 @@ Finally, there is one manual step left before the system can come up auto-magica
 
 Refer to GitHub's documentation to [set public access on your container repositories](https://docs.github.com/en/packages/guides/configuring-access-control-and-visibility-for-container-images#configuring-visibility-of-container-images-for-your-personal-account)
 
-### 3.2 Kubernetes operation
 
-Kubernetes operates by way of declarations specified via manifest files. There are two formats supported for a manifest file--JSON & YAML--with YAML the preferred format. See [here](https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/). A manifest file contains one or more declarations of resource for k8s. You will find all manifests for the application in the ``cluster`` directory.
-
-Each resource in a manifest file starts off with 4 common element: `apiVersion`, `kind`, `metadata` and `spec`. The first three are standardized while the last (`spec`) varies according to the resource. Refer to the documentation on [k8s objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/).
-
-
-This application contain 3 services: s1, s2 and db. (They are all intentionally simplistic to keep the focus on Kubernetes.)
-
-Our usage of ``istio`` necessitates a manifest (``cluster/service-gateway.yaml``) to declare the ingress gateway to allow traffic into the cluster.
-
-
-We will use a combination of a `Deployment` resource to declare the desired resources to power your container and a `Service` resource to expose the containers' capabilities to the world. (Refer to the documentation for [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) and [Service](https://kubernetes.io/docs/concepts/services-networking/service/))
-
-Refer to ``cluster/s2-dpl-v1.yaml``, which specifies the `Deployment` for the Music service (S2) and whose `spec` section looks similar to:
-```  
-    spec:
-      serviceAccountName: svc-s2
-      containers:
-      - name: cmpt756s2
-        image: ghcr.io/<YOUR GITHUB USERID>/cmpt756s2:v1
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 30001
-
-  ```
-
-Note that your manifest contains your Github id in place of  `<YOUR GITHUB USERID>`. (This was performed during the instantiation process at the start of this assignment.)
-
-You will now perform a trial run of the s2 service by triggering 
-the pseudo-target `s2`. (You are using a pseudo-target instead of just applying the single file `s2-dpl-v1.yaml` because there is more machinery involved that we won't get into presently.)
-
-```bash
-/home/k8s# make -f k8s.mak s2
-```
-
-Verify that the service is operating with:
-```bash
-/home/k8s# make -f k8s.mak ls
-```
-
-Shutdown the service and the containers deployed to provide it:
-
-```bash
-/home/k8s# kubectl -n c756ns delete svc cmpt756s2
-/home/k8s# kubectl -n c756ns delete deployment cmpt756s2-v1
-```
-
-This is a good point for a break. Take five minutes to stretch before resuming.
-
-### 3.3 Querying the music service
+### 3.2 Deploying the music service
 
 This final version of the music service (S2) in the application is not standalone; it relies upon several other resources:
 
@@ -497,7 +448,7 @@ mql: read 6ecfafd0-8a35-4af6-a9e2-cbd79b3abeea
 If it works, congratulations! You have just set up a small microservice-based system on
 a Kubernetes cluster running in the cloud.
 
-### 3.4 Fixing the "bug" in the music service
+### 3.3 Fixing the "bug" in the music service
 
 For one final time, I ask you to find and fix the music servce "bug".  To demonstrate the bug, issue the `test` command from the music client.  You will get the familiar error code `500` and the stack trace in the S2 logs. (The stack trace will not be visible in the k9s logs because it is black text displayed on a black background.  But if you select the blank space where the text should be, you will see the trace.)
 
@@ -519,7 +470,7 @@ So this version of the music service has our "bug". Here are the familiar steps 
 
 The Kubernetes rollout algorithm minimizes service disruption. It first sets up the revised version of the service, performs modest health and readiness checks to ensure that the revision works, and only then terminates the original version, routing all traffic to the revision. This process is too tricky and tedious to do by hand but is readily handled by the Kubernetes algorithms.  This is our first example of the benefits of orchestrating containers by software rather than by hand.
 
-### 3.5 Reflection and look ahead
+### 3.4 Reflection and look ahead
 
 That assignment was a lot of material.  At this point, it may well seem like using Kubernetes is far more work than running containers by hand. Do we really benefit from all this machinery?  Yes, we do:
 
