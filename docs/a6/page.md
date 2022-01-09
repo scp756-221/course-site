@@ -236,7 +236,7 @@ several neural nets using the PyTorch library. Clone
 the assignment repon and `cd` into it:
 
 ~~~bash
-[ec2-user@angry_cray/ec2 ~]$ git clone https://github.com/scp-2021-jan-cmpt-756/gpu-assignment
+[ec2-user@angry_cray/ec2 ~]$ git clone https://github.com/scp756-221/gpu-assignment
 [ec2-user@angry_cray/ec2 ~]$ cd gpu-assignment
 ~~~
 
@@ -554,7 +554,7 @@ Here are the commands, where `NAME` is the name assigned to the instance upon it
 /home/k8s# esshn NAME ubuntu
 ... signon messages ...
 [ubuntu@suspicious_spence/ec2 ~]$ source activate base
-(base) [ubuntu@suspicious_spence/ec2 ~]$ git clone https://github.com/scp-2021-jan-cmpt-756/gpu-assignment
+(base) [ubuntu@suspicious_spence/ec2 ~]$ git clone https://github.com/scp756-221/gpu-assignment
 (base) [ubuntu@suspicious_spence/ec2 ~]$ cd gpu-assignment
 ~~~
 
