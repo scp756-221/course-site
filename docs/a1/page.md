@@ -304,7 +304,7 @@ high-bandwidth access.
 
 In this second part, you will run and modify a simple client-server
 application.  The coding you do will be simple; the point of this
-exercise is to gain familiarity with the tools and applications that
+assignment is to gain familiarity with the tools and applications that
 you will be using for the rest of the course.
 
 ### Client-server application
@@ -462,12 +462,12 @@ are running on remote machines, surrounded by security barriers
 designed to limit access.
 
 In this assignment (and the three to follow), we're going to give you
-practice debugging cloud systems. This exercise begins with the
+practice debugging cloud systems. This assignment begins with the
 simplest case, debugging a server running on your local machine. By
 Assignment&nbsp;4, we'll have moved up to debugging a server running
 remotely on AWS.
 
-In each of these exercises, the service has the same "bug": that
+In each of these assignments, the service has the same "bug": that
 the `test` command throws an exception in the server and returns a
 `500` status code, indicating
 ["Internal Server Error"](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).
@@ -586,7 +586,7 @@ c756-exer/s2/standalone $ git push origin
 
 The coding part of this assignment was simple enough: Beginning with a
 basic client-server design, find and fix a defect in the server. In
-coming exercises, we will repeat this cycle of read
+coming assignments, we will repeat this cycle of read
 logs-fix-rebuild-test-commit.  As the server becomes more remote and
 more protected, the "read logs" and "rebuild and test" steps will
 require more tooling.

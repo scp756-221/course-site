@@ -10,11 +10,11 @@ In Part&nbsp;2, you will explore further features of containers and the `docker`
 
 **1. You must have obtained a GHCR access token and saved it in `cluster/ghcr.io-token.txt`.  See Assignment&nbsp;0 for details.**
 
-**2. You must have completed the Docker exercises previously assigned.**
+**2. You must have completed the Docker assignments previously assigned.**
 
 ## Part&nbsp;1: Running a container on a remote EC2 instance
 
-Rather than building the music service on the remote instance, in this exercise we will pull a containerized copy of the service from GitHub Container Registry (GHCR).  But first, the image must be built and pushed to GHCR.
+Rather than building the music service on the remote instance, in this assignment we will pull a containerized copy of the service from GitHub Container Registry (GHCR).  But first, the image must be built and pushed to GHCR.
 
 Because this assignment is about using the `docker` command, we will be using the command directly, rather than calling it inside a predefined shell script or Makefile. This will give you some familiarity with the many options the command requires. **While you may be inclined to copy/paste/hit return for the commands presented below, resist the urge. Instead, type the command yourself into your terminal. Doing so will help with memorizing and recall what is happening. Additionally, you need to tailor the command in most cases with custom parameters before pressing `Return`:**
 
@@ -183,7 +183,7 @@ Docker provides the `logs` command to get the logs from a detached container.  O
 ...
 ~~~
 
-where `s2` is the name we assigned the container when we created it via the `--name` parameter of `docker container run`. This is the log we saw in the previous exercises, with the unique code on the first line.
+where `s2` is the name we assigned the container when we created it via the `--name` parameter of `docker container run`. This is the log we saw in the previous assignments, with the unique code on the first line.
 
 **Aside:** With some work, you could configure the `docker` client on your local machine to pull the logs directly from the remote EC2 instance. But that is tricky---more security permissions---so we'll just use the client directly on the EC2 instance. When we move to Kubernetes in the next assignment however, running the client directly on the remote instance will not be an option.
 
@@ -191,7 +191,7 @@ where `s2` is the name we assigned the container when we created it via the `--n
 
 After the previous two assignments, the fix-rebuild-test run-commit cycle should be getting familiar.  The difference this time is that you will update the package from your development machine, push it up to the GitHub container repository, and pull it from the remote instance, and run it there.
 
-1. *On your local machine*, edit `app-a3.py`.  This is the same sequence you did in previous exercises, just using the unique code for this exercise.
+1. *On your local machine*, edit `app-a3.py`.  This is the same sequence you did in previous assignments, just using the unique code for this assignment.
 2. *On your local machine*, build the container image using the same command you used above.
 3. *On your local machine*, tag and push the rebuilt image to `ghcr.io` using the same command you used above. However, you won't need to log in to `ghcr.io` again, as your prior login will still apply.
 4. *On the remote machine*, pull and run the rebuilt image.  This time, you will have to force docker to pull the image.  The remote machine already  has a local copy of the image `ghcr.io/REGID/s2-standalone:v0.75` and by default assumes that is up to date.  We add the `--pull always` argument to force docker to pull the rebuilt image from GHCR:

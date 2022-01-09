@@ -39,7 +39,7 @@ Your first step is to start an EC2 instance. You will do this through the AWS Co
 2. In the search bar at the top of the page, enter `EC2` and press Return.
 3. In the top right, select `Oregon` from the menu of regions.
 3. Click on `Launch instances`, in the upper right.
-5. From the list, click on `Select` for the entry labelled `Deep Learning AMI (Amazon Linux 2) Version 55.0` with the ami id of `ami-0a100c9a1c22dd744`.  Note: We chose this machine image as a matter of convenient (this image happens to have all the tools we need already) and not because we are performing any deep learning in this exercise.
+5. From the list, click on `Select` for the entry labelled `Deep Learning AMI (Amazon Linux 2) Version 55.0` with the ami id of `ami-0a100c9a1c22dd744`.  Note: We chose this machine image as a matter of convenient (this image happens to have all the tools we need already) and not because we are performing any deep learning in this assignment.
 4. **Step 1 Page:** In the search bar, enter `deep learning` and press return.
 6. **Step 2 Page:** Click the check box to the left of the row with `t1.micro`. Then click on the label `6. Configure Security Group` at the top of the page. (We are skipping Steps 3--5.)
 7. **Step 6 Page:** In the `Configure Security Group` dialogue:
@@ -62,7 +62,7 @@ Your first step is to start an EC2 instance. You will do this through the AWS Co
 12. Click on the instance ID link (it will look like `i-0fada0697f42aed7e`).  This will bring up the instance summary.
 13. Locate the `Public IPv4 DNS` entry, mid-right of the page. It will look like `ec2-34-210-56-181.us-west-2.compute.amazonaws.com`. Don't do anything with it for now.
 
-You have just instantiated a virtual machine running Linux in one of Amazon's Oregon datacentres.  The hardware for this machine is rather weak (~1 CPU core with ~0.5GB of RAM) and doesn't cost much to run (USD0.02/h which works out about CAD0.60/day). But it is more than sufficient for this exercise.
+You have just instantiated a virtual machine running Linux in one of Amazon's Oregon datacentres.  The hardware for this machine is rather weak (~1 CPU core with ~0.5GB of RAM) and doesn't cost much to run (USD0.02/h which works out about CAD0.60/day). But it is more than sufficient for this assignment.
 
 ### Build and run the music server
 
