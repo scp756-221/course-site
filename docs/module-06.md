@@ -4,4 +4,4 @@
 
 ### GPU
 
-<div class="video-container-16by9"><iframe src="https://drive.google.com/file/d/1k7uEpuaqzrLtBf7sWruAF00Ijsfiq3Fw/preview" width="640" height="480" allow="autoplay"></iframe></iframe></div>
+<div class="video-container-4by3"><iframe src="https://drive.google.com/file/d/1k7uEpuaqzrLtBf7sWruAF00Ijsfiq3Fw/preview" width="640" height="480" allow="autoplay"></iframe></iframe></div>
