@@ -175,6 +175,44 @@ You can check that Docker is running when the following command returns successf
 ~~~bash
 $ docker image ls
 # any response other than an error is okay
+$ docker info
+Client:
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc., v0.7.1)
+  compose: Docker Compose (Docker Inc., v2.2.1)
+  scan: Docker Scan (Docker Inc., v0.14.0)
+
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 60
+ ...
+ Kernel Version: 5.10.76-linuxkit
+ Operating System: Docker Desktop
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 4
+ Total Memory: 9.731GiB
+ Name: docker-desktop
+ ID: OB2S:Y324:Y675:L7EW:U4EZ:XWIF:Q6FK:FSEC:6FTP:FMOL:YEPU:62D3
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: true
+  File Descriptors: 43
+  Goroutines: 44
+  System Time: 2022-01-11T22:31:33.3861164Z
+  EventsListeners: 3
+ HTTP Proxy: http.docker.internal:3128
+ HTTPS Proxy: http.docker.internal:3128
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+ Live Restore Enabled: false
 ~~~
 
 As this is the first time you will have run the container, its image
