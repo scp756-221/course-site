@@ -595,7 +595,7 @@ require more tooling.
 
 Create a PDF file and provide the following:
 
-1. Screen-capture of a terminal session showing the `c756-tool` container image. Use `docker image | grep c756` to retrieve this. (Aside: for students on MacOS or Windows, go to your Docker Desktop tray and bring up Dashboard/Images and compare the content.)
+1. Screen-capture of a terminal session showing the `c756-tool` container image. Use `docker image ls | grep c756` to retrieve this. (Aside: for students on MacOS or Windows, go to your Docker Desktop tray and bring up Dashboard/Images and compare the content.)
 
 2. Screen-capture of a terminal session with your git commit. You can use `git log` to retrieve the history. 
 
