@@ -168,7 +168,16 @@ the course code repository.**
 To start the container, run `tools/shell.sh` as follows:
 
 
-**Note:** As this is the first time you will have run the container, its image
+**Note:** 
+Before proceeding, start up Docker if you haven't done so already. (You can configure Docker to start up with your system.)
+You can check that Docker is running when the following command returns successfully:
+
+~~~bash
+$ docker image ls
+# any response other than an error is okay
+~~~
+
+As this is the first time you will have run the container, its image
 will be be downloaded. This will be indicated by a message that
 Docker could not find the image locally. The image is large (>2&nbsp;GB) and can
 take several minutes depending upon the speed of your Internet service. This download is not needed on
@@ -595,11 +604,11 @@ require more tooling.
 
 Create a PDF file and provide the following:
 
-1. Screen-capture of a terminal session showing the `c756-tool` container image. Use `docker image ls | grep c756` to retrieve this. (Aside: for students on MacOS or Windows, go to your Docker Desktop tray and bring up Dashboard/Images and compare the content.)
+1. Screen-capture of a terminal session showing the `c756-tool` container image. Use `docker image ls | grep c756` to retrieve this. (Aside: for students on MacOS or Windows, go to your Docker Desktop tray and bring up Dashboard/Images and compare the content.) (Do this on the host side.)
 
-2. Screen-capture of a terminal session with your git commit. You can use `git log` to retrieve the history. 
+2. Screen-capture of a terminal session with your git commit. You can use `git log` to retrieve the history. (Do this on the host side.)
 
-3. Screen-capture of a terminal session with the permission of your cluster directory. You can use `ls -la cluster` from the `c756-exer` folder.
+3. Screen-capture of a terminal session with the permission of your cluster directory. You can use `ls -la cluster` from the `c756-exer` folder. (Do this on the host side.)
 
 4. Your unique code for the error in the s2 application.
 
