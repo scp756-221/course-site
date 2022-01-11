@@ -1,8 +1,9 @@
 # Week 2 (Jan 16-22): topic
 
 ## Recording
-Tuesday [Zoom recording (coming)]()
-Friday [Zoom recording (coming)]()
+
+* Tuesday [Zoom recording (coming)]()
+* Friday [Zoom recording (coming)]()
 
 ## Presented Slides  
 
