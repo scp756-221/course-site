@@ -1,5 +1,9 @@
 # Week 2 (Jan 16-22): topic
 
+## Recording
+Tuesday [Zoom recording (coming)]()
+Friday [Zoom recording (coming)]()
+
 ## Presented Slides  
 
 ### SCM & git
@@ -16,4 +20,4 @@
 <div class="video-container-4by3"><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTen4xex7rrAek6gLrASVCaLYMbuQoMBdJsoUesQBsASCQ0zz2KpTlbTz004QYMCDMfc6FmpymL_r8U/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1440" height="1109" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></iframe></div>
 
 ### Credit
-Deck 3 developed by [Brian Fraser](https://www.sfu.ca/computing/people/faculty/brianfraser.html)
+Deck 2 developed by [Brian Fraser](https://www.sfu.ca/computing/people/faculty/brianfraser.html)
