@@ -1,8 +1,10 @@
 # Week 1 (Jan 9-15): admin & intro
 
 ## Recording
-Tuesday [Zoom recording (1:38:42)](https://sfu.zoom.us/rec/share/ZqFK3r4bX8uq80WBeEWXRpzOfD_YWsBk_q7Fr_rl4l1XFZioxzGWsp5peor5X4n7.jBEIjMDrshA4mv5P?startTime=1641917358000)
-Friday [Zoom recording (coming)]()
+
+* Tuesday [Zoom recording (1:38:42)](https://sfu.zoom.us/rec/share/ZqFK3r4bX8uq80WBeEWXRpzOfD_YWsBk_q7Fr_rl4l1XFZioxzGWsp5peor5X4n7.jBEIjMDrshA4mv5P?startTime=1641917358000)
+
+* Friday [Zoom recording (coming)]()
 
 ## Presented Slides  
 
