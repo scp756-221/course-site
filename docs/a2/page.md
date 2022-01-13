@@ -39,9 +39,9 @@ Your first step is to start an EC2 instance. You will do this through the AWS Co
 2. In the search bar at the top of the page, enter `EC2` and press Return.
 3. In the top right, select `Oregon` from the menu of regions.
 3. Click on `Launch instances`, in the upper right.
-5. From the list, click on `Select` for the entry labelled `Deep Learning AMI (Amazon Linux 2) Version 55.0` with the ami id of `ami-0a100c9a1c22dd744`.  Note: We chose this machine image as a matter of convenient (this image happens to have all the tools we need already) and not because we are performing any deep learning in this assignment.
+5. From the list, click on `Select` for the entry labelled `Deep Learning AMI (Amazon Linux 2) Version 55.0` with the ami id of `ami-0a100c9a1c22dd744`.  Note: We chose this machine image as a matter of convenient (this image happens to have all the tools we need already) and not because we are performing any deep learning in this assignment. (The specific version is not significant... version newer than 55 should be okay too.)
 4. **Step 1 Page:** In the search bar, enter `deep learning` and press return.
-6. **Step 2 Page:** Click the check box to the left of the row with `t1.micro`. Then click on the label `6. Configure Security Group` at the top of the page. (We are skipping Steps 3--5.)
+6. **Step 2 Page:** Click the check box to the left of the row with `t1.micro`. Then click on the label `6. Configure Security Group` at the top of the page. (We are skipping Steps 3--5.) (The instance type is not significant... we are choosing the smallest instance. Something slightly larger/newer is okay too. The cost will be higher but for what you're doing here, the difference is not consequential.)
 7. **Step 6 Page:** In the `Configure Security Group` dialogue:
    0. Select `Create a new security group` (it is the default).
    1. *Security group name:* `Music service (port 30001)`
