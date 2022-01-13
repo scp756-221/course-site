@@ -57,7 +57,7 @@ complement the command-line Git. Also configure GitHub Desktop's integration (un
 
 
 We have
-[a course Git summary](https://canvas.sfu.ca/files/13170454/download?download_frd=1).
+[a course Git summary](https://coursys.sfu.ca/2022sp-cmpt-756-g1/pages/dzone_git_refcard.pdf).
 (Additional tutorials at
 [DZone Git reference card](https://dzone.com/refcardz/getting-started-git)
 and
