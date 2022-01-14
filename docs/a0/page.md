@@ -48,6 +48,11 @@ We will be using GitHub for a number of purposes:
    [create one](https://github.com/join).  We *strongly recommend* setting
    up Multi-Factor-Authentication (MFA) for this account.
 2. [Configure your Git command-line client](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration).  **You must use the short form of your SFU email address for this. (This is typically a 5-6 letter sequence following by a number of digits.)** This is to disambiguate between students in the future.
+
+    ```sh
+    $ git config --global user.email xyzNNN@sfu.ca
+    ```
+
 3. If you have Multi-Factor Authentication (MFA) for your GitHub account, 
    [configure your command-line for Github.com with MFA](https://docs.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication).
 

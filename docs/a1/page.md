@@ -98,7 +98,7 @@ In the Web page for your repository,
    materials and type, where `URL` is the pasted value of the URL in your clipboard:
 
    ~~~bash
-   ... $ git clone URL
+   ... $ git clone URL c756-exer
    ~~~
 
 You now have a copy of the course code repository on your local machine, linked to the copy on your GitHub account.
@@ -162,8 +162,7 @@ by the appropriate suffix: `/home/k8s#` indicates the Guest OS, while
 We'll get into more details of the above structure in
 Assignment&nbsp;3 but for now this is enough to start.
 
-A final, crucial point on starting the course tools container: **Always start the container from the `c756-exer/` directory of
-the course code repository.**
+A final, crucial point on starting the course tools container: **Always start the container from inside `c756-exer` (where you've cloned your generated repository).**
 
 To start the container, run `tools/shell.sh` as follows:
 
