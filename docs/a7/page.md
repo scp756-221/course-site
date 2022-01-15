@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This assignment demonstrates the combined use of several distinct but related tools:
+This assignment demonstrates the combined use of adjacent but related tools/practices:
 
 * **Git branches**, which support development along multiple independent  paths by several developers;
 * **Static checking**, which ensures that a system's code conforms to syntax, style, and safety requirements;
@@ -10,21 +10,23 @@ This assignment demonstrates the combined use of several distinct but related to
 * **Development platforms**, such as GitHub, which provide a central site to merge changes from several developers; and
 * **Continuous integration (CI)**, which reduces the risk that merged changes introduce defects.
 
-This list is incomplete&mdash;each of these tools supports additional use cases and outcomes, while other tools are also used to achieve the above goals&mdash;but this assignment introduces the essential elements.  Continuous integration ensures that all code that is ready to be deployed:
+This list is incomplete&mdash;each of these tools supports additional use cases and outcomes, while other equivalent tools may be used to achieve the same goals&mdash;but this assignment introduces represenative example for each.  
 
-* conforms to the organization's style requirements,
-* does not include insecure or unreliable code sequences, and
-* passes a comprehensive test suite.
+The now common practice of Continuous Integration helps a team to achieve a number of goals:
+
+* validate the program conforms to some level of performance/correcteness;
+* maintain compliance to style/formatting requirements;
+* does not include inappropriate code sequences (e.g., access keys and tokens) or known faulty code sequences (e.g., vulnerabilites).
 
 By scrutinizing all code commits via several different technologies, CI provides high confidence that the code will be defect-free when it is deployed.
 
 Rather than ask you to do the programming for this assignment, we are providing most of the code and asking you to apply the updates. We want you to focus on the steps in this process and how the tools work together rather than losing yourself in Python code. You will get a chance to do a little coding at the very end of the assignment. 
 
-The assignment considers the case of collaboration between several developers. You will in fact do it individually, playing both roles, yourself and the other developer, named "Other Dev".
+The assignment considers the case of collaboration between several developers. But unlike Assignment 5 where you involved other students, you will complete this assignment individually. That is, you will take on both roles: yourself and the other developer (named "Other Dev").
 
 ### The scenario
 
-Our scenario for this exercise is that you and Other Dev have been assigned to add a new feature to the music service, an "original artist" field.  The current service just stores a single artist for every song title but many songs have been performed by more than one artist. This feature adds a single field to a song record, naming an artist that performed the song earlier. It's far from a complete history (we'd need to able to store an arbitrary number of previous artists) but it's a start.
+Our scenario for this exercise is that you and Other Dev have been assigned to add a new feature to the music service, an "original artist" field.  The current service just stores a single artist for every song title but many songs have been performed by more than one artist. This feature adds a new field to the song record to store the artist who performed the song previously. This design is rudimentary and far from adequate (we'd need to able to store an arbitrary number of previous artists) but it is sufficient for this assignment.
 
 The music API currently has three calls:
 
@@ -43,23 +45,23 @@ After you're both done, the change sets will be combined and the complete featur
 
 ## Part 1: Add your changes
 
-The first part is to make "your" changes, adding the two API calls that you were assigned. This requires extending the code in three files:
+The first part is to make "your" change: add the two API calls. This requires extending the code in three files:
 
 1. The API itself: `s2/v1.1/app.py` implements the music API.
 2. Clients that call the API: `ci/v1.1/music.py` is a library providing a simpler interface to the music API, representing it as a Python object whose member functions correspond to API calls.
 3. Tests: `ci/v1.1/test_music.py` tests the music API, calling it via `s2/v1.1/music.py`.
 
-We provide these changes in three files prefixed `a7_*`.  Your task is to replace the existing three files with these. In the tools container command line, execute:
+We provide these changes in three files prefixed `a7_self_*`.  Your task is to replace the existing three files with these. In the tools container command line, execute:
 
 ~~~bash
 /home/k8s # cd ci/v1.1
-/home/k8s/ci/v1.1 # mv a7_music.py music.py
-/home/k8s/ci/v1.1 # mv a7_test_music.py test_music.py
+/home/k8s/ci/v1.1 # mv a7_self_music.py music.py
+/home/k8s/ci/v1.1 # mv a7_self_test_music.py test_music.py
 /home/k8s/ci/v1.1 # cd ../../s2/v1.1
-/home/k8s/s2/v1.1 # mv a7_app.py app.py
+/home/k8s/s2/v1.1 # mv a7_self_app.py app.py
 ~~~
 
-We encourage you to review the changes made to these files, using either `diff`, `git diff`, or the version comparison feature of Visual Studio Code.
+We encourage you to review the changes made to these files, using `diff`, `git diff`, GitHub Desktop, and the version comparison feature of Visual Studio Code. 
 
 ### Previewing the CI tests locally
 
@@ -135,23 +137,25 @@ Given that this test succeeded, you don't really need to read its output, but th
 
 ## Part 2:  Add Other Dev's changes
 
-You've made your changes and successfully pushed them to the central repository.  Now it's time to make Other Dev's changes.  Recall that Other Dev was asked to extend the *existing* API calls. Of course, in actual practice, Other Dev would do the following steps, not you, but for purposes of this assignment we ask you to do them.
+You've made your changes and successfully pushed them to the central repository.  Now it's time to make Other Dev's changes.  Recall that Other Dev was asked to extend the *existing* API calls. Of course, in actual practice, Other Dev would do the following steps, not you, but for purposes of this assignment we ask you to do them. To simulate Other Dev working independently from you, you will now create a branch and make the change within that.  
+
 
 ### Roll the repository back to before your commit
 
-We start with one step that might seem odd: We are going to "roll back time" in your local repository to before you made your last changes.  This is where Other Dev would start, without your changes, working in parallel with you.
+We start with one step that might seem odd: We are going to "time travel back" in your local repository to before you made your last changes.  This is where Other Dev would have started--without your changes.
 
-We achieve this rollback by checking out the commit before our last change, denoted by `HEAD~`:
+We achieve this rollback by jumping to the commit _before_ our last change, denoted by `HEAD~`. (The expresssion `HEAD~` above is known as tree-ish. Refer to this [post](https://stackoverflow.com/questions/4044368/what-does-tree-ish-mean-in-git) for details.)
 
 ~~~bash
 /home/k8s/ci/v1.1 # git checkout HEAD~
 ~~~
 
-If you do an `ls`, you will see that the files are back to their version before your changes. For example, there once again is a file named, `a7_music.py`, which you renamed in your last change.
+
+If you do an `ls`, note the files are as they were before your changes. For example, there is once again the file `a7_music.py`. As well `music.py` is the same as before.
 
 ### Start a fresh branch named `other_dev`
 
-You're going to make Other Dev's changes in a new branch, starting at this commit.  Name that new branch, `other_dev`:
+Now create the branch and make Other Dev's changes there.  
 
 ~~~bash
 /home/k8s/ci/v1.1 # git checkout -b other_dev 
@@ -174,12 +178,13 @@ Once you've made these changes, repeat the steps that completed Part&nbsp;1:
 2. Commit and push the updates
 3. Review the new CI output on GitHub.
 
+
 ## Interlude: The levels of the CI tests
 
-At this point, we want to pause and consider all the components invoked when we run one of these local CI tests. This outline shows the components called when we run a command such as `runci-local.sh v1.1`.  Lines at the same indentation are called in sequence while an indented line is called as a function or subservice.  The implementation language for each component is in parentheses:
+At this point, let's pause and consider all the components invoked during a local CI tests. This outline shows the components called by `runci-local.sh v1.1`.  Lines at the same indentation are called in sequence while an indented line is called as a function or subservice.  The implementation language for each component is in parentheses:
 
 * `runci-local.sh` (bash) Top-level script
-  * `docker` (Go) Client
+  * `docker` (Go) Client (from inside `clear-ci-images.sh`)
     * `dockerd` (Go) Server managing container images
   * `runci.sh` (bash) Mid-level script
     * `flake8` (Python) Static code checker
@@ -191,12 +196,12 @@ At this point, we want to pause and consider all the components invoked when we 
               * [via HTTP] `cmpt756db` (Python) Database interface layer
                 * [via HTTP] `DynamoDB` (Java) Data storage layer
 
-That's 12 components, written in 4 languages, organized in 9 layers (each indentation level) for our simple application. Actual cloud-based microservice architectures will have far more components than this. How do we know which ones to change when we want to update the system?
+That's 12 components, written in 4 languages, organized in 9 layers (each indentation level) for our simple application. Real-world cloud-based microservice architectures will have far more components than this. How do we know which ones to change when we want to update the system?
 
 The layered design is key. For any given change, you need to
 
-1. Locate the layer that needs to implement that change,
-2. If that layer's API changed, update the caller of that layer, and
+1. Locate the layer that needs to implement that change;
+2. Update the callers of this layer if the API was changed;  
 3. Add a test of the change.
 
 It's not always this simple.  Complicated changes often cut across several layers but the basic principle remains the same, with every change requiring at least two changes (the layer and a test) and perhaps a third (the caller).
@@ -204,8 +209,8 @@ It's not always this simple.  Complicated changes often cut across several layer
 For the simple changes that you and Other Dev made, the relevant layers and their files were:
 
 1. The extensions were made to the `cmpt756s2` layer, the music service, in file `s2/v1.1/app.py`.
-2. The tests are in the `test_music` layer, in file `ci/v1.1/test_music.py`.
-3. Because the music service's API changed, you also had to modify the client library, in file `ci/v1.1/music.py`.
+2. Because the music service's API changed, you also had to modify the client library, in file `ci/v1.1/music.py`.
+3. The tests are in the `test_music` layer, in file `ci/v1.1/test_music.py`.
 
 Both you and Other Dev have updated these files but the updates were independent.  We need to consider how these independent updates are recorded in the repository.
 
@@ -227,14 +232,14 @@ Both sets of changes update the same three files (`test_music.py`, `music.py`, a
 
 ## Part 3: Merge your changes with Other Dev's changes
 
-The Git operation to merge two branches is straightforwardly named, "merge".  We want to merge Other Dev's branch into `master`, so we make `master` active by checking it out, then run `git merge other_dev`:
+The Git operation to merge two branches is appropriately named, "merge".  We want to merge Other Dev's branch into `master`, so we make `master` active by checking it out, then run `git merge other_dev`:
 
 ~~~bash
 /home/k8s # git checkout master
 /home/k8s # git merge other_dev
 ~~~
 
-Although you and Other Dev modified the same files, you did not modify the same functions.  Your respective changes are sufficiently distinct that Git combines them automatically. You do not need to manually tweak the resulting merge.
+Although you and Other Dev modified the same files, the changes did not overlap by functions. The changes are sufficiently distinct that git can combine them automatically without your intervention. (If the changes overlapped by lines of code, you would need to manually review and reconcil the changes.)
 
 Now repeat the familiar sequence:
 
@@ -242,11 +247,7 @@ Now repeat the familiar sequence:
 2. Commit and push the updates
 3. Review the new CI output on GitHub.
 
-If every step was correct, the tests should pass fine.
-
-Sweet! We're all done, right?
-
-Right?
+What happened?
 
 ### The answer
 
@@ -283,7 +284,7 @@ Once you've written your test, repeat the now-familiar sequence of first running
 
 ### Static code checking
 
-Now that you are writing code, we need to describe another component of CI, *static checking*. The first step in our CI sequence is to run the [Flake8](https://flake8.pycqa.org/en/latest/) static Python code checker on all submitted code. This tool examines your Python code *statically*, without running it, simply looking for patterns in the syntax. It enforces a common style and checks for insecure and unreliable code sequences. If Flake8 finds any, it describes the problem and gives the line number, then fails the CI run.
+Now that you are writing code, we can introduce a common component of CI, *static checking*. The first step in our CI sequence is to run the [Flake8](https://flake8.pycqa.org/en/latest/) static Python code checker on the submitted code. This tool examines your Python code *statically* (without running it) and looks for patterns in the syntax. It enforces a common style and checks for insecure and unreliable code sequences. When Flake8 finds such sequences, it describes them (including the line number) and fails the CI run.
 
 The Flake8 messages appear near the beginning of the CI output.  A successful run will look like:
 
@@ -328,4 +329,8 @@ Continuous integration tools are an important part of this process. They don't s
 
 ## Submission
 
-BLERG
+Create a PDF file and include the following:
+
+1. TODO
+
+Submit the file to [Assignment 7](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a7/) in CourSys.
