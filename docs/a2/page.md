@@ -132,6 +132,7 @@ Now that the instance is running, we need to build the music server and run it t
 4. Build and start the music service on this remote instance:
 
    ~~~bash
+   [ec2-user@ip-172-31-25-98 ~]$ cd ~/c756-exer/s2/standalone
    [ec2-user@ip-172-31-25-98 ~/c756-exer/s2/standalone]$ ./builda2.sh
    ... lengthy build output ...
    Successfully tagged s2-standalone:v0.5
