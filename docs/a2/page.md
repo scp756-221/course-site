@@ -17,6 +17,38 @@ Second, you will explore the features of git, GitHub Desktop and GitHub.
 
 **2. You must have completed all of Assignment&nbsp;1.**
 
+### Generate course code repo instance
+
+**You must have successfully installed Git before starting this
+step.**
+
+**You must have a GitHub userid (see the first part of
+Assignment&nbsp;0) before starting this step.**
+
+Due to corrections made since Assignment 1, you will need to regenerate a repo for Assignment 2. The process is similar:
+
+1. Sign in to GitHub using your userid.
+2. Sign in to [GitHub Education](https://education.github.com/) using the same userid. 
+3. Accept this assignment via this [link](https://classroom.github.com/a/3cAM2ygY)
+4. Wait while a copy of the repo is generated for you.
+5. Bookmark the URL of your copy of the repo http://github.com/scp756-221/assignment2on-YOUR-GITHUB-ID. As the repo resides in this class' organization, you will not see it listed under "Your repositories". But you will find it at the left-hand margin of your [GitHub home page]](https://github.com) after you sign in.
+6. Reuse Assignment 1's `tpl-vars.txt`. **Do not delete the old Assignment 1 repo.** If you'd cloned Assignment 1's repo into `c756-exer` locally, you will find it convenient to rename this so as to free up the name for this new copy:
+```sh
+$ mv c756-exer c756-exer-assignment1
+```
+7. Clone the repo from step 4 to your laptop and re-instantiate the templates:
+```sh
+$ git clone https://github.com/scp756-221/assignment2on-YOUR-GITHUB-ID.git c756-exer
+
+# reuse your Assignment 1 tpl-vars.txt; you may need to adjust the Assignment 1 repo name
+$ cp c756-exer-assignment1/cluster/tpl-vars.txt c756-exer/cluster/tpl-vars.txt
+
+$ cd c756-exer
+$ make -f k8s-tpl.mak templates
+```
+
+
+
 ## Part 1: Running an Amazon EC2 instance
 
 In this part you will repeat the build-debug-fix-test-commit cycle of Assignment&nbsp;1 with one difference. This time the server will be running in the cloud, on an Amazon EC2 virtual machine ("instance"). Note the point of Part 1 is to arrive at an EC2 instance while providing some visibility into the EC2 service for students who are either unfamiliar with the concept of virtualization or cloud service. Thus, the steps provided far from optimal but adequate for this. 
@@ -90,10 +122,10 @@ Now that the instance is running, we need to build the music server and run it t
 
    The window is now showing a terminal session on *the remote Amazon instance*, not your machine. (The `ip-172-31-25-98` portion of the prompt will vary with the IP address of your particular instance.)
 
-3. Clone the repo by doing the following, where `REGID` is your GitHub userid:
+3. Clone the Assignment 2 repo generated above with the following, where `REGID` is your GitHub userid:
 
    ~~~bash
-   [ec2-user@ip-172-31-25-98 ~]$ git clone https://github.com/REGID/c756-exer.git
+   [ec2-user@ip-172-31-25-98 ~]$ git clone https://github.com/scp756-221/assignment2on-REGID.git c756-exer
    [ec2-user@ip-172-31-25-98 ~]$ cd c756-exer/s2/standalone
    ~~~
 
@@ -223,14 +255,14 @@ Follow the instructions there to:
     $ docker info > file.txt
     ```
     2. Add `file.txt` and commit this into your local repo **using GitHub Desktop**. Write a long multi-line commit comment for this.
-    3. Push this up to GitHub using GitHub Desktop. **Be sure to set this as a public repo.**
+    3. Push this up to GitHub using GitHub Desktop. 
 
 
 When you've completed the scenarios above, repeat the process of fixing the service:
 
 1. Committing the change you made to `app-a2.py` in Part&nbsp;1 **with one change**: write a long multi-line commit comment via GitHub Desktop.
 
-2. Push this change to your GitHub account.
+2. Push this change to your GitHub repo.
 
 ## Submission
 
@@ -240,11 +272,11 @@ Create a PDF file and provide the following:
 
 2. URL Of your GitHub repo "Created-in-git"
 
-3. Screen-capture of a terminal session with the git commit that correct the problem. You can use `git log` to retrieve the history. 
+3. Screen-capture of a terminal session with the git commit that correct the problem. You can use `git log` to retrieve the history.  (Do this on the host side.)
 
-4. URL of the line of code with the fix in your Github repo's copy of `c756-exer/s2/standalone/app-a2.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
+4. URL of the line of code with the fix in your Github repo's copy of `s2/standalone/app-a2.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
 ![AWS Image](https://github.com/scp756-221/course-site/blob/main/docs/a1/github-permalink.png?raw=true)
 
-5. What are some potential difficulties or obstacles for building the service? What potential solutions can you offer for handling these?
+5. What are some potential difficulties or obstacles for building the service in your EC2 instance? What potential solutions can you offer for handling these?
  
 Submit the file to [Assignment 2](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a2/) in CourSys.
