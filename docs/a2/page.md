@@ -41,7 +41,6 @@ $ mv c756-exer c756-exer-assignment1
 $ git clone https://github.com/scp756-221/assignment2on-YOUR-GITHUB-ID.git c756-exer
 # reuse your Assignment 1 tpl-vars.txt; you may need to adjust the Assignment 1 repo name
 $ cp c756-exer-assignment1/cluster/tpl-vars.txt c756-exer/cluster/tpl-vars.txt
-
 $ cd c756-exer
 $ make -f k8s-tpl.mak templates
 ```
