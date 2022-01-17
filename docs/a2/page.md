@@ -39,7 +39,6 @@ $ mv c756-exer c756-exer-assignment1
 7. Clone the repo from step 4 to your laptop and re-instantiate the templates:
 ```sh
 $ git clone https://github.com/scp756-221/assignment2on-YOUR-GITHUB-ID.git c756-exer
-
 # reuse your Assignment 1 tpl-vars.txt; you may need to adjust the Assignment 1 repo name
 $ cp c756-exer-assignment1/cluster/tpl-vars.txt c756-exer/cluster/tpl-vars.txt
 
