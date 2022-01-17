@@ -418,13 +418,15 @@ a simple command-line query interface.
 
 ### Running the music application
 
-Open up two terminal windows: one each for the client and the server.  In each one, start the tools
-container, remembering that first you have to make `c756-exer/`
-the current directory.
+Open up two terminal windows: one each for the client and the server.  In each one, remember to *start the tools
+container* from the  `c756-exer/` directory.
 
 In one window, build and run the server:
 
 ~~~bash
+$ cd c756-exer
+$ tools/shell.sh
+...
 /home/k8s# cd s2/standalone
 /home/k8s/s2/standalone# ./builda1.sh
 ... build messages ...
@@ -435,6 +437,9 @@ In one window, build and run the server:
 In the other window, build and run the client:
 
 ~~~bash
+$ cd c756-exer
+$ tools/shell.sh
+...
 /home/k8s# cd mcli
 /home/k8s/mcli# make build-mcli
 ... build messages ...
