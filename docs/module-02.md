@@ -2,7 +2,7 @@
 
 ## Recording
 
-* Tuesday [Zoom recording (coming)]()
+* Tuesday [Zoom recording (1:46:45)](https://sfu.zoom.us/rec/share/4s25IatzUyBJAsruwP46acYmQ8cnjnG2XaeRC0Bx03EBVZi_J1jkkuJRlzqdXguz.0Y55FgfZYtKc-t87?startTime=1642520448000) (passcode C756221)
 * Friday [Zoom recording (coming)]()
 
 ## Presented Slides  
@@ -21,4 +21,4 @@
 <div class="video-container-4by3"><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTen4xex7rrAek6gLrASVCaLYMbuQoMBdJsoUesQBsASCQ0zz2KpTlbTz004QYMCDMfc6FmpymL_r8U/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1440" height="1109" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></iframe></div>
 
 ### Credit
-Deck 2 developed by [Brian Fraser](https://www.sfu.ca/computing/people/faculty/brianfraser.html)
+Deck 2 developed by [Dr Brian Fraser](https://www.sfu.ca/computing/people/faculty/brianfraser.html)
