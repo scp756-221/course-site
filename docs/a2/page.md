@@ -108,6 +108,7 @@ Now that the instance is running, we need to build the music server and run it t
    [ec2-user@ip-172-31-25-98 ~]$
    ~~~
 
+
    If you see the message and input prompt (with different values for the address and fingerprint):
 
    ~~~bash
@@ -127,7 +128,17 @@ Now that the instance is running, we need to build the music server and run it t
    [ec2-user@ip-172-31-25-98 ~]$ cd c756-exer/s2/standalone
    ~~~
 
-4. Build and start the music service on this remote instance:
+4. From your host environment, transfer student-specific files to your EC2 instance, performing the same substitution as in step 2. 
+
+   ~~~bash
+   $ cd .../c756-exer/s2/standalone
+   $ ./transfer.sh ~/.ssh/KEY-FILE ec2-user EC2-DNS-NAME
+   + scp -i /home/...  Dockerfile ec2user@EC2-DNS-NAME:...
+   + scp -i /home/...  unique_code.py ec2user@EC2-DNS-NAME:...
+   ...
+   ~~~ 
+
+5. Build and start the music service on this remote instance:
 
    ~~~bash
    [ec2-user@ip-172-31-25-98 ~]$ cd ~/c756-exer/s2/standalone
