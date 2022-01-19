@@ -134,34 +134,46 @@ Now that the instance is running, we need to build the music server and run it t
    $ cd .../c756-exer/s2/standalone
    $ ./transfer.sh ~/.ssh/KEY-FILE ec2-user EC2-DNS-NAME
    + scp -i /home/...  Dockerfile ec2user@EC2-DNS-NAME:...
+   ...
    + scp -i /home/...  unique_code.py ec2user@EC2-DNS-NAME:...
+   + scp -i /home/...  music.csv ec2user@EC2-DNS-NAME:...
    ...
    ~~~
 
-   You will then need to move the the copies of these files in your EC2 instance to the appropriate location. If you used the suggested `c756-exer`, this will be `c756-exer/s2/standalone`:
+   You will then need to move `unique_code.py` (on your EC2 instance) into the appropriate location. If you used the suggested `c756-exer`, this will be `c756-exer/s2/standalone`:
 
    ~~~bash
-   [ec2-user@ip-172-31-25-98 ~]$ mv ~/requirements.txt ~/c756-exer/s2/standalone/requirements.txt
-   [ec2-user@ip-172-31-25-98 ~]$ mv ~/Dockerfile ~/c756-exer/s2/standalone/Dockerfile
-   [ec2-user@ip-172-31-25-98 ~]$ mv ~/Makefile ~/c756-exer/s2/standalone/Makefile
-   [ec2-user@ip-172-31-25-98 ~]$ mv ~/app-a2.py ~/c756-exer/s2/standalone/app-a2.py
    [ec2-user@ip-172-31-25-98 ~]$ mv ~/unique_code.py ~/c756-exer/s2/standalone/unique_code.py
-   [ec2-user@ip-172-31-25-98 ~]$ mv ~/music.csv ~/c756-exer/s2/standalone/music.csv
-   [ec2-user@ip-172-31-25-98 ~]$ mv ~/builda2.sh ~/c756-exer/s2/standalone/builda2.sh
-   [ec2-user@ip-172-31-25-98 ~]$ mv ~/runa2.sh ~/c756-exer/s2/standalone/runa2.sh
-   [ec2-user@ip-172-31-25-98 ~]$ mv ~/builda2.sh ~/c756-exer/s2/standalone/Makefile
-   [ec2-user@ip-172-31-25-98 ~]$ mv ~/.dockerignore ~/c756-exer/s2/standalone/.dockerignore
    ~~~
 
 
 5. Build and start the music service on this remote instance:
 
+   The below may be confusing but the goal is similar to what you had followed in Assignment 1: you must start up `tools/shell.sh` before running the service. The prompts reminds that you are working in your EC2 instance initially. But once you execute `tools/shell.sh`, the prompt will lose the descriptiveness.
+
    ~~~bash
-   [ec2-user@ip-172-31-25-98 ~]$ cd ~/c756-exer/s2/standalone
-   [ec2-user@ip-172-31-25-98 ~/c756-exer/s2/standalone]$ ./builda2.sh
+   [ec2-user@ip-172-31-25-98 ~]$ cd ~/c756-exer
+   [ec2-user@ip-172-31-25-98 ~]$ tools/shell.sh
+   + [[ 0 -eq 1 ]]
+   + VER=v1.0
+   + CREG=ghcr.io
+   + REGID=scp756-221
+   + INAME=c756-tool
+   + TZ=Canada/Pacific
+   + docker container run -it --rm -v /home/ec2-user/.aws:/root/.aws -v /home/ec2-user/.azure:/root/.azure -v /home/ec2-user/.minikube:/root/.minikube -v /home/ec2-user/.ssh:/root/.ssh -v /home/ec2-user/.kube:/root/.kube -v /home/ec2-user/.config:/root/.config -v /var/run/docker.sock:/var/run/docker.sock -v /home/ec2-user/c756-exer/gatling/results:/opt/gatling/results -v /home/ec2-user/c756-exer/gatling:/opt/gatling/user-files -v /home/ec2-user/c756-exer/gatling/target:/opt/gatling/target -v /home/ec2-user/c756-exer:/home/k8s -e TZ=Canada/Pacific -e HWD=/home/ec2-user/c756-exer ghcr.io/scp756-221/c756-tool:v1.0
+   Unable to find image 'ghcr.io/scp756-221/c756-tool:v1.0' locally
+   v1.0: Pulling from scp756-221/c756-tool
+   ...
+   ...
+   da07917180b6: Pull complete 
+   Digest: sha256:75419b03715a4eb13801524340c88e71f799d2047f561d0a48da356195d61dea
+   Status: Downloaded newer image for ghcr.io/scp756-221/c756-tool:v1.0
+
+   root@3dbb7e27734d:/home/k8s# cd s2/standalone
+   root@3dbb7e27734d:/home/k8s/s2/standalone# ./builda2.sh
    ... lengthy build output ...
    Successfully tagged s2-standalone:v0.5
-   [ec2-user@ip-172-31-25-98 ~/c756-exer/s2/standalone]$ ./runa2.sh
+   root@3dbb7e27734d:/home/k8s# ./runa2.sh
    [2021-12-07 00:47:38,204] ERROR in app: Unique code: bb6f4ceb0082f107f759d61a861600ec6b7266c18ffb0d6ca3b42c27df2fa6f4
     * Serving Flask app "app" (lazy loading)
     * Environment: production
