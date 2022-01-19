@@ -68,14 +68,14 @@ Your first step is to start an EC2 instance. You will do this through the AWS Co
 1. Sign on to the AWS console, `https://console.aws.amazon.com/` , using your IAM administrative userid. If you have set up Multi-Factor Authentication (MFA), you will need to enter the one-time code as well.
 2. In the search bar at the top of the page, enter `EC2` and press Return.
 3. In the top right, select `Oregon` from the menu of regions.
-3. Click on `Launch instances`, in the upper right.
-5. From the list, click on `Select` for the entry labelled `Deep Learning AMI (Amazon Linux 2) Version 55.0` with the ami id of `ami-0a100c9a1c22dd744`.  Note: We chose this machine image as a matter of convenient (this image happens to have all the tools we need already) and not because we are performing any deep learning in this assignment. (The specific version is not significant... version newer than 55 should be okay too.)
-4. **Step 1 Page:** In the search bar, enter `deep learning` and press return.
+3. Click the orange `Launch instance` button, in the mid-lower left (you may have to scroll down).
+4. **Step 1 Page:** In the search bar, enter `Deep Learning AMI (Amazon Linux 2)` and press Return.
+5. From the list, click on `Select` for an entry labelled `Deep Learning AMI (Amazon Linux 2) Version 57.0` or a similar version.  Note: We chose this machine image as a matter of convenience (this image happens to have all the tools we need already) and not because we are performing any deep learning in this assignment.
 6. **Step 2 Page:** Click the check box to the left of the row with `t1.micro`. Then click on the label `6. Configure Security Group` at the top of the page. (We are skipping Steps 3--5.) (The instance type is not significant... we are choosing the smallest instance. Something slightly larger/newer is okay too. The cost will be higher but for what you're doing here, the difference is not consequential.)
 7. **Step 6 Page:** In the `Configure Security Group` dialogue:
    0. Select `Create a new security group` (it is the default).
    1. *Security group name:* `Music service (port 30001)`
-   2. Click `Add Rule`.
+   2. Click `Add Rule` and then `Custom TCP Rule` from the dropdown.
    3. In the new row that is added:
       * *Port Range:* `30001`
       * *Source:* (Menu) `Anywhere`
@@ -87,7 +87,7 @@ Your first step is to start an EC2 instance. You will do this through the AWS Co
    * In the drop down list, select the key pair that you created in Assignment&nbsp;0.
    * Click the box acknowledging that you have access to the key created in Assignment&nbsp;0.
    * Click `Launch Instances` (only one will be launched).
-10. Click `View Instances`.
+10. Click `View Instances` (lower right).
 11. In the Instance view, wait until *Instance state* is `Running`.  However, the instance is not ready to run yet. Watch the "Status check" column.  Occasionally click the refresh button (the clockwise circle icon), waiting until the field reads `2/2 checks passed`.
 12. Click on the instance ID link (it will look like `i-0fada0697f42aed7e`).  This will bring up the instance summary.
 13. Locate the `Public IPv4 DNS` entry, mid-right of the page. It will look like `ec2-34-210-56-181.us-west-2.compute.amazonaws.com`. Don't do anything with it for now.
@@ -128,11 +128,11 @@ Now that the instance is running, we need to build the music server and run it t
    [ec2-user@ip-172-31-25-98 ~]$ cd c756-exer/s2/standalone
    ~~~
 
-4. From your host environment, transfer student-specific files to your EC2 instance, performing the same substitution as in step 2. 
+4. From your host environment, transfer student-specific files to your EC2 instance, performing the same substitution as in Step&nbsp;2. 
 
    ~~~bash
    $ cd .../c756-exer/s2/standalone
-   $ ./transfer.sh ~/.ssh/KEY-FILE ec2-user EC2-DNS-NAME
+   .../c756-exer/s2/standalone $ ./transfer.sh ~/.ssh/KEY-FILE ec2-user EC2-DNS-NAME
    + scp -i /home/...  Dockerfile ec2user@EC2-DNS-NAME:...
    ...
    + scp -i /home/...  unique_code.py ec2user@EC2-DNS-NAME:...
@@ -149,31 +149,11 @@ Now that the instance is running, we need to build the music server and run it t
 
 5. Build and start the music service on this remote instance:
 
-   The below may be confusing but the goal is similar to what you had followed in Assignment 1: you must start up `tools/shell.sh` before running the service. The prompts reminds that you are working in your EC2 instance initially. But once you execute `tools/shell.sh`, the prompt will lose the descriptiveness.
-
    ~~~bash
-   [ec2-user@ip-172-31-25-98 ~]$ cd ~/c756-exer
-   [ec2-user@ip-172-31-25-98 ~]$ tools/shell.sh
-   + [[ 0 -eq 1 ]]
-   + VER=v1.0
-   + CREG=ghcr.io
-   + REGID=scp756-221
-   + INAME=c756-tool
-   + TZ=Canada/Pacific
-   + docker container run -it --rm -v /home/ec2-user/.aws:/root/.aws -v /home/ec2-user/.azure:/root/.azure -v /home/ec2-user/.minikube:/root/.minikube -v /home/ec2-user/.ssh:/root/.ssh -v /home/ec2-user/.kube:/root/.kube -v /home/ec2-user/.config:/root/.config -v /var/run/docker.sock:/var/run/docker.sock -v /home/ec2-user/c756-exer/gatling/results:/opt/gatling/results -v /home/ec2-user/c756-exer/gatling:/opt/gatling/user-files -v /home/ec2-user/c756-exer/gatling/target:/opt/gatling/target -v /home/ec2-user/c756-exer:/home/k8s -e TZ=Canada/Pacific -e HWD=/home/ec2-user/c756-exer ghcr.io/scp756-221/c756-tool:v1.0
-   Unable to find image 'ghcr.io/scp756-221/c756-tool:v1.0' locally
-   v1.0: Pulling from scp756-221/c756-tool
-   ...
-   ...
-   da07917180b6: Pull complete 
-   Digest: sha256:75419b03715a4eb13801524340c88e71f799d2047f561d0a48da356195d61dea
-   Status: Downloaded newer image for ghcr.io/scp756-221/c756-tool:v1.0
-
-   root@3dbb7e27734d:/home/k8s# cd s2/standalone
-   root@3dbb7e27734d:/home/k8s/s2/standalone# ./builda2.sh
+   [ec2-user@ip-172-31-25-98 standalone]$ ./builda2.sh
    ... lengthy build output ...
    Successfully tagged s2-standalone:v0.5
-   root@3dbb7e27734d:/home/k8s# ./runa2.sh
+   [ec2-user@ip-172-31-25-98 standalone]$  ./runa2.sh
    [2021-12-07 00:47:38,204] ERROR in app: Unique code: bb6f4ceb0082f107f759d61a861600ec6b7266c18ffb0d6ca3b42c27df2fa6f4
     * Serving Flask app "app" (lazy loading)
     * Environment: production
@@ -228,7 +208,8 @@ You will follow a similar sequence of steps as from Assignment&nbsp;1 to locate 
    revised code down from GitHub (note the directory) :
 
    ~~~bash
-   [ec2-user@ip-172-31-25-98 ~/c756-exer]$ git pull
+   [ec2-user@ip-172-31-25-98 standalone]$ cd ../..
+   [ec2-user@ip-172-31-25-98 c756-exer]$ git pull
    ~~~
 
 5. *On the remote machine*, rerun `./builda2.sh`.
