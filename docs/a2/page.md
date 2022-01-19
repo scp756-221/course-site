@@ -136,7 +136,23 @@ Now that the instance is running, we need to build the music server and run it t
    + scp -i /home/...  Dockerfile ec2user@EC2-DNS-NAME:...
    + scp -i /home/...  unique_code.py ec2user@EC2-DNS-NAME:...
    ...
-   ~~~ 
+   ~~~
+
+   You will then need to move these files to the appropriate location. If you used the suggested `c756-exer`, this will be `c756-exer/s2/standalone`:
+
+   ~~~bash
+   $ mv ~/requirements.txt ~/c756-exer/s2/standalone/requirements.txt
+   $ mv ~/Dockerfile ~/c756-exer/s2/standalone/Dockerfile
+   $ mv ~/Makefile ~/c756-exer/s2/standalone/Makefile
+   $ mv ~/app-a2.py ~/c756-exer/s2/standalone/app-a2.py
+   $ mv ~/unique_code.py ~/c756-exer/s2/standalone/unique_code.py
+   $ mv ~/music.csv ~/c756-exer/s2/standalone/music.csv
+   $ mv ~/builda2.sh ~/c756-exer/s2/standalone/builda2.sh
+   $ mv ~/runa2.sh ~/c756-exer/s2/standalone/runa2.sh
+   $ mv ~/builda2.sh ~/c756-exer/s2/standalone/Makefile
+   $ mv ~/.dockerignore ~/c756-exer/s2/standalone/.dockerignore
+   ~~~
+
 
 5. Build and start the music service on this remote instance:
 
