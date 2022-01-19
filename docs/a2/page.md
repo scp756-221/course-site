@@ -138,19 +138,19 @@ Now that the instance is running, we need to build the music server and run it t
    ...
    ~~~
 
-   You will then need to move these files to the appropriate location. If you used the suggested `c756-exer`, this will be `c756-exer/s2/standalone`:
+   You will then need to move the the copies of these files in your EC2 instance to the appropriate location. If you used the suggested `c756-exer`, this will be `c756-exer/s2/standalone`:
 
    ~~~bash
-   $ mv ~/requirements.txt ~/c756-exer/s2/standalone/requirements.txt
-   $ mv ~/Dockerfile ~/c756-exer/s2/standalone/Dockerfile
-   $ mv ~/Makefile ~/c756-exer/s2/standalone/Makefile
-   $ mv ~/app-a2.py ~/c756-exer/s2/standalone/app-a2.py
-   $ mv ~/unique_code.py ~/c756-exer/s2/standalone/unique_code.py
-   $ mv ~/music.csv ~/c756-exer/s2/standalone/music.csv
-   $ mv ~/builda2.sh ~/c756-exer/s2/standalone/builda2.sh
-   $ mv ~/runa2.sh ~/c756-exer/s2/standalone/runa2.sh
-   $ mv ~/builda2.sh ~/c756-exer/s2/standalone/Makefile
-   $ mv ~/.dockerignore ~/c756-exer/s2/standalone/.dockerignore
+   [ec2-user@ip-172-31-25-98 ~]$ mv ~/requirements.txt ~/c756-exer/s2/standalone/requirements.txt
+   [ec2-user@ip-172-31-25-98 ~]$ mv ~/Dockerfile ~/c756-exer/s2/standalone/Dockerfile
+   [ec2-user@ip-172-31-25-98 ~]$ mv ~/Makefile ~/c756-exer/s2/standalone/Makefile
+   [ec2-user@ip-172-31-25-98 ~]$ mv ~/app-a2.py ~/c756-exer/s2/standalone/app-a2.py
+   [ec2-user@ip-172-31-25-98 ~]$ mv ~/unique_code.py ~/c756-exer/s2/standalone/unique_code.py
+   [ec2-user@ip-172-31-25-98 ~]$ mv ~/music.csv ~/c756-exer/s2/standalone/music.csv
+   [ec2-user@ip-172-31-25-98 ~]$ mv ~/builda2.sh ~/c756-exer/s2/standalone/builda2.sh
+   [ec2-user@ip-172-31-25-98 ~]$ mv ~/runa2.sh ~/c756-exer/s2/standalone/runa2.sh
+   [ec2-user@ip-172-31-25-98 ~]$ mv ~/builda2.sh ~/c756-exer/s2/standalone/Makefile
+   [ec2-user@ip-172-31-25-98 ~]$ mv ~/.dockerignore ~/c756-exer/s2/standalone/.dockerignore
    ~~~
 
 
