@@ -121,7 +121,7 @@ Now that the instance is running, we need to build the music server and run it t
 
    The window is now showing a terminal session on *the remote Amazon instance*, not your machine. (The `ip-172-31-25-98` portion of the prompt will vary with the IP address of your particular instance.)
 
-3. Clone the Assignment 2 repo generated above with the following, where `REGID` is your GitHub userid:
+3. Clone the Assignment 2 repo generated above with the following, where `REGID` is your GitHub userid. **You will need to authenticate/configure git on this EC2 instance as it is a fresh installation. Use the PAT from Assignment 1 as you would your password when prompted.**
 
    ~~~bash
    [ec2-user@ip-172-31-25-98 ~]$ git clone https://github.com/scp756-221/assignment2on-REGID.git c756-exer
@@ -219,7 +219,7 @@ You will follow a similar sequence of steps as from Assignment&nbsp;1 to locate 
 
    * Add the repo
    * Observe the visual diff that GitHub Desktop provides
-   * Commit the code to the local repo
+   * Commit the code to the local repo as before with one change: use a multi-line comment.
    * Check that your own GitHub repo does not contain this fix
    * Push the code up to your own copy of the repo
    * Recheck that your GitHub repo now has the fix
@@ -295,12 +295,6 @@ Follow the instructions there to:
     2. Add `file.txt` and commit this into your local repo **using GitHub Desktop**. Write a long multi-line commit comment for this.
     3. Push this up to GitHub using GitHub Desktop. 
 
-
-When you've completed the scenarios above, repeat the process of fixing the service:
-
-1. Committing the change you made to `app-a2.py` in Part&nbsp;1 **with one change**: write a long multi-line commit comment via GitHub Desktop.
-
-2. Push this change to your GitHub repo.
 
 ## Submission
 
