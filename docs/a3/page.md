@@ -92,11 +92,11 @@ $ vi ~/.ec2.mak
 $ source ~/.aws-a
 ~~~
 
-Now you can launch and stop instances very quickly with the `erun`, `eps` and `ekill` shortcuts.
+Now you can launch and stop instances very quickly with the `erun`, `eps` and `ekn` shortcuts.
 
-There is also an `essh` shortcut that will log you into the machine too.
+There is also an `esshn` shortcut that will log you into the machine too.
 
-Review the script to work out how the hand-off works between the commands/targets. (Hint: it uses up-ip.log to transfer the IP address between commands.)
+Review the script to work out how the hand-off works between the commands/targets. (Hint: it uses `x86-ip.log` to transfer the IP address between commands.)
 
 ~~~bash
 # launch the EC2 instance
@@ -115,8 +115,26 @@ You can use `eps` to examine the instances you have running. Examine the alias t
 $ eps
 i-01099e36520cd6e22 t2.xlarge running 2021-12-14T00:09:18+00:00 34.217.34.207 furious_varahamihira
 ~~~
+There are 3 key outputs:
+* Instance-id: `i-01099e36520cd6e22`. This is an AWS-private id for use with the AWS CLI. 
+* Public IP4 name/address: `34.217.34.207`. This is the public name/IP you can use to access/reference the machine.
+* Mnemonic name: `furious_varahamihira`. This is an easier to remember name. 
 
-(Finally, experiment with `ekill` to terminate your instance. Try a few cycles of `erun`+`eps`+`ekill` and examine the output.)
+Experiment with `ekn` to terminate your instance. Try a few cycles of `erun`+`eps`+`ekn` and examine the output.
+
+Review the `epkg` macro which is a generalization of `erun` to access other machines.
+
+Finally, consider `esshn` which allows you to `ssh` into an instance by name.
+
+These macro operate on three pieces of information:
+* The "instance type"--the hardware that you wish to use. (The `INSTANCE` variable inside `.ec2.mak`.)
+* The AMI id--the operating system/software to run on this hardware. (The `IMAGE` variable inside `.ec2.mak`.)
+* The user-id--this is a detail of the AMI which you've selected. (The `SSH_USER` variable inside `.ec2.mak`.)
+
+The key idea behind these macros is to automate the tracking of the instance-id and public IP address (which are hard to remember) with the use of the mnemonic name (which is arguably easier to keep tabs of).
+
+
+When you are satisified, locate the AMI used in Assignment 2 and find the appropriate package to launch a machine. (You will invoke it along the line of `epkg <somepackage>`.)
 
 ~~~bash
 # copy the data and CR token over
