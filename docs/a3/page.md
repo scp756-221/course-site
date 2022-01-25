@@ -104,7 +104,7 @@ $ erun
 ...
 
 # inspect the IP address of the instance you launched
-$ cat up-ip.log
+$ cat x86-ip.log
 A.B.C.D
 ~~~
 
