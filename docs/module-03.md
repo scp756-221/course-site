@@ -1,4 +1,9 @@
-# Week 3 (Jan 23-29): topic
+# Week 3 (Jan 23-29): Docker (& EC2)
+
+## Recording
+
+* Tuesday [Zoom recording (1:42:36)](https://sfu.zoom.us/rec/share/QKuU2kV3xUjgbx-PiZD25j_OfxFtJQbpP1ADymI-OLP-11BJGIRSSM-mCCDTh0D1.l5WJK832CJtRt7NV?startTime=1643128143000) (passcode C756221)
+* Friday [Zoom recording (COMING)]() (passcode C756221)
 
 ## Presented Slides  
 
