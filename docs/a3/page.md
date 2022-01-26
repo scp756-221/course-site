@@ -429,6 +429,6 @@ Create a PDF file and provide the following:
 2. URL of the line of code with the fix in your Github repo's copy of `c756-exer/s2/standalone/app-a3.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
 ![AWS Image](https://github.com/scp756-221/course-site/blob/main/docs/a1/github-permalink.png?raw=true)
 
-3. What are some risks for using/running a container image based solely on its container registry tag? How does this compare with what you did here in this assignment  with a Dockerfile that you build/tag/pushed?
+3. What are some risks for using/running a container image based solely on its container registry name/tag (e.g., "ghcr.io/scp756-221/c756-tool:v1.0" or "docker.io/somebody/someimage:v1.0" )? How does this compare with what you did here in this assignment with a Dockerfile that you build/tag/pushed?
  
 Submit the file to [Assignment 3](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a3/) in CourSys.
