@@ -77,6 +77,19 @@ The commands must be enabled every time you start a new instance of the tools co
 Once you have set up the EC2 commands, start a GPU-enabled EC2 instance
 by running the following commands:
 
+**NOTE: This assignment requires that the gpu_small package is configured with the default:
+
+```sh
+# Cheaper GPU with Python-based AMI
+# USD 0.526/hr in us-west-2
+INSTANCE=$(GPU_ML_X)
+IMAGE=$(AMI_AMAZON_LINUX_ML)
+SSH_USER=$(AMAZON_USER)
+```
+
+If you have changed these (possibly in Assignment 3), please restore your package as above.
+**
+
 ~~~bash
 /home/k8s# epkg gpu_small
 /home/k8s# # Wait 1--2 minutes for the instance to completely initialize

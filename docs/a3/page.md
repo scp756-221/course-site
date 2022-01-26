@@ -317,7 +317,7 @@ Try running the music service without them:
 
 ~~~bash
 # note you are skipping the -it option
-/home/k8s# docker container run --rm -v $HWD/s2/standalone:/data -p 30001:30001 s2-standalone:v0.75
+/home/k8s# docker container run --platform x86_64 --rm -v $HWD/s2/standalone:/data -p 30001:30001 s2-standalone:v0.75
 ~~~
 
 It actually works, though we don't recommend doing this in production.
@@ -326,7 +326,7 @@ Shut down the running service by entering `^C` and now test the client without `
 
 ~~~bash
 # note you are skipping the -it option
-/home/k8s# docker container run --rm --name mcli mcli:v0.8 python3 mcli.py 0.0.0.0 30001 | more
+/home/k8s# docker container run --platform x86_64 --rm --name mcli mcli:v0.8 python3 mcli.py 0.0.0.0 30001 | more
 ~~~
 
 Whoops!  The client attempts to read input but without the `-it` options no terminal exists.  The result is simply an infinite sequence of end-of-file (EOF) inputs. We added the `| more` pipe to prevent the client from filling your window with hundreds of lines of `*** Unknown syntax: EOF`.
@@ -352,7 +352,7 @@ Try running the music service without `--rm` (but with `-it`, of course):
 
 ~~~bash
 # note you are skipping the --rm option
-/home/k8s# docker container run -it -v $HWD/s2/standalone:/data -p 30001:30001 --name s2 s2-standalone:v0.75
+/home/k8s# docker container run --platform x86_64 -it -v $HWD/s2/standalone:/data -p 30001:30001 --name s2 s2-standalone:v0.75
 ....
 ~~~
 
@@ -402,7 +402,7 @@ We'll demonstrate this by starting the music service with a different initial li
 Start the music service, mapping its `/data` directory to `s2/standalone/odd` rather than `s2/standalone`:
 
 ~~~bash
-/home/k8s# docker container run -it --rm -v $PWD/s2/standalone/odd:/data -p 30001:30001 --name s2 s2-standalone:v0.75
+/home/k8s# docker container run --platform x86_64 --platform x86_64 -it --rm -v $PWD/s2/standalone/odd:/data -p 30001:30001 --name s2 s2-standalone:v0.75
 [2021-12-11 00:21:31,034] ERROR in app: Unique code: f189212871ce7d0e6c4f5101c14b6a288d7c92509dd231473d2c135f281a162e
  * Serving Flask app "app" (lazy loading)
  * Environment: production
