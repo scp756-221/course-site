@@ -83,7 +83,7 @@ $ cp .aws-off ~/
 $ cp .ec2.mak ~/
 $ cd ~
 
-# insert your security group, subnet ID and key
+# insert your security group and key
 $ vi ~/.ec2.mak
 ~~~
 
