@@ -1,21 +1,22 @@
 ## Introduction
 
-The term project provides an opportunity for a small group to explore the ideas, apply/observe the principles of the course while gaining hands-on experience through building and observation of a working distributed application. This project for CMPT 756 requires a small team (5 members; exceptions subject to approval) working over the course of 9 weeks.
+The term project provides an opportunity for a small group to explore the technologies introduced to date. You are to apply and observe the principles of the course while gaining hands-on experience through building, scaling and observation of a working distributed application. This project for CMPT 756 requires a small team (5 members; exceptions subject to approval) working over the course of 7 weeks.
 
-The project comprises 4 stages:
+The project comprises 6 stages:
 
-1. Propose an application in a domain of your choice and define the interaction/API.
-2. Implement the API using the supplied reference architecture.
-3. Run your application with a load and analyse its behaviour.
-4. Write up a report summarizing your findings.
-5. Walk through and describe your application in a video recording.
+1. Choose your technology platform. AWS EKS as introduced by this course is a reasonable choice but if you are interested in exploring alternate Kubernetes platform (e.g., Azure AKS, GCP EKS, etc), you may do so. Kubernetes provides a high degree of portability across the various clouds.
+2. Add an additional public microservice. The material presented in the assignments repo includes two public microservices ("music" and "user"); you need to add an additional service. This can be trivially a clone/derivative of the existing service ("playlist") or something that your team wish to explore (packaging a machine learning model).
+3. Run your application with a load and measure/observe its behaviour.
+4. Scale the load and application and report on your observations/learnings.
+5. Write up a report summarizing your findings.
+6. Walk through and describe your team, approach and application in a video recording.
 
-On completing this assignment, you will connect the various ideas from the course together including:
+Through this project, you will connect the various ideas from the course together including:
 
 1. Scrum methodology for a distributed team
 2. Infrastructure as code
 2. Containerized application
-4. The micro-services distributed system architecture pattern (REST)
+4. The micro-services distributed system architecture pattern (using REST)
 5. Test coverage and load testing of your system.
 
 
@@ -23,25 +24,25 @@ Key dates:
 
 | Date | Offset | From Project Start | Note |
 |-|-|-|-|
-| Jan 12, 2021 (Tue) | -- | First day of class. |
-| Jan 22, 2021 (Fri) | --  | Class mixer |
-| Feb 10, 2021 (Wed) | -- | Project team confirmed. |
-| Feb 12, 2021 (Fri) | -- | Project announced. |
-| Mar 13, 2021 (Sat) | 4 weeks | First milestone |
-| Mar 27, 2021 (Sat) | 6 weeks | Second milestone |
-| Apr 13, 2021 (Tue) | --  | Last day of class. |
-| Apr 16, 2020 (Fri) | 8 weeks | Project completion. Final submission. |
+| Jan 11, 2022 (Tue) | First day of course. |
+| Feb 15, 2022 (Tue) | Project team confirmed. |
+| Mar 12, 2022 (Sat) | Interim milestone |
+| Apr 8, 2022 (Fri) | Last day of course. |
+| Apr 12, 2022 (Tue) | Project completion; Final submission. |
 
 
 ## 0. Set up
 
-Each project team is named according to letter of the alphabet. Refer to [Canvas](https://canvas.sfu.ca/courses/59479/groups#tab-26517) for your team's name.
+Organize your team and send an email to `cmpt756g100-help@sfu.ca` with the subject "[c756] [team-formation]". In the body of your message, 
+list the members of your team **using your short SFU id**. (As teams are created manually, your attention here will speed up the process greatly.)
 
-Even though this is a group project, each member of the project team must navigate to the [Github Education classroom](https://classroom.github.com/g/L2FU5On3) to accept this assignment. The first member of each team to accept this assignment will also need to create and name the team. **Please name the team according to the name as it appears in Canvas (e.g., Team ?). This will keep the collation consistent.**
+**Wait for an acknowledgement email from an instructor/TA before accepting the GitHub Education assignment (below) for this term project.**
 
-The repo from this Github Education classroom contains a standardized directory tree for use in organizing your project. There is very minimal content here; it's setup here mainly for standardized structure and access.
+As this is a group project, each member of the project team must navigate to [Github Education](https://classroom.github.com/a/xFDX11DX) to accept the "assignment". The first member of each team will also need to create and name the team. **Please name the repo using the name as assigned to you (e.g., team-n). This will keep the collation consistent.**
 
-Even as the term project is a team submission, marks will be assigned individually according to documented contribution to the project. Therefore, document your contributions via appropriate means (e.g., commit comments, issues assignments, etc). Commit early and often!
+The repo from Github Education classroom is intentionally empty but will provide access for the teaching team to your team's work.
+
+Marks will be assigned individually according to documented contribution to the project. Therefore, document your contributions via appropriate means (e.g., commit comments, issues assignments, etc). Commit early and often!
 
 Practice what you've learn to date:
 1. use branches appropriately (perhaps to isolate each team member's contributions);
@@ -50,44 +51,40 @@ Practice what you've learn to date:
 
 ## 1. Propose an application within some domain
 
-Your application is to be a distributed system for the operation of an organization.
-This organization needs only be hypothetical though it should represent a reasonable domain.
-For example, a ride-sharing company (or a similar business in the so-called sharing economy) is a valid choice. Something conventional such as a bank or insurance company is also valid.
+Because this course is focused on the distributed system aspects (as opposed to the AI/ML aspects) of a cloud application, your term 
+project will be similarly focused. To be clear, there is insufficient time to program any of the (albeit interesting) data science 
+techniques into your application. If you do choose to implement a wholly new microservices, take care to manage the scope of that. 
+(E.g., do not spend too much time training/tuning your model.) Continuing with the example above, 
+do not implement smart playlist using a cool ML technique from CMPT 7xx. These data processing/handling techniques are important but 
+are only overlays for your application. (I will leave them to other courses and/or your future employers.)
 
-Because this course is focused on the system aspect of a distributed system, your term project's focus will be similarly focused. Specifically, there is insufficient time to program any of the (albeit interesting) data science techniques into your application. Continuing with the example above, you are to skip implementing the rider/car matching algorithm. Or the GPS feed of the driver's location to the rider. These data processing/handling need are important but are overlays onto the distributed nature of the application. (I will leave them to other courses and/or your future employers.)
-
-Your application must be stateful: user (or a proxy) and session/login are a minimum. You can go as far as desired based on your chosen domain, creativity and effort.
-
-You can certainly model this application on a problem/system from your professional experience. However, do not replicate any proprietary schema or techniques in your project. Within the constraints of the remainder of the term (~eight weeks), the application need/can not be too sophisticated.
-
-Your application must feature at least 3 types of entities (e.g., user, widget, gizmo) and 5 operations that relate 2 or 3 of them (e.g., operate-on-widget-with-gizmo, pair-widget-with-gizmo, etc).
-
-Each such operation (a public call) needs to make use of additional underlying calls (e.g., read-from-database, validate-user-has-funds, etc). Finally, your application must use DynamoDB for storing its data.
+Within the constraints of the latter half of the term (~eight weeks), the application need/can not be too sophisticated.
 
 ## 2. Implement your application using exercise material supplied to date
 
-To accelerate the development of your team's application, you will be using templates and material that you have accumulated over the exercises to date and yet to come. The following attributes are mandatory:
+You are encouraged to reuse as much as you can of the material supplied to date within the course. 
+
 
 ### Technologies
-1. To be operated on AWS (personal account), Azure or GCP
-1. Within a managed Kubernetes cluster (EKS, AKS or GKE)
-1. With istio as a service mesh
+1. To be operated on a public cloud: AWS (personal account), Azure, GCP, or equivalent. 
+1. Within a managed Kubernetes cluster (EKS, AKS, GKE, or equivalent)
 1. Following a Microservices architecture
 1. Serving up a number of REST API
 1. Validated/tested/analysed with traffic load generated by Gatling.io
 1. Persisting data to DynamoDB
 
-The choices above were made in consideration of the technology/pattern's prevalence, track-record in the market-place and ease of use/learning. This in turn translates into community know-how, reliability and easy/available tooling. **Your team should spend no more than ½ the project time/effort on development.**
+The choices above were made in consideration of the technology/pattern's prevalence, track-record in the market-place and ease of 
+use/learning. This in turn translates into community know-how, reliability and easy/available tooling. **Your team should spend no 
+more than half your time/effort development.**
+However, if you have prior experience implementing REST API using an alternate language/library, you can certainly do so.
 
-I highly encourage you to implement your REST API using Python and Flask especially if this is your time. However, if you have prior experience implementing REST API using an alternate language/library, you may make a request to the instructor for approval to use an alternative.
 
-
-The remaining ½ of your time is devoted to operating, measurement and analyzing the produced system. Note that this does not mean testing and debugging! You will need the time to work with and analyze your system and (most importantly) write it up.
+The remaining half of your time is devoted to operating, measurement and analyzing the produced system. Note that this does not mean testing and debugging! You will need the time to work with and analyze your system and (most importantly) write it up.
 
 ## 3. Run your application with a load and document its behaviour.
 
-Exercise 5 will introduce you to Gatling. In the interim, visit [Gatling Academy](https://gatling.io/academy/) and sign-up. Work through [Module 1](https://academy.gatling.io/courses/Run-your-first-tests-with-Gatling) to learn how Gatling works and how to build/use a simulation.
 
+Guide 9 Gatling. In the interim, visit [Gatling Academy](https://gatling.io/academy/) and sign-up. Work through [Module 1](https://academy.gatling.io/courses/Run-your-first-tests-with-Gatling) to learn how Gatling works and how to build/use a simulation.
 You should use the containerized Gatling setup inside the exercise to run your simulation. But it will be more convenient to develop your simulations using a local install of Gatling. (Recall that you have previously installed Gatling as part of Exercise 1.)
 
 Build a _coverage simulation_ that exercises your entire API. This first simulation need to exercise every public API call that you've implemented. Consider this the equivalent of every API target that was implemented in `api.mak`: `cuser`, `uuser`, `duser`, `apilogin`, `apilogoff`, `cmusic`, `rmusic`, & `dmusic`. Note that private APIs (e.g., `db`'s  `read`, `write`, `update`, `delete`) are not needed in this coverage simulation. Run, save and submit a run of this simulation.
