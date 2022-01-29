@@ -1,5 +1,10 @@
 # Week 13 (Apr 3-9): Chaos Engineering
 
+## Recording
+
+* Tuesday [Zoom recording (COMING)]() (passcode C756221)
+* Friday [Zoom recording (COMING)]() (passcode C756221)
+
 ## Presented Slides  
 
 ### Chaos Engineering

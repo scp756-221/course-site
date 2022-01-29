@@ -1,5 +1,10 @@
 # Week 4 (Jan 30-Feb 5): Kubernetes
 
+## Recording
+
+* Tuesday [Zoom recording (COMING)]() (passcode C756221)
+* Friday [Zoom recording (COMING)]() (passcode C756221)
+
 ## Presented Slides  
 
 ### Kubernetes

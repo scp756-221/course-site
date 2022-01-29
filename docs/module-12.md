@@ -1,6 +1,11 @@
 # Week 12 (Mar 27-Apr 2): Observability
 # Lecture 11
 
+## Recording
+
+* Tuesday [Zoom recording (COMING)]() (passcode C756221)
+* Friday [Zoom recording (COMING)]() (passcode C756221)
+
 ## Presented Slides  
 
 ### Observability

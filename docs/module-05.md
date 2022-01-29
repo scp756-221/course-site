@@ -1,5 +1,10 @@
 # Week 5 (Feb 6-12): Agile
 
+## Recording
+
+* Tuesday [Zoom recording (COMING)]() (passcode C756221)
+* Friday [Zoom recording (COMING)]() (passcode C756221)
+
 ## Presented Slides  
 
 ### Agile

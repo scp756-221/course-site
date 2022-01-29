@@ -1,6 +1,11 @@
 # Week 9 (Mar 6-12): Latency
 # Lecture 8
 
+## Recording
+
+* Tuesday [Zoom recording (COMING)]() (passcode C756221)
+* Friday [Zoom recording (COMING)]() (passcode C756221)
+
 ## Presented Slides  
 
 ### Latency

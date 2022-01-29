@@ -1,6 +1,11 @@
 # Week 10 (Mar 13-19): istio (Service Mesh)
 # Lecture 9
 
+## Recording
+
+* Tuesday [Zoom recording (COMING)]() (passcode C756221)
+* Friday [Zoom recording (COMING)]() (passcode C756221)
+
 ## Presented Slides  
 
 ### istio

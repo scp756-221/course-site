@@ -1,6 +1,11 @@
 # Week 11 (Mar 20-26): CAP Theorem
 # Lecture 10
 
+## Recording
+
+* Tuesday [Zoom recording (COMING)]() (passcode C756221)
+* Friday [Zoom recording (COMING)]() (passcode C756221)
+
 ## Presented Slides  
 
 ### CAP & PACELC

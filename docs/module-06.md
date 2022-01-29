@@ -1,5 +1,10 @@
 # Week 6 (Feb 13-19): GPU
 
+## Recording
+
+* Tuesday [Zoom recording (COMING)]() (passcode C756221)
+* Friday [Zoom recording (COMING)]() (passcode C756221)
+
 ## Presented Slides  
 
 ### GPU

@@ -1,6 +1,11 @@
 # Week 8 (Feb 27-Mar 5): REST
 # Lecture 7
 
+## Recording
+
+* Tuesday [Zoom recording (COMING)]() (passcode C756221)
+* Friday [Zoom recording (COMING)]() (passcode C756221)
+
 ## Presented Slides  
 
 ### REST
