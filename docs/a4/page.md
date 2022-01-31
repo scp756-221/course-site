@@ -2,8 +2,6 @@
 
 ## Introduction
 
-**Please refer to the [Assignment 4 FAQ](https://docs.google.com/document/d/1xXuSCJCHU_l0moMviQu_DlPgcj2qFJN4z6a7-MJt5dY/edit?usp=sharing) for up-to-date answers on common problems. I will update them continually as new information rolls in.**
-
 This assignment will revisit the music service you used in Assignments&nbsp;1 through 3. We will expand our viewpoint from a single service, the music service, to a larger microserviced-based application:
 
 ![AWS Image](System-diagram.png?raw=true)
@@ -497,18 +495,25 @@ You need to be particularly careful about your cloud-side clusters as they are e
 
 ## Submission
 
-Create a PDF file and provide the following:
+Your submission this week is divided between entries entered into CourSys directly and as a PDF. Submit these via [Assignment 4](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a4/).
+
+
+CourSys entries:
+
+1. URL of the line of code with the fix in your Github repo's copy of `c756-exer/s2/standalone/app-a3.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
+![AWS Image](https://github.com/scp756-221/course-site/blob/main/docs/a1/github-permalink.png?raw=true)
+
+2. The URLs of the 4 images that were built/pushed in this assignment:
+  a. `cmpt756s1`
+  b. `cmpt756s2`
+  c. `cmpt756db`
+  d. `cmpt756loader`
+
+
+In your PDF provide the following:
 
 1. Screen-capture of a terminal session with the git commit that correct the problem. You can use `git log` to retrieve the history. 
 
-2. URL of the line of code with the fix in your Github repo's copy of `c756-exer/s2/standalone/app-a3.py`. Navigate to your repo inside Github and locate the file/line. Click on the line number and select "Copy permalink". 
-![AWS Image](https://github.com/scp756-221/course-site/blob/main/docs/a1/github-permalink.png?raw=true)
+2. Compare and contrast Kubernetes with Hadoop and Spark. What similarities do you see between them? What differences are there between them? **Limit your answer to 500 words.**
 
-3. The URLs of the 4 images that were built/pushed in this assignment: `cmpt756s1`, `cmpt756s2`, `cmpt756db`, & `cmpt756loader`.
- 
-4. Compare and contrast Kubernetes with Hadoop and Spark. What similarities do you see between them? What differences are there between them?
-
-5. Assume that you wish to run one of your programs from CMPT 732 (say, wordcount.java of Assignment 1) on a Kubernetes cluster. Describe in words the steps required to have your Java program run on a Kubernetes cluster. (You do not need to do this... just think through and describe what's required.)
-
-Submit the file to [Assignment 4](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a4/) in CourSys.
-
+3. Assume that you wish to run one of your programs from CMPT 732 (say, `wordcount.java` from Assignment 1) on a Kubernetes cluster. Describe in words the steps required to have your Java program run on a Kubernetes cluster. (You do not need to do this... think through and describe what's required.) **Limit your answer to 500 words.**
