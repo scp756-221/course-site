@@ -316,13 +316,13 @@ services.
 1. Stop any Gatling jobs you used to generate the traffic:
 
    ~~~
-   $ docker ps
+   $ docker ps --filter 'label=gatling'
    $ docker stop x_y a_b i_j ...
    # or
    $ tools/kill-gatling.sh
    ~~~
 
-2. Shut down the cluster in your cloud provider:
+2. Shut down your cluster:
 
 	~~~
 	$ make -f VENDOR.mak stop
