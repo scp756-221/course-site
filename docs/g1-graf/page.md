@@ -17,7 +17,7 @@ displaying *dashboards*.  We will drive the system using a *load
 tester* and use the dashboards to observe the changes in those
 metrics as the load varies.
 
-This series of guide (1-3) introduces a number of new components:
+This series of guides (1-3) introduces a number of new tools:
 
 * **[Gatling](https://gatling.io/)**: A load-testing tool for defining
   synthetic user behaviours and running those behaviours to load the
@@ -64,7 +64,8 @@ $ make -f VENDOR.mak start
 
 where `VENDOR` is one of `mk` (Minikube), `az` (Azure), `eks` (Amazon),
 or `gcp` (Google), depending upon where you want the new cluster to
-run. Creating new cluster takes typically 15+ minutes so be patient.
+run. Creating new cluster takes typically 15+ minutes so be patient. The default context that is 
+created is rather verbose; the `start` target renames it to a shorter `aws756`. 
 
 ### 3. Ensure AWS DynamoDB is initialized
 
@@ -90,6 +91,12 @@ The resulting output should include the tables `User-<your-Github-id>` and `Musi
 
 A fresh cluster simply includes the Kubernetes components. Installing
 the course sample application and the components required is called *provisioning*.
+
+Kubernetes uses a `namespace` to organize applications. Begin by creating a namespace `c756ns` and setting it as the default (to save typing/specifying it):
+~~~
+$ kubectl create ns c756ns
+$ kubectl config set-context --current --namespace=c756ns
+~~~
 
 Assuming that your new cluster is in the current Kubernetes context,
 provision it with the single command:
@@ -138,7 +145,7 @@ dashboard by hovering on the "Dashboards" icon on the left:
 
 ![Grafana home page with callout to "Dashboards" menu item](Grafana-home-page-highlighting-dashboards-menu-item.png)
 
-Select "Manage" from the menu. This will bring up a list of
+Select "Browse" from the menu. This will bring up a list of
 dashboards. Click on `c756 transactions` (it should be at or near the
 top of the list).
 
@@ -276,6 +283,8 @@ Now we will begin to send load to the system, simulating user
 interactions. We will start small, with just one user each querying
 the user service (`s1`) and the music service (`s2`).
 
+To create this load, you will use Gatling via an image that has been prepared for you: `ghcr.io/scp-2021-jan-cmpt-756/gatling:3.4.2`. (The source `Dockerfile` is available [here](https://github.com/tedkirkpatrick/kubernetes-testbed/tree/master/e-k8s/tools/gatling).)
+
 ### Start Gatling simulating two users
 
 Gatling is a sophisticated tool that allows you to define scenarios of
@@ -284,42 +293,44 @@ user behaviour, using a programming language
 then run Gatling, specifying how many simulated users will follow each
 scenario.
 
-We have provided two scenarios for you (source code in
-`e-k8s/gatling/simulations/proj756/ReadTables.scala`):
+We have provided two scenarios (Gatling calls them simulations) for you. The source code is supplied at
+`gatling/simulations/proj756/ReadTables.scala`:
 
 * `ReadUserSim`: Call `s1` to read a user, then wait 1&nbsp;s before
   trying again
 * `ReadMusicSim`: Call `s2` to read a music entry, then wait 1&nbsp;s before
   trying again
 
-Gatling is invoked by a simple script, `tools/gatling.sh` that takes
-two arguments:
+The simulations uses three parameters:
+* `CLUSTER_IP` - the DNS name of your cluster
+* `USERS` - the number of users to simulate
+* `SIM_NAME` - selects either `ReadUserSim` or `ReadMusicSim` to choose between either of the microservices. 
 
-* The number of users to simulate
-* The name of the script to run (at this point, either `ReadUserSim`
-  or `ReadMusicSim`)
+Each simulation runs in an infinite loop until it is stopped (`docker container stop`). (There is also a 'bulk kill' script `tools/kill-gatling.sh`.)
 
-Each script runs in an infinite loop until you stop it via
-`tools/kill-gatling.sh`.
-
-Start Gatling, specifying a single user and the `ReadMusicSim`
-script:
+To start Gatling, create a script `gatling-1-music.sh` that contains the following:
 
 ~~~
-$ tools/gatling.sh 1 ReadMusicSim
+#!/usr/bin/evn bash
+docker container run --detach --rm \
+  -v ${PWD}/gatling/results:/opt/gatling/results \
+  -v ${PWD}/gatling:/opt/gatling/user-files \
+  -v ${PWD}/gatling/target:/opt/gatling/target \
+  -e CLUSTER_IP=`tools/getip.sh kubectl istio-system svc/istio-ingressgateway` \
+  -e USERS=1 \
+  -e SIM_NAME=ReadMusicSim 
+  --label gatling \
+  ghcr.io/scp-2021-jan-cmpt-756/gatling:3.4.2 \
+  -s proj756.ReadMusicSim
 ~~~
 
-Gatling takes several seconds to start but will ultimately begin
-sending output (where the `...` will be paths on your machine):
+Note the selection of ReadMusicSim is indicated via the `SIM_NAME` variable as well as the simulation name (`proj756.ReadMusicSim`).
+
+As this is using `--detach`, you will have no output; use `docker container ls`/`docker logs` to review the progress. (Alternately, remove the `--detach` and run this in an extra terminal.)
+
+In either case, the logs will look similar to 
 
 ~~~
-$ tools/gatling.sh 1 ReadMusicSim
-docker container run --detach --rm -v .../e-k8s/gatling/results:/opt/gatling/results -v .../e-k8s/gatling:/opt/gatling/user-files -v .../e-k8s/gatling/target:/opt/gatling/target -e CLUSTER_IP=52.228.103.222 -e USERS=1 -e SIM_NAME=ReadMusicSim --label gatling ghcr.io/scp-2021-jan-cmpt-756/gatling:3.4.2 -s proj756.ReadMusicSim > /tmp/123
-
-*** Control-C out of the following when you've seen enough ***
-
-docker container logs `cat /tmp/123` --follow
-GATLING_HOME is set to /opt/gatling
 Simulation proj756.ReadMusicSim started...
 
 ================================================================================
@@ -335,16 +346,12 @@ Simulation proj756.ReadMusicSim started...
 [--------------------------------------------------------------------------]  0%
           waiting: 0      / active: 1      / done: 0     
 ================================================================================
-
-^C
 ~~~
 
-The output will continue infinitely.  Once you have seen the `waiting
-... active` line, enter Control-C to stop the output. **This will not
-stop the Gatling job.** As mentioned above, `tools/kill-gatling.sh`
-will stop the job.
+To stop `gatling`, use `tools/kill-gatling.sh`. Note that this scripts stops all accumulated/running simulations.
 
-**Check for success:**  Each time you run Gatling, check two things to
+
+**Check for success:**  In the logs, check for two things to
   ensure that the command succeeded:
 
 1. The rightmost column should read `KO=0`, indicating no requests
@@ -356,17 +363,10 @@ If one of these conditions does not hold, check that your cluster is
 running, that your Internet connection is live, and that you correctly
 entered one of the two scenario names.
 
-Now run Gatling with one user and the `ReadUserSim` script, producing
-the following output:
+Revisit the instructions above to start a second run of 1 user for `ReadUserSim`.
 
+Your logs will look similar to:
 ~~~
-$ tools/gatling.sh 1 ReadUserSim
-docker container run --detach --rm -v .../e-k8s/gatling/results:/opt/gatling/results -v .../e-k8s/gatling:/opt/gatling/user-files -v .../e-k8s/gatling/target:/opt/gatling/target -e CLUSTER_IP=52.228.103.222 -e USERS=1 -e SIM_NAME=ReadUserSim --label gatling ghcr.io/scp-2021-jan-cmpt-756/gatling:3.4.2 -s proj756.ReadUserSim > /tmp/123
-
-*** Control-C out of the following when you've seen enough ***
-
-docker container logs `cat /tmp/123` --follow
-GATLING_HOME is set to /opt/gatling
 Simulation proj756.ReadUserSim started...
 
 ================================================================================
@@ -382,14 +382,12 @@ Simulation proj756.ReadUserSim started...
 [--------------------------------------------------------------------------]  0%
           waiting: 0      / active: 1      / done: 0     
 ================================================================================
-
-^C
 ~~~
 
 ### View the effects on the dashboard
 
 Return to the Grafana dashboard. Now that we have a light load on the
-system, all the panels save "Errors per second" should have data. For
+system, all the panels with the exception of "Errors per second" should have data. For
 such a light load, we will not have any errors, so this is expected.
 
 Scan all the panels to get a sense of what a lightly-loaded system
@@ -413,31 +411,13 @@ immediately when you increase the load in the next steps.
 Now we'll put a medium load on the system, adding ten users each for
 services `s1` and `s2`:
 
-~~~
-$ tools/gatling.sh 10 ReadUserSim
-...
-$ tools/gatling.sh 10 ReadMusicSim
-...
-~~~
+Run/create scripts for medium loads `gatling-10-music.sh` and `gatling-10-user.sh`.
 
 Be sure to check that `KO=0` and `waiting: 0`, indicating successful
 starts.
 
 You should now have four Gatling commands running, for a total of 22
-users, 11 for each service.  To list all your active Gatling scripts,
-run `tools/list-gatling.sh`:
-
-~~~
-$ tools/list-gatling.sh 
-                Name  Users               Script
-    pedantic_wescoff     10        ReadMusicSim
-  reverent_zhukovsky     10         ReadUserSim
-     hopeful_jackson      1        ReadMusicSim
-    fervent_jennings      1         ReadUserSim
-~~~
-
-The names you see in the left column will differ from the
-above&mdash;they are randomly assigned by Docker.
+users, 11 for each service.  
 
 Before returning to the Grafana dashboard, make a prediction:  In
 which direction will each plot have changed with the increased load?
@@ -453,18 +433,7 @@ So far, we've been gentle on our service.  It should be able to handle
 only 22 users without any errors.  Let's give it a heavy load.
 
 Run two more Gatling jobs, each with 50 users.  Now
-you should have *six* jobs running, for a total of 122 users:
-
-~~~
-$ tools/list-gatling.sh 
-                Name  Users               Script
-         happy_mayer     50         ReadUserSim
-   serene_chatterjee     50        ReadMusicSim
-    pedantic_wescoff     10        ReadMusicSim
-  reverent_zhukovsky     10         ReadUserSim
-     hopeful_jackson      1        ReadMusicSim
-    fervent_jennings      1         ReadUserSim
-~~~
+you should have *six* jobs running, for a total of 122 users.
 
 Ask yourself: How big will the changes be to the panels on our
 dashboard?
@@ -500,9 +469,8 @@ case with dashboards: They highlight that a problem has begun
 (better still, that a problem is *about to begin*) but often do not let us
 diagnose exact causes.
 
-For the while, summarize/describe what happened and selectively
-hypothesize on
-potential causes/mechanisms.
+You will find it useful to record your observations so far and selectively
+hypothesize on potential causes/mechanisms.
 
 1. What happened to total requests and successful requests when errors
    began to occur?
@@ -561,8 +529,6 @@ but less flexible tool, consider the
 
 ## Next Steps
 
-TODO: verbiage and segue to the term project
-
-
 The insights provided by Grafana are useful but
 Grafana would be even more useful if your application can output tailored metrics. In the next guide, you will explore Prometheus to understand how it manages and surfaces the data collected and how an application can leverage Prometheus to enable monitoring.
+
