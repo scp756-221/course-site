@@ -516,4 +516,4 @@ In your PDF provide the following:
 
 2. Compare and contrast Kubernetes with Hadoop and Spark. What similarities do you see between them? What differences are there between them? **Limit your answer to 500 words.** (4 marks)
 
-3. Assume that you wish to run one of your programs from CMPT 732 (say, `wordcount.java` from Assignment 1) on a Kubernetes cluster. Describe in words the steps/materials required to have your program run on a Kubernetes cluster. (You do not need to do this... think through and describe what's required.) **Limit your answer to 500 words.** (3 marks)
+3. Assume that you wish to run a Java/Python/C/C++/R program of your choice on a Kubernetes cluster. Describe in words the steps/materials required to have your program run on a Kubernetes cluster. (You do not need to do this... think through and describe what's required.) **Limit your answer to 500 words.** (3 marks)
