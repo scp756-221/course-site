@@ -311,18 +311,20 @@ Each simulation runs in an infinite loop until it is stopped (`docker container 
 To start Gatling, create a script `gatling-1-music.sh` that contains the following:
 
 ~~~
-#!/usr/bin/evn bash
+#!/usr/bin/env bash
 docker container run --detach --rm \
   -v ${PWD}/gatling/results:/opt/gatling/results \
   -v ${PWD}/gatling:/opt/gatling/user-files \
   -v ${PWD}/gatling/target:/opt/gatling/target \
   -e CLUSTER_IP=`tools/getip.sh kubectl istio-system svc/istio-ingressgateway` \
   -e USERS=1 \
-  -e SIM_NAME=ReadMusicSim 
+  -e SIM_NAME=ReadMusicSim \
   --label gatling \
   ghcr.io/scp-2021-jan-cmpt-756/gatling:3.4.2 \
   -s proj756.ReadMusicSim
 ~~~
+
+(Note the use of the `--label` option; this is used by `tools/kill-gatling.sh` to quickly identify these containers.)
 
 Note the selection of ReadMusicSim is indicated via the `SIM_NAME` variable as well as the simulation name (`proj756.ReadMusicSim`).
 
@@ -490,7 +492,7 @@ hypothesize on potential causes/mechanisms.
 Once you have completed this guide, clean up all the running
 services.
 
-1. Delete all the Gatling jobs via the `tools/kill-gatling.sh` command
+1. Delete all the Gatling jobs using the `tools/kill-gatling.sh` script. (You may find it useful to study how it works using Docker's `label` feature.)
 
   ~~~
   $ tools/kill-gatling.sh 

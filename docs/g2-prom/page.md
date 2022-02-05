@@ -346,9 +346,9 @@ often used, such as [Datadog](https://www.datadoghq.com/),
 
 You have now seen how Grafana and Prometheus provide complementary capabilities for your application: the former to visualizing your system state and the latter to gather and store metrics to inform your system state. But however useful they are, you are still missing the forest for the tree because there is no place that surfaces the structure of the application: how do the various microservices call and rely upon each other.
 
-Within the scope of this sample application, you have been told that `s1` and `s2` both call
+Within the scope of this sample application, you are told that `s1` and `s2` both call
 `db`, which in turn calls Amazon DynamoDB. But none of this is
-represented in the dashboard. In a more likely scenario where there are both a myriad of dependent calls within a single microservice and layers of intervening calls in between any two given microservices of interest, this type of knowledge which is vital is neither provided nor discernible. Indeed, the inherent challenge of a microservice architecture is the proliferation/invocation of services to achieve a significant outcome.
+represented in the dashboard. In a real-world application, one is faced with two situations: 1) where one microservice is dependent on a number of other  microservices; 2) there are layers of intervening calls between any two given microservices of interest. This dependency/usage graph that we see is both vital but neither available nor readily available. Indeed, the inherent challenge of a microservice architecture is the proliferation of services to achieve any meaningful outcome.
 
-In the final guide, we will examine the service mesh `istio` (TODO: and also introduce Kiali that will explicitly represent our microservice architecture and display metrics
-within that context).
+In the final guide, we will examine the service mesh `istio` and its console `Kiali` that will explicitly represent our microservice architecture and surface metrics
+within that context.
