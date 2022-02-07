@@ -2,14 +2,13 @@
 
 The term project provides an opportunity for a small group to explore the technologies introduced to date. You are to apply and observe the principles of the course while gaining hands-on experience through building, scaling and observation of a working distributed application. This project for CMPT 756 requires a small team (5 members; exceptions subject to approval) working over the course of 7 weeks.
 
-The project comprises 6 stages:
+The project comprises 5 stages:
 
 1. Choose your technology platform. AWS EKS as introduced by this course is a reasonable choice but if you are interested in exploring alternate Kubernetes platform (e.g., Azure AKS, GCP EKS, etc), you may do so. Kubernetes provides a high degree of portability across the various clouds.
-2. Add an additional public microservice. The material presented in the assignments repo includes two public microservices ("music" and "user"); you need to add an additional service. This can be trivially a clone/derivative of the existing service ("playlist") or something that your team wish to explore (packaging a machine learning model).
-3. Run your application with a load and measure/observe its behaviour.
-4. Scale the load and application and report on your observations/learnings.
-5. Write up a report summarizing your findings.
-6. Walk through and describe your team, approach and application in a video recording.
+2. Implement three public micro-services. The material presented in the assignments repo already includes two public microservices ("music" and "user"); you only need to add an additional service. This can be trivially a clone/derivative of the existing service (e.g., "playlist") or something that your team wish to explore (e.g., packaging a machine learning model).
+3. Run your application with various loads and measure/observe its behaviour.
+4. Write up a report summarizing your findings.
+5. Record a video walking through and describing your team, approach and application.
 
 Through this project, you will connect the various ideas from the course together including:
 
@@ -22,8 +21,8 @@ Through this project, you will connect the various ideas from the course togethe
 
 Key dates:
 
-| Date | Offset | From Project Start | Note |
-|-|-|-|-|
+| Date | Offset |
+|-|-|
 | Jan 11, 2022 (Tue) | First day of course. |
 | Feb 15, 2022 (Tue) | Project team confirmed. |
 | Mar 12, 2022 (Sat) | Interim milestone |
@@ -33,45 +32,58 @@ Key dates:
 
 ## 0. Set up
 
-Organize your team and send an email to `cmpt756g100-help@sfu.ca` with the subject "[c756] [team-formation]". In the body of your message, 
-list the members of your team **using your short SFU id**. (As teams are created manually, your attention here will speed up the process greatly.)
+Organize yourself into a team as you see fit. To use CourSys' group feature, one member of a team creates the group and invites the other team members in.
 
-**Wait for an acknowledgement email from an instructor/TA before accepting the GitHub Education assignment (below) for this term project.**
+After you've formed your team, each member of the project team must navigate to [Github Education](https://classroom.github.com/a/xFDX11DX) to accept the "assignment". The first member of the team will then create and name the team. The repo from Github Education classroom is intentionally empty but provides full access to the teaching team of your team's work.
 
-As this is a group project, each member of the project team must navigate to [Github Education](https://classroom.github.com/a/xFDX11DX) to accept the "assignment". The first member of each team will also need to create and name the team. **Please name the repo using the name as assigned to you (e.g., team-n). This will keep the collation consistent.**
+While the project is graded as a whole, marks are assigned individually to each member according to documented contribution to the project. Therefore, document your contributions via appropriate means (e.g., commit comments, issues assignments, etc). Commit early and often!
 
-The repo from Github Education classroom is intentionally empty but will provide access for the teaching team to your team's work.
+## 1. Distributed System Focus
 
-Marks will be assigned individually according to documented contribution to the project. Therefore, document your contributions via appropriate means (e.g., commit comments, issues assignments, etc). Commit early and often!
-
-Practice what you've learn to date:
-1. use branches appropriately (perhaps to isolate each team member's contributions);
-1. issues to maintain a backlog of ideas/stories/tasks; and
-1. boards to manage your team's activities.
-
-## 1. Propose an application within some domain
-
-Because this course is focused on the distributed system aspects (as opposed to the AI/ML aspects) of a cloud application, your term 
+Because this course is focused on the distributed system aspects (as opposed to machine learning or other "AI" aspects) of a cloud application, your term 
 project will be similarly focused. To be clear, there is insufficient time to program any of the (albeit interesting) data science 
 techniques into your application. If you do choose to implement a wholly new microservices, take care to manage the scope of that. 
-(E.g., do not spend too much time training/tuning your model.) Continuing with the example above, 
-do not implement smart playlist using a cool ML technique from CMPT 7xx. These data processing/handling techniques are important but 
+Continuing with the example above, 
+do not implement smart playlist using a cool ML technique from CMPT 726. These techniques are important but, for the purpose of this course, 
 are only overlays for your application. (I will leave them to other courses and/or your future employers.)
 
-Within the constraints of the latter half of the term (~eight weeks), the application need/can not be too sophisticated.
 
-## 2. Implement your application using exercise material supplied to date
+## 2. Practice Agile:
 
-You are encouraged to reuse as much as you can of the material supplied to date within the course. 
+As you are working in a team environment and potentially in a distributed (maybe even timezone-wise) fashion, use the tools introduced to date including git and GitHub:
+
+1. Build a backlog of activities to plan and track the team's ideas and work
+2. Use a Kanban project ("GitHub project") to monitor your team's activities and progress.
+3. Branch and merge each team member's contributions
+
+This course did not cover CI or microservices in-depth but your team can explore these as background/interest dictate.
 
 
-### Technologies
-1. To be operated on a public cloud: AWS (personal account), Azure, GCP, or equivalent. 
-1. Within a managed Kubernetes cluster (EKS, AKS, GKE, or equivalent)
-1. Following a Microservices architecture
-1. Serving up a number of REST API
-1. Validated/tested/analysed with traffic load generated by Gatling.io
-1. Persisting data to DynamoDB
+## 2. Implement/Reuse Supplied Material 
+
+You are encouraged to reuse as much as you can of the material supplied to date within the course. You may also bring in other technologies/libraries with approval; when in doubt, ask first.
+
+Within the constraints of time (about eight weeks max), your application can not be too sophisticated. Keep this in mind!
+
+
+### Guides
+There are three additional guides that introduce additional material within the course repo. These guides are structured similar to assignment but have no submissions. This are resources for your team to use in building out your system.  
+
+1. [Guide 1: Grafana](https://scp756-221.github.io/course-site//#/g1-graf/page?embedded=true&hidegitlink=true)
+    Grafana as a dashboard for monitoring your system.
+2. [Guide 2: Prometheus](https://scp756-221.github.io/course-site//#/g2-prom/page?embedded=true&hidegitlink=true)
+    Promethesus as a metrics gathering tool for your system.
+3. [Guide 3: Service Mesh & istio](https://scp756-221.github.io/course-site//#/g3-mesh/page?embedded=true&hidegitlink=true)
+    istio and Kiali for visualizing and reasoning about your system.
+
+### Mandatory Elements
+
+Your application must:
+
+1. Run within a managed Kubernetes cluster in the public cloud (e.g., EKS, AKS, GKE, or equivalent)
+1. Follow a microservices architecture and serve up a number of REST APIs
+1. Persists its data to DynamoDB. You may use additional data stores (e.g, AWS RDS, Kafka, etc) if so inclined but this is not required.
+1. Create traffic load using Gatling. 
 
 The choices above were made in consideration of the technology/pattern's prevalence, track-record in the market-place and ease of 
 use/learning. This in turn translates into community know-how, reliability and easy/available tooling. **Your team should spend no 
@@ -79,119 +91,119 @@ more than half your time/effort development.**
 However, if you have prior experience implementing REST API using an alternate language/library, you can certainly do so.
 
 
-The remaining half of your time is devoted to operating, measurement and analyzing the produced system. Note that this does not mean testing and debugging! You will need the time to work with and analyze your system and (most importantly) write it up.
+## 3. Run Your Application and Document its Behaviour.
 
-## 3. Run your application with a load and document its behaviour.
+Guide 2 uses [Gatling](https://gatling.io/) as a tool for creating a synthetic load on the application. Visit [Gatling Academy](https://gatling.io/academy/) and sign-up. Work through [Module 1](https://academy.gatling.io/courses/Run-your-first-tests-with-Gatling) to learn how Gatling works and how to build/use a simulation. (Gatling uses the term _simulation_ to refer to a load that you program.)
+The guide introduces a containerized Gatling container that is suitable for reuse. 
 
+You must run your application with up to a load of thousands of users (e.g, >1000 users) and hundreds of thousands requests (e.g., >100,00 requests/second).
 
-Guide 9 Gatling. In the interim, visit [Gatling Academy](https://gatling.io/academy/) and sign-up. Work through [Module 1](https://academy.gatling.io/courses/Run-your-first-tests-with-Gatling) to learn how Gatling works and how to build/use a simulation.
-You should use the containerized Gatling setup inside the exercise to run your simulation. But it will be more convenient to develop your simulations using a local install of Gatling. (Recall that you have previously installed Gatling as part of Exercise 1.)
-
-Build a _coverage simulation_ that exercises your entire API. This first simulation need to exercise every public API call that you've implemented. Consider this the equivalent of every API target that was implemented in `api.mak`: `cuser`, `uuser`, `duser`, `apilogin`, `apilogoff`, `cmusic`, `rmusic`, & `dmusic`. Note that private APIs (e.g., `db`'s  `read`, `write`, `update`, `delete`) are not needed in this coverage simulation. Run, save and submit a run of this simulation.
-
-Create a second _load simulation_ (based on the first) that simulates a number of users interacting with your system. For your load simulation, use the _closed model_. This is not as accurate for web applications (compared to the open model) but it is easy to understand. Start with [`constantConcurrentUsers(50)`](https://gatling.io/docs/current/general/simulation_setup/#closed-model) for a run of at least 30 minutes. (You may wish to experiment with `rampUsersPerSec` in the _open model_ but that is not required for the term project.) Again, run, save and submit the test run.
-
-## 4. Write up a report summarizing your findings.
+## 4. Write a Report summarizing your findings.
 
 Your team's final report is a coherent story that summarizes the observations and learnings
-through the process of developing and analyzing your distributed system. The term project's
-goal (and by extension, the course's purpose) is to give your team the basis--a distributed system together with
-an amount of tooling--to explore and practice the various ideas:
+through the process of developing and analyzing your distributed system.
 
 1. Working in a team environment following the scrum methodology
-2. Using a distributed source control system to collaborate
+2. Using a distributed source control system for collaboration
 3. Developing for the cloud environment
-5. Developing microservices following a highly decoupled design
-6. Observing a system using a variety of tools
-7. Exploring failure modes of a system
+5. Developing microservices using a highly decoupled design
+6. Observing a system at load using a variety of tools
+7. Exploring the failure modes of a system
 8. Exploring various approaches to remediate such failures
 
 Use this outline to guide your thinking and presentation. Remember, the reports is
 to summarize your observations and learnings. Do not merely drop in diagrams and
-charts from your work; narrate and explain your line of thinking.
+charts; narrate and explain your line of thinking.
 
+Keep your report to 20 pages max. 
 
-There is no limit on the length of the report but it need to cover minimally:
+It needs to cover minimally:
 
-1. Problem domain: What concrete problem is your application solving?
+1. Reflection on the scrum methodology: 
+    i. What did you observe from applying the scrum methodology? 
+    ii. What worked well? What didn’t? What surprised you? 
+    iii. If you have other/professional experience with scrum, how did your team performed in comparison to past teams?
+2. Observations of the system while:
+    i. operating at a stable load;
+    ii. responding to increasing loads;
+    iii. scaling (either manual or automatic) to the changing load;
 
-1. Reflection on the scrum methodology: What did you observe from applying and using the scrum methodology? What worked well? What didn’t? What surprised you? If you have professional experience with scrum, how did your team performed in comparison to past teams?
+Optional topics that you may include:
+1. Exploration of service mesh features:
+    i. Retry/timeout
+    ii. Circuit breaker
+    iii. Rolling deployment
+    iv. Blue/green deployment
+2. Other ideas of your own. 
 
-1. Results of testing with Gatling: How did the coverage simulation help with your development? Where and when did you used it and what was the outcome for the application? The development process? The team?
+## 5. Record a Video guide of the system.
 
-1. How did the load simulation help with testing of your completed system? What types of failures did you simulate and what were the outcomes? How did your application respond to various disturbances to the network?
-
-
-## 5. Record a short video guide of the system.
-
-The intent of the video is to provide insight into the practical aspects of your
-system and the team that built it. I will also evaluate each team member's contribution
-to the project via their participation in this meeting. Note that this is *in addition*
+The video is to provide insight into the practical aspects of your
+system and the team that built it. The video is also the occasion to demonstrate each team member's contribution
+to the project via their participation. Note that this is *in addition*
 to the material inside Github (e.g., issues & commits).
 
-Note that this recording is *not* to be an elaborate production. Please do not spend time
-on music, elaborate visuals, or post-production work. It suffices to make a recording
-with Zoom while walking thru a script.
+Note that this recording is *not* to be an elaborate production. **Do not spend time
+on music, elaborate visuals, or post-production work.** It suffices to make a recording
+in Zoom while walking thru a script. 
 
-Your script should contain minimally the following. (Please have each team member
+Your script **must** contain minimally the following. (Please have each team member
 take on at least one item.)
 
-1. A tour of the code inside Github. Narrate the structure of the repo and point out how
-your team used the material/structure from the exercise to arrive at the repo for the team.
+1. A tour of the team's Github repo. Narrate the structure and  content of the repo.
+
 2. A walk thru of a couple of issues/branches/PR to illustrate the collaboration between
 team members.
+
 3. A deployment (e.g., a ``make -f k8s.mak provision`` or equivalent) of your system into an empty cluster. You may want to start up
-a cluster prior to the meeting/recording to reduce waiting within the recording. Take
-care that screen sharing is setup and that the terminal window is legible.
-4. A run of the coverage simulation on your system. This is a short run which can complete
-over the course of the recording. Present any findings here.
+a cluster prior to the meeting/recording to reduce waiting within the recording. Take care that screen sharing is setup and that the terminal window is legible.
+
 5. A run of the load simulation on your system with no disturbance. As this run is long, you do not need to
 have it complete. About 5 minutes of run-time will suffice during which a narrator
 can point out any observations. If you have summary findings (e.g., Grafana summary reports)
 to present, collect those from a separate run.
+
 6. A second run of the load simulation on your system during which you will disturb
-the system via any of the means I've outlined previously (e.g., injecting a delay, simulating a
+the system via any of the means I've outlined previously (e.g., increasing the load, injecting a delay, simulating a
 machine failure, inserting a circuit breaker, etc). Include your follow-up actions to either
 remediate or to understand the behaviour of the system.
 
-You can of course add additional items. The purpose of the video is to showcase the various aspects of the team's work. Assume that the audience viewing your video does not know the specifics of this course; they are encountering your project for the first time. However, you can assume that they are sufficiently familiar/technical with the basic components (e.g., GitHub, cloud, REST API, micro-services). After viewing your video, the audience would know where to look in your repo for relevant components, the run-time environment of the system (in a cloud of your choosing), the approach the team took to testing/observing the behaviour of the system at load and the behaviour that you discovered.
+The purpose of the video is to showcase the various aspects of the team's work. Assume that the audience viewing your video does not know the specifics of this course; they are encountering your project for the first time. However, you can assume that they are sufficiently familiar/technical with the basic components (e.g., GitHub, cloud, REST API, micro-services). After viewing your video, the audience should know where to look in your repo for relevant components, the run-time environment of the system, the approach the team took to developing/testing/observing the behaviour of the system at load and the behaviour that you discovered.
 
-Note that your [SFU Zoom account](https://sfu.zoom.us/) now includes a Record feature to record your meetings. (Turn off your laptop's camera but record the screen sharing and your narration.) **Every team member** must participate (including speaking) in this meeting.
-
-You should aim for a meeting/recording of about 20-30 minutes in length.
 
 ## Submission
 
-Throughout the eight weeks of the project, your team will be making steady progress and making interim submissions. Your team will be graded on two milestones and the final submission. **Marks will be assigned individually for the final submission.**
+Throughout the remainer of the term, your team will be making steady progress. Your team will be graded on the one interim milestone (5%) and the final submission (25%). **Marks will be assigned individually for the final submission.**
 
 | Milestone | Deliverable(s)/Submission |
 | - | - |
-| Milestone 1 | [report draft 1](https://canvas.sfu.ca/courses/59479/assignments/576403) |
-| Milestone 2 | [report draft 2](https://canvas.sfu.ca/courses/59479/assignments/576404) |
-| Project Completion | [final report (individual submission)](https://canvas.sfu.ca/courses/59479/assignments/576656); code (automatic); [Zoom recording (team submission)](https://canvas.sfu.ca/courses/59479/assignments/576406) |
-
-### Create a PDF
-
-Make a copy of the [submission template](https://docs.google.com/document/d/1xYzX3sta87WntJHNqHvbpE5lGvgblkvtiWblX4wRXJw/edit?usp=sharing)(GDoc format).
-
-As you will work on this project in a team, you will find it less confusing to maintain one team copy of the submission report. (E.g., One team member makes the copy and share this copy with the other team members.) However, each team member will be making individual submission for the term project. I will be using any and all available material (e.g., the commit history, issue history, etc) at hand to determine that the work was spread even across the team. In the ideal situation where this is the case, all members of the team will receive the same score for the submission. If this is not the case, offsetting awards/penalty will be made to reflect the effort of specific team members.  
-
-Generate a PDF of this document.
-
-You must name your PDF (or ZIP) according to the pattern: **SFU-student-no**`-tprj-submission.pdf` (or **SFU-student-no**`-tprj-submission.zip`) where **SFU-student-no** is the  numeric id (typically 30...) assigned to you upon entering SFU.
-
-**A penalty will be assessed for failure to name your submission appropriately.**
+| Interim Milestone | [interim report](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+tprjm/) |
+| Project Completion | [final report & project guide video](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+tprj/); code (automatic) |
 
 
-1. Milestone 1 is a progress check that your team is on track. Submit a draft of the report (PDF) with section 1 (Problem Statement), 2 (Github Repo Guide) and 3 (Reflection on Development) roughed in. These section need to be sufficiently complete to be useful for the reader (though not finalized). (5%)
+(The code for your application is automatically maintained and collected by GitHub Education.)
 
-2. Milestone 2 is a completeness check: Your application will be functional and stable. Submit another draft of the report (PDF) with section 4 (Analysis) _outlining_ the approach and preliminary results of your Gatling tests. (5%)
+### Report
 
-3. The final project submission will comprise three components:
-  a. the code (automatically collected via  Github Education classroom repo);
+Create a document in a cloud of your choice (Google Doc, OneDrive, etc). As you will work on this project in a team, you will find 
+it less confusing to maintain one team copy of the submission report. (E.g., One team member owns the document and shares it 
+with the other team members.) I will be using 
+any and all available material (e.g., commit history, issue history, etc) at hand to determine that the work was spread evenly across 
+the team. In the ideal situation where this is the case, all members of the team should receive the same score for the submission.
+If this is not the case, offsetting awards/penalty will be made to reflect the effort of specific team members.  
 
-  b. the final report with all sections completed and two Gatling simulation runs (zip);
-  (Gather the PDF and HTMLs and compressed into one zip file for submission.)
+#### Interim Milestone
 
-  c. a Zoom recording (at most 30 minutes) (URL submission).
-  (You can upload the video to your personal YouTube account as an **unlisted** video. This will ensure the video remains private except for whoever you share its URL.)
+The Interim Milestone is a progress check that your team is on track. Submit a draft of your report with at least a skeletal outline and whatever content has been produced. (5%)
+
+#### Project Completion
+
+At Project Completion, submit the final copy of your report with all sections fully fleshed out. 
+
+### Video
+
+Your [SFU Zoom account](https://sfu.zoom.us/) now includes a Record feature. **Every team member must participate (including speaking) in this meeting.** 
+
+Download the recording and post it to YouTube as [an unlisted video](https://support.google.com/youtube/answer/157177). (This will ensure the video remains private except for whoever has its URL.)
+
+A good video runs between 20-30 minutes.

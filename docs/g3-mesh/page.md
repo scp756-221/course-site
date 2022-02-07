@@ -188,14 +188,13 @@ Reset the display interval to "Last 1m" and the refresh interval to
 "Every&nbsp;30s". Press the blue "Cycle" button for an immediate
 refresh of the graph of the services.
 
-## Experiment with Blue/Green Deployment 
+## Experiment with Canary Deployment 
 
-You will now execute a [blue/green deployment](https://www.redhat.com/en/topics/devops/what-is-blue-green-deployment). (Follow the link to read more about it.)
-This is technique whereby you deploy an alternate ("blue") version of a service concurrently with the primary ("green") version.
-(In our case, the green version is "V1" while the blue version if "V2".)
-We will keep the V1 running but use `istio` to distribute 10% of the
-traffic to V2. Doing so allows you to compare the two versions of the service. You will use the `istio` `VirtualService`'s `DestinationRule`
-feature to perform this split.
+You will now execute a [canary deployment](https://martinfowler.com/bliki/CanaryRelease.html). (Follow the link to read more about this.)
+This is technique whereby you deploy an update (V2) of a service to a subset of your user with the goal of evaluating its impact on the system.
+With `istio` as a service mesh, we can keep V1 running but shift 10% of the
+traffic to V2. Doing so allows you to assess the impact of the new version on the system. (You will use the `istio` `VirtualService`'s `DestinationRule`
+feature to perform this split.)
 
 ### The S2 Deployment, Version 2
 
@@ -279,7 +278,7 @@ V2 Deployment (square) and explore its details in the right
 sidebar. Set the display interval to "Last 5m" or "Last 10m" to get a
 more reliable estimate of the proportion of error responses.
 
-Using a Blue/Green deployment strategy has saved us: we discovered a bug in the new version
+Using a canary deployment strategy has saved us: we discovered a bug in the new version
 but at the cost of 5% disruption to our traffic.  (If we had done a complete
 switchover to the new version, half the traffic would have suffered.)
 
