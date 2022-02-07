@@ -24,7 +24,7 @@ Key dates:
 | Date | Offset |
 |-|-|
 | Jan 11, 2022 (Tue) | First day of course. |
-| Feb 15, 2022 (Tue) | Project team confirmed. |
+| Feb 19, 2022 (Sat) | Project team confirmed. |
 | Mar 12, 2022 (Sat) | Interim milestone |
 | Apr 8, 2022 (Fri) | Last day of course. |
 | Apr 12, 2022 (Tue) | Project completion; Final submission. |
@@ -32,7 +32,7 @@ Key dates:
 
 ## 0. Set up
 
-Organize yourself into a team as you see fit. To use CourSys' group feature, one member of a team creates the group and invites the other team members in.
+Organize yourself into a team as you see fit. To use CourSys' group feature, one member of a team creates the group and invites the other team members in. Your team must comprise 4-5 team members. (Exceptions is allowed but *must be approved*.)
 
 After you've formed your team, each member of the project team must navigate to [Github Education](https://classroom.github.com/a/xFDX11DX) to accept the "assignment". The first member of the team will then create and name the team. The repo from Github Education classroom is intentionally empty but provides full access to the teaching team of your team's work.
 
@@ -158,14 +158,14 @@ team members.
 3. A deployment (e.g., a ``make -f k8s.mak provision`` or equivalent) of your system into an empty cluster. You may want to start up
 a cluster prior to the meeting/recording to reduce waiting within the recording. Take care that screen sharing is setup and that the terminal window is legible.
 
-5. A run of the load simulation on your system with no disturbance. As this run is long, you do not need to
+4. A run of the load simulation on your system with no disturbance. As this run is long, you do not need to
 have it complete. About 5 minutes of run-time will suffice during which a narrator
 can point out any observations. If you have summary findings (e.g., Grafana summary reports)
 to present, collect those from a separate run.
 
-6. A second run of the load simulation on your system during which you will disturb
-the system via any of the means I've outlined previously (e.g., increasing the load, injecting a delay, simulating a
-machine failure, inserting a circuit breaker, etc). Include your follow-up actions to either
+5. A second run of the load simulation on your system during which there is some disturbance
+to the system: a change in load, a network fault (delays), a
+machine failure, introduction of a circuit breaker, etc. Include your follow-up actions to either
 remediate or to understand the behaviour of the system.
 
 The purpose of the video is to showcase the various aspects of the team's work. Assume that the audience viewing your video does not know the specifics of this course; they are encountering your project for the first time. However, you can assume that they are sufficiently familiar/technical with the basic components (e.g., GitHub, cloud, REST API, micro-services). After viewing your video, the audience should know where to look in your repo for relevant components, the run-time environment of the system, the approach the team took to developing/testing/observing the behaviour of the system at load and the behaviour that you discovered.
@@ -223,6 +223,7 @@ Your team's project submission (report, video & code) will be graded on:
 3. System Implementation & Operation (report & code)
    Organization of artifacts
    Maintainability of artifacts
+   Appropriate use of technologies
    Learnings
 
 4. Technology (code)
