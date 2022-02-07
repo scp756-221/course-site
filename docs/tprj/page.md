@@ -207,3 +207,24 @@ Your [SFU Zoom account](https://sfu.zoom.us/) now includes a Record feature. **E
 Download the recording and post it to YouTube as [an unlisted video](https://support.google.com/youtube/answer/157177). (This will ensure the video remains private except for whoever has its URL.)
 
 A good video runs between 20-30 minutes.
+
+## Grading
+
+Your team's project submission (report, video & code) will be graded on:
+
+1. Presentation (report & video)
+   Clarity and format of material
+   Participation of entire team
+
+2. Application of agile principles/scrum methodology (video & code)
+   Evidence of application
+   Learnings from the process
+
+3. System Implementation & Operation (report & code)
+   Organization of artifacts
+   Maintainability of artifacts
+   Learnings
+
+4. Technology (code)
+   Use of taught technologies
+   Inclusion of new/novel technologies and/or techniques
