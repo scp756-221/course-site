@@ -19,9 +19,9 @@ Through this project, you will connect the various ideas from the course togethe
 5. Test coverage and load testing of your system.
 
 
-Key dates:
+Key Dates:
 
-| Date | Offset |
+| Date | Event |
 |-|-|
 | Jan 11, 2022 (Tue) | First day of course. |
 | Feb 19, 2022 (Sat) | Project team confirmed. |
