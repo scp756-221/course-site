@@ -51,7 +51,7 @@ For your repository-level project, create 2 stages: In-Process and Done.
 
 For your organizational project, create 3 stages: To-Do, In-Process and Done.
 
-Practice flowing your 7 issues across these 2 projects. Observe an issue can be in different stages in different projects.
+Practice flowing your 3 issues across these 2 projects. Observe an issue can be in different stages in different projects.
 
 When you are satisfied, leave one issue in each stage of each board.
 
