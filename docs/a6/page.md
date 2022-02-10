@@ -50,15 +50,20 @@ sufficiently specialized that they only accelerate some net
 designs. The steps in this assignment ask you to compare the degree of
 speedup for several net configurations.
 
+### Submission Document
+
+This assignment differs from prior assignment in that you will be collecting many data points. To assist in organizing this, use this [submission template](https://docs.google.com/document/d/1ThMnCbFrnjF5SVCCEGRPBgsK4wlFTzThbfN7NjlwxgQ/edit?usp=sharing). Make a copy of this and fill it in as you work through the assignment. This assignment refers to your copy of this template as the _submission document_.  
+
+
 ### Controlling costs
 
 In this assignment, you will use some of the more expensive EC2 instances, costing US$&nbsp;0.526&nbsp;/&nbsp;hr and more. You can minimize your expenses by planning the assignment. Review the whole assignment completely before executing any commands, so that you know the assignment's structure and steps before you start.
 
 ## Manage EC2 instances using the command line
 
-You will manage your EC2 instances using a set of command-line tools, predefined in the `profiles` subdirectory and described in `profiles/README-aws.md`. These tools simplify working with EC2 instances, avoiding the busywork required by the EC2 Web console.
+You will manage your EC2 instances using the  set of command-line tools introduced previously in Assignment 4. A copy is also included in the `profiles` subdirectory and described in `profiles/README-aws.md`. These tools simplify working with EC2 instances, avoiding the busywork required by the EC2 Web console.
 
-The commands require a small amount of one-time setup, modifying file `profiles/ec2.mak` to define the following variables:
+If you haven't previously configured these, do so now. The copy included require a small amount of one-time setup inside `profiles/ec2.mak` to define the following variables:
 
   * `SGI_WFH`
   * `KEY`
@@ -445,7 +450,8 @@ memory bandwidth utlization, GPU memory allocation---but recall that for allocat
 measures will fluctuate; simply record a value that seems close to the
 median for the training phases of the run.  We are interested in big-picture differences, not subtle variations.
 
-Record the values in the top row of Table&nbsp;1 of the BLERG document URL and they need to make a copy or what?
+Record the values in the top row of Table&nbsp;1 of your [submission document](#submission-document).
+
 Pay attention to the rounding and recording requirements.  We are looing for high-level patterns, which can be obscured by recording too many figures.
 
 The first time you run a net on the GPU, it has to be downloaded, another tedious process.
@@ -461,7 +467,7 @@ naive net.  Given how long it takes to train this net on a CPU, it is OK to base
 
 Note: Training this net on the CPU will require tens of minutes, by far the longest run of this assignment.
 
-Add your data to the bottom row of Table&nbsp;1 of the BLERG document
+Add your data to the bottom row of Table&nbsp;1 of your [submission document](#submission-document).
 
 ## Preliminary analysis: What seems to be going on?
 
@@ -497,14 +503,14 @@ ever be very good---but it will make the net bigger.
 **Stop. Think. What effects do you expect to see as the net size
   increases? Which factor is likely to be limit performance for the CPU?  For the GPU?**
 
-Run the tests on the CPU and GPU, using the widths specified in Table&nbsp;2 of the BLERG document.  Enter your results in the x86 columns of that table.  **You do not need to do any throwaway runs for different widths.  You only need to do a throwaway run for the first-ever time you run NaiveNet on the GPU.**
+Run the tests on the CPU and GPU, using the widths specified in Table&nbsp;2 of your [submission document](#submission-document).  Enter your results in the x86 columns of that table.  **You do not need to do any throwaway runs for different widths.  You only need to do a throwaway run for the first-ever time you run NaiveNet on the GPU.**
 
 To save time, run these tests for a single training epoch and record the epoch time and allocation and utilization statistics for that run.
 
 In addition to the above, find a single width above 5,000 that 
 is too large for the GPU&mdash;it fails before running a single epoch.  You do not have to find a tight upper bound, just a value too large to be allocated in the GPU.
 
-Enter the unsuccessful width in the x86 column of Table&nbsp;3 of the BLERG document.
+Enter the unsuccessful width in the x86 column of Table&nbsp;3 of your [submission document](#submission-document).
 
 Once you have all the data, you can terminate this instance, as you will not be using it again. See "Managing your costs" above for how to terminate an instance.  The 
 "Terminating instances" section of `profiles/README-aws.md` describes additional methods.
@@ -611,10 +617,6 @@ Our intent here is to give some exposure to the kinds of issues that arise when 
 
 ## Submission
 
-Make a copy of the [submission template](https://docs.google.com/document/d/1ThMnCbFrnjF5SVCCEGRPBgsK4wlFTzThbfN7NjlwxgQ/edit?usp=sharing).
-
-Fill in the two tables and answer the questions.
-
-Generate a PDF of this for your submission.
+Generate a PDF of your filled-in [submission document](#submission-document).
 
 Submit the file to [Assignment 6](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a6/) in CourSys.
