@@ -52,7 +52,7 @@ speedup for several net configurations.
 
 ### Submission Document
 
-This assignment differs from prior assignment in that you will be collecting many data points. To assist in organizing this, use this [submission template](https://docs.google.com/document/d/1ThMnCbFrnjF5SVCCEGRPBgsK4wlFTzThbfN7NjlwxgQ/edit?usp=sharing). Make a copy of this and fill it in as you work through the assignment. This assignment refers to your copy of this template as the _submission document_.  
+This assignment differs from prior assignment in that you will be collecting many data points. To assist in organizing this, use this [submission template](https://docs.google.com/document/d/1ThMnCbFrnjF5SVCCEGRPBgsK4wlFTzThbfN7NjlwxgQ/edit?usp=sharing). Make a copy of it and fill it in as you work through the assignment. This assignment refers to your copy of this template as the _submission document_.  
 
 
 ### Controlling costs
@@ -61,9 +61,9 @@ In this assignment, you will use some of the more expensive EC2 instances, costi
 
 ## Manage EC2 instances using the command line
 
-You will manage your EC2 instances using the  set of command-line tools introduced previously in Assignment 4. A copy is also included in the `profiles` subdirectory and described in `profiles/README-aws.md`. These tools simplify working with EC2 instances, avoiding the busywork required by the EC2 Web console.
+You will manage your EC2 instances using the  set of command-line tools introduced previously in Assignment 3. A copy is also included in the `profiles` subdirectory and described in `profiles/README-aws.md`. These tools simplify working with EC2 instances, avoiding the busywork required by the EC2 Web console.
 
-If you haven't previously configured these, do so now. The copy included require a small amount of one-time setup inside `profiles/ec2.mak` to define the following variables:
+If you haven't previously used/configured these, do so now. The copy included require a small amount of one-time setup inside `profiles/ec2.mak` to define the following variables:
 
   * `SGI_WFH`
   * `KEY`
@@ -82,7 +82,7 @@ The commands must be enabled every time you start a new instance of the tools co
 Once you have set up the EC2 commands, start a GPU-enabled EC2 instance
 by running the following commands:
 
-**NOTE: This assignment requires that the gpu_small package is configured with the default:
+NOTE: This assignment requires that the `gpu_small` package is configured with the default:
 
 ```sh
 # Cheaper GPU with Python-based AMI
@@ -93,7 +93,6 @@ SSH_USER=$(AMAZON_USER)
 ```
 
 If you have changed these (possibly in Assignment 3), please restore your package as above.
-**
 
 ~~~bash
 /home/k8s# epkg gpu_small
@@ -122,7 +121,7 @@ is a remote EC2 instance.
 
 ## The architecture of the machine
 
-The `g4dn.xlarge` instance created by the `gpu_small` reques features a CPU with the following parameters:
+The `g4dn.xlarge` instance created by the `gpu_small` package features a CPU with the following parameters:
 
 * x86_64 Intel Cascade Lake CPU
 * 4 vCPUs on 2 Cores
@@ -450,7 +449,7 @@ memory bandwidth utlization, GPU memory allocation---but recall that for allocat
 measures will fluctuate; simply record a value that seems close to the
 median for the training phases of the run.  We are interested in big-picture differences, not subtle variations.
 
-Record the values in the top row of Table&nbsp;1 of your [submission document](#submission-document).
+Record the values in the top rows of Table&nbsp;1 of your [submission document](#submission-document).
 
 Pay attention to the rounding and recording requirements.  We are looing for high-level patterns, which can be obscured by recording too many figures.
 
@@ -467,7 +466,7 @@ naive net.  Given how long it takes to train this net on a CPU, it is OK to base
 
 Note: Training this net on the CPU will require tens of minutes, by far the longest run of this assignment.
 
-Add your data to the bottom row of Table&nbsp;1 of your [submission document](#submission-document).
+Add your data to the bottom rows of Table&nbsp;1 of your [submission document](#submission-document).
 
 ## Preliminary analysis: What seems to be going on?
 
@@ -611,9 +610,12 @@ families&mdash;the skills developed in this assignment.
 
 ## Analysis
 
-Our analysis in this assignment is not intended to be definitive or detailed. This assignment is an initial exploration to determine what factors *might* be worth further investigation and what architectural choices might not apply. We are not looking for regression analyses but simply for general guidelines. In practice, results such as these would guide further, more detailed work, including multiple runs rather than the single runs we made.
+Answer the questions in your [submission document](#submission-document) using the data gathered.
 
-Our intent here is to give some exposure to the kinds of issues that arise when matching an application to the machine architectures offered by a given cloud provider.
+
+Your analysis in this assignment is not intended to be definitive or detailed. This assignment is an initial exploration to determine what factors *might* be worth further investigation and what architectural choices might not apply. We are not looking for regression analyses but simply for general guidelines. In practice, results such as these would guide further, more detailed work, including multiple runs rather than the single runs we made.
+
+The intent here is to showcase the issues that arise when matching an application to the architectures available in a typical cloud provider.
 
 ## Submission
 
