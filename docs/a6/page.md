@@ -188,12 +188,11 @@ idle state, the program with the highest CPU utilization for the most
 recent 2&nbsp;s, listed in the top row of the leaderboard, was `containerd`, consuming a
 miniscule 0.7% of CPU and 0.1% of available memory.
 
-The listed CPU percentage is for a single core. Given the two cores
-in these machines, maximum utilization is 200%. In a few
+The listed CPU percentage is for a single core. For an AWS `g4dn.xlarge` with two cores, maximum utilization is 200%. In a few
 moments, you will see that training a PyTorch neural net can consume
 nearly the full utilization of the machine.
 
-**Only watch and record the topmost line of the `top` display. Ignore the
+**Only watch and record the topmost occurrences of python in `top`'s display. Ignore the
 other lines.**
 
 Press `q` to exit `top`.
@@ -223,7 +222,7 @@ Press `^C` to exit `nividia-smi dmon`.
 
 ## Set up the environment
 
-To run the sample machine learning application, you must first activate the [`conda`
+To run the sample machine learning application on the AWS x86 EC2 instance, you must first activate the [`conda`
 environment](https://docs.conda.io/en/latest/) containing the required libraries:
 
 ~~~bash
@@ -456,7 +455,7 @@ Pay attention to the rounding and recording requirements.  We are looing for hig
 The first time you run a net on the GPU, it has to be downloaded, another tedious process.
 You can watch the GPU memory slowly increase in the `nvidia-smi` window.  When the epoch actually begins, the memory required will stabilize and the GPU utilization will rise.
 
-Note that when training on the CPU, the most important values are the ones returned by `top` (host CPU utilization, host memory allocation), while when training on the GPU, the most important values are the ones returned by `nvidia-smi` (GPU utilization, GPU memory bandwidth utilization, GPU memory allocation).
+Note that when training on the CPU, the only values of relevance are the ones returned by `top` (host CPU utilization, host memory allocation). When training on the GPU, you will collect two sets of values (from `top` and `nvidia-smi`) with the more important values being those returned by the latter (GPU utilization, GPU memory bandwidth utilization, GPU memory allocation).
 
 ## Step 2: Train the sophisticated net
 
@@ -716,4 +715,4 @@ Mon Feb 14 09:34:30 2022
 +-----------------------------------------------------------------------------+
 ~~~
 
-In summary, expect results collected from CSIL to differ sufficiently from those on AWS though the behaviour within each will be comparable. 
+In summary, expect results collected from CSIL to differ sufficiently from those on AWS though the trend manifested by each will be comparable. 
