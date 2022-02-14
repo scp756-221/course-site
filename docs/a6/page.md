@@ -516,6 +516,8 @@ Once you have all the data, you can terminate this instance, as you will not be 
 
 ## Step 4: Compare with a different architecture
 
+(This step is only required if you are using AWS' GPU instances.)
+
 As a final step, we will gather timings from an instance running a completely different CPU architecture. Up to now, you have been using an "Intel x86" processor. You will now switch to an "ARM" processor or more accurately an [AArch64](https://en.wikipedia.org/wiki/AArch64) processor.
 
 ### Amazon's Graviton ARM processor and `g5g.2xlarge` instance
@@ -622,3 +624,96 @@ The intent here is to showcase the issues that arise when matching an applicatio
 Generate a PDF of your filled-in [submission document](#submission-document).
 
 Submit the file to [Assignment 6](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a6/) in CourSys.
+
+
+## Using CSIL/MPCS lab
+
+For students unable to access AWS' GPU instances, the CSIL/MPCS labs are available. However, the capacity is limited (36 workstations in total) and you must also schedule the GPU access (as it is a device useable by only one workstation user at a time).
+
+To access the MPCS lab, refer to the guide [here](https://www.sfu.ca/computing/about/support/csil/mpcs-workstations.html). Additional details for the lab's equipment is [here](https://www.sfu.ca/computing/about/support/csil/hardware.html).
+
+Note the table at the bottom of the first link above. You can use only the first group (`blu9402-XNN.csil.sfu.ca`) for this assignment. Pick three workstations across the four blocks and create aliases inside your `~/.ssh/config` to work with them. For each chosen workstation, create an entry using the appropriate template and substituting as required (look for `XNN` and `your-sfu-id`):
+
+~~~
+# SECB 1010: blu9402-XNN.csil.sfu.ca
+Host s10XNN
+HostKeyAlias s10XNN
+HostName blu9402u-XNN.csil.sfu.ca
+Port 24
+User your-sfu-id
+~~~
+
+You can now access your chosen workstations directly using the short alias name:
+
+```sh
+$ ssh s10XNN
+```
+
+The assignment repo has been updated with a new script `mpcs-user-check.sh` to check for other users on the workstation. You must run this script immediately after you log-in to determine whether there are other students working on the assignment. If there are, switch to another of your chosen workstations. 
+
+The output for when you are the exclusive user of the workstation is similar to:
+~~~bash
+# This assumes you have previously cloned http://github.com/overcoil/gpu-assignment
+# If you cloned prior to Feb 14, remember to refresh using git pull to pick up the new script
+your-SFU-id@blu9402u-XNN:~$ gpu-assignment/mpcs-user-check.sh
+Checking for other ssh users. You should see only 3 processes with 2 featuring your id.
+1070 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+20348 sshd: your-SFU-id [priv]
+20511 sshd: your-SFU-id@pts/0 
+Checking for xRDP users. There should be nothing following this message.
+your-SFU-id@blu9402u-XNN:~$ 
+~~~
+
+The CSIL workstations are more powerful than AWS' `g4dn.xlarge` instances:
+
+* x86_64 Intel Coffee Lake CPU
+* 8 vCPUs on 8 Cores
+* 32 GiB of main memory
+
+In detail:
+
+~~~bash
+your-SFU-id@blu9402u-XNN:~$ lscpu
+Architecture:                    x86_64
+...
+CPU(s):                          8
+On-line CPU(s) list:             0-7
+Thread(s) per core:              1
+Core(s) per socket:              8
+Socket(s):                       1
+...
+L1d cache:                       256 KiB
+L1i cache:                       256 KiB
+L2 cache:                        2 MiB
+L3 cache:                        12 MiB
+...
+~~~
+
+
+CSIL's `blu9402` workstations have a comparable GPU (nVidia GeForce RTX 2080) to AWS' T4 though the RTX 2080 has only 8 GiB of GPU memory (vs the T4's 16 GiB).  
+
+~~~bash
+your-SFU-id@blu9402u-XNN:~$ nvidia-smi
+Mon Feb 14 09:34:30 2022       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 510.47.03    Driver Version: 510.47.03    CUDA Version: 11.6     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  NVIDIA GeForce ...  On   | 00000000:01:00.0 Off |                  N/A |
+| 18%   26C    P8    12W / 215W |     62MiB /  8192MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A      1501      G   /usr/lib/xorg/Xorg                 61MiB |
++-----------------------------------------------------------------------------+
+~~~
+
+In summary, expect results collected from CSIL to differ sufficiently from those on AWS though the behaviour within each will be comparable. 
