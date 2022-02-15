@@ -28,7 +28,7 @@ The assignment considers the case of collaboration between several developers. B
 
 Our scenario for this exercise is that you and Other Dev have been assigned to add a new feature to the music service, an "original artist" field.  The current service just stores a single artist for every song title but many songs have been performed by more than one artist. This feature adds a new field to the song record to store the artist who performed the song previously. This design is rudimentary and far from adequate (we'd need to able to store an arbitrary number of previous artists) but it is sufficient for this assignment.
 
-The music API currently has three calls:
+The music microservice API currently has three calls:
 
 * `/` [HTTP POST]: Create a record with an artist name and song title.
 * `/<music_id>` [HTTP GET]: Read the record for the song identified by `<music_id>`, returning its artist name and song title.
@@ -55,13 +55,13 @@ We provide these changes in three files prefixed `a7_self_*`.  Your task is to r
 
 ~~~bash
 /home/k8s # cd ci/v1.1
-/home/k8s/ci/v1.1 # mv a7_self_music.py music.py
-/home/k8s/ci/v1.1 # mv a7_self_test_music.py test_music.py
+/home/k8s/ci/v1.1 # cp a7_music.py music.py
+/home/k8s/ci/v1.1 # cp a7_test_music.py test_music.py
 /home/k8s/ci/v1.1 # cd ../../s2/v1.1
-/home/k8s/s2/v1.1 # mv a7_self_app.py app.py
+/home/k8s/s2/v1.1 # cp a7_app.py app.py
 ~~~
 
-We encourage you to review the changes made to these files, using `diff`, `git diff`, GitHub Desktop, and the version comparison feature of Visual Studio Code. 
+You may review the changes made to the three files (`ci/v1.1/music.py`, `ci/v1.1/test_music.py`, & `s2/v1.1/app.py`), using whichever tool you prefer: `diff`, `git diff`, GitHub Desktop, or the version comparison feature of Visual Studio Code. 
 
 ### Previewing the CI tests locally
 
@@ -70,6 +70,7 @@ We'll get into the details of CI tests later in this assignment but for now we'l
 You run the CI tests locally via the `runci-local.sh` script:
 
 ~~~bash
+/home/k8s/s2/v1.1# cd ../../ci
 /home/k8s/ci# ./runci-local.sh v1.1
 ... extensive output ...
 ~~~
@@ -166,10 +167,10 @@ Now create the branch and make Other Dev's changes there.
 Now repeat the commands you performed in Part&nbsp;1, only this time using the `a7_other_dev_*` files, which contain Other Dev's updates:
 
 ~~~bash
-/home/k8s/ci/v1.1 # mv a7_other_dev_music.py music.py
-/home/k8s/ci/v1.1 # mv a7_other_dev_test_music.py test_music.py
+/home/k8s/ci/v1.1 # cp a7_other_dev_music.py music.py
+/home/k8s/ci/v1.1 # cp a7_other_dev_test_music.py test_music.py
 /home/k8s/ci/v1.1 # cd ../../s2/v1.1
-/home/k8s/s2/v1.1 # mv a7_other_dev_app.py app.py
+/home/k8s/s2/v1.1 # cp a7_other_dev_app.py app.py
 ~~~
 
 Once you've made these changes, repeat the steps that completed Part&nbsp;1:
