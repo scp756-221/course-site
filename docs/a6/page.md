@@ -370,10 +370,20 @@ on a CPU. Here are some tips to keep the process manageable:
 2. The `--resume` option will restart a saved net: The latest most
    accurate version of the two net types can be restarted by running
    with the `--resume` option.  This allows you to pause a session via
-   Control-C, sign off the machine, and resume later. Because the checkpoints are stored
-   in your home directory and the Blusson Hall machines are identical,
-   you can even resume the training on a different machine and still get
-   consistent results.
+   Control-C, sign off the machine, and resume later. But do be careful
+   with resumption. Because EC2 instances are ephemeral, you will lose 
+   the contents of the machine (including a saved checkpoints) whenever you 
+   terminate your instance. By default,
+   this is the behaviour of `erun`/`epkg`/`armrun`/`armpkg`. 
+   (Look for the `--instance-initiated-shutdown-behavior terminate` flag
+   during the creation of your EC2 instance; refer to the AWS documentation
+   if you wish to adjust this.)
+   
+   If you are using a CSIL/MPCS lab machine, your checkpoints are persisted
+   to your home directory and will remain until removed. 
+   (And since the SECB 1010's machines are identical,
+   you can resume the training on a different machine and still get
+   consistent results.)
 
 With this background out of the way, you are ready to start the assignment.
 
@@ -627,11 +637,11 @@ Submit the file to [Assignment 6](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a6/
 
 ## Using CSIL/MPCS lab
 
-For students unable to access AWS' GPU instances, the CSIL/MPCS labs are available. However, the capacity is limited (36 workstations in total) and you must also schedule the GPU access (as it is a device useable by only one workstation user at a time).
+For students unable to access AWS' GPU instances, the CSIL/MPCS labs are available. However, the capacity is limited (36 workstations in total) and you must also schedule the GPU access (as the GPU is a device useable by only one workstation user at a time).
 
 To access the MPCS lab, refer to the guide [here](https://www.sfu.ca/computing/about/support/csil/mpcs-workstations.html). Additional details for the lab's equipment is [here](https://www.sfu.ca/computing/about/support/csil/hardware.html).
 
-Note the table at the bottom of the first link above. You can use only the first group (`blu9402-XNN.csil.sfu.ca`) for this assignment. Pick three workstations across the four blocks and create aliases inside your `~/.ssh/config` to work with them. For each chosen workstation, create an entry using the appropriate template and substituting as required (look for `XNN` and `your-sfu-id`):
+Note the table at the bottom of the first link above. You can use only the first group (`blu9402-XNN.csil.sfu.ca`) for this assignment. Pick three workstations across the four blocks and create aliases inside your `~/.ssh/config` to work with them. For each chosen workstation, create an entry using the template below and substituting as required (look for `XNN` and `your-sfu-id`):
 
 ~~~
 # SECB 1010: blu9402-XNN.csil.sfu.ca
