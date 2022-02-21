@@ -400,6 +400,8 @@ of the host CPU and the GPU in smaller windows:
 
 Summarizing the five measures you will observe in this assignment:
 
+### CPU Training
+
 Host CPU utilization (via `top`---range 0--200%)
 : The proportion of time the 2 CPU cores are in active use.
 
@@ -408,7 +410,9 @@ Host memory allocation (via `top`---range 0--100%, as a proportion of 16&nbsp;Gi
 memory, so the maximum is 100% . For machines whose main memory is
 16&nbsp;GiB, each 10% represents 1.6&nbsp;GiB.
 
-GPU process utilization (via `nvidia-smi dmon`---range 0--100%)
+### GPU Training
+
+GPU processor utilization (via `nvidia-smi dmon`---range 0--100%)
 : The proportion of time at least one thread is running on the
 GPU. Informally, you can use this as a measure of "how much of the GPU
 is in use".
@@ -421,13 +425,13 @@ GPU memory allocation (via `nvidia-smi dmon`---range 3--15100&nbsp;MiB)
 3&nbsp;MiB at all times, so that is the minimal baseline before you
 train any nets.
 
-The two limit types affect the training differently:
+The latter two limit types affect the training differently:
 
 * **Allocation** determines whether a model can be *trained at
   all*.  If a model is too large for the available memory, it cannot be
   trained, while if the model fits, the training can run.
 
-  When recording allocations, we're only concerned with whether the
+  When recording allocation, we're only concerned with whether the
   value is close to the total available.  Simply record whether the value
   is above or below 90%.
 
