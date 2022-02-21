@@ -192,8 +192,8 @@ The listed CPU percentage is for a single core. For an AWS `g4dn.xlarge` with tw
 moments, you will see that training a PyTorch neural net can consume
 nearly the full utilization of the machine.
 
-**Only watch and record the topmost occurrences of python in `top`'s display. Ignore the
-other lines.**
+**Only watch and record the topmost occurrence of python in `top`'s display. Ignore the
+other lines (including child python processes).**
 
 Press `q` to exit `top`.
 
