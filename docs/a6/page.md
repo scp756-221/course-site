@@ -427,6 +427,11 @@ train any nets.
 
 The latter two limit types affect the training differently:
 
+* **Utilization** determines the *rate of training*. When a net is
+  large enough to approach the maximum utilization for any single
+  resource (in this case, the GPU's memory bandwidth), that resource will limit the training rate for any larger
+  nets.
+
 * **Allocation** determines whether a model can be *trained at
   all*.  If a model is too large for the available memory, it cannot be
   trained, while if the model fits, the training can run.
@@ -434,11 +439,6 @@ The latter two limit types affect the training differently:
   When recording allocation, we're only concerned with whether the
   value is close to the total available.  Simply record whether the value
   is above or below 90%.
-
-* **Utilization** determines the *rate of training*. When a net is
-  large enough to approach the maximum utilization for any single
-  resource, that resource will limit the training rate for any larger
-  nets.
 
 ## Step 1: Train the naive net
 
