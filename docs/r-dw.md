@@ -13,4 +13,4 @@
 
 ## Your Turn
 
-   Take 30 minutes to take [Quiz 10](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+r10/) for this reading. 
+   Take 30 minutes for [Quiz 10](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+q10/). 

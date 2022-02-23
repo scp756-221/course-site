@@ -46,4 +46,4 @@ The (calendar) time required to deploy a change into production and offer it as 
 
 ## Your Turn
 
-   Take 30 minutes to take [Quiz 7](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+r7/) for this reading. 
+   Take 30 minutes for [Quiz 7](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+q7/). 

@@ -1,4 +1,4 @@
-## Reading 8
+## Reading 9
 1. [Consistency Tradeoffs in Modern Distributed Database System Design](http://www.cs.umd.edu/~abadi/papers/abadi-pacelc.pdf)
 
 ## Overview
@@ -45,4 +45,4 @@ Abadi summarizes this broader tradeoff by the acronym PACELC, pronounced “pass
 
 ## Your Turn
 
-   Take 30 minutes to take [Quiz 8](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+r8/) for this reading. 
+   Take 30 minutes for [Quiz 9](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+q8/). 
