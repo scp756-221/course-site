@@ -10,9 +10,9 @@ This assignment demonstrates the combined use of adjacent but related tools/prac
 * **Development platforms**, such as GitHub, which provide a central site to merge changes from several developers; and
 * **Continuous integration (CI)**, which reduces the risk that merged changes introduce defects.
 
-This list is incomplete&mdash;each of these tools supports additional use cases and outcomes, while other equivalent tools may be used to achieve the same goals&mdash;but this assignment introduces represenative example for each.  
+This list is incomplete&mdash;each tool supports additional use cases and outcomes beyond that showcased in the assignment, while comparable tools exist to achieve the same goal(s)&mdash;but this assignment introduces representative example for each.  
 
-The now common practice of Continuous Integration helps a team to achieve a number of goals:
+The common practice of Continuous Integration (see also [Reading 9](https://scp756-221.github.io/course-site//#/r9)) helps a team to achieve a number of goals:
 
 * validate the program conforms to some level of performance/correcteness;
 * maintain compliance to style/formatting requirements;
@@ -20,13 +20,13 @@ The now common practice of Continuous Integration helps a team to achieve a numb
 
 By scrutinizing all code commits via several different technologies, CI provides high confidence that the code will be defect-free when it is deployed.
 
-Rather than ask you to do the programming for this assignment, we are providing most of the code and asking you to apply the updates. We want you to focus on the steps in this process and how the tools work together rather than losing yourself in Python code. You will get a chance to do a little coding at the very end of the assignment. 
+Rather than requiring you to do *all* the programming for this assignment, we are providing most of the code. You will be responsible for applying the updates. We want you to focus on the steps of the process and how the tools work together rather than losing yourself in Python code. You will get a chance to do a little coding at the very end of the assignment. 
 
-The assignment considers the case of collaboration between several developers. But unlike Assignment 5 where you involved other students, you will complete this assignment individually. That is, you will take on both roles: yourself and the other developer (named "Other Dev").
+The assignment considers the case of collaboration between several developers. But unlike Assignment 5 which involved other students, you will complete this assignment individually. That is, you will take on both roles: yourself and the other developer (named "Other Dev").
 
 ### The scenario
 
-Our scenario for this exercise is that you and Other Dev have been assigned to add a new feature to the music service, an "original artist" field.  The current service just stores a single artist for every song title but many songs have been performed by more than one artist. This feature adds a new field to the song record to store the artist who performed the song previously. This design is rudimentary and far from adequate (we'd need to able to store an arbitrary number of previous artists) but it is sufficient for this assignment.
+Our scenario for this exercise is that you and Other Dev have been assigned to add a new feature to the music service, an "original artist" field.  The current service only stores a single artist for every song but many songs have been performed by more than one artist. This new feature adds a new field to the song record to store the artist who performed the song previously. This design is rudimentary and far from adequate (e.g., we'd need to able to store an arbitrary number of previous artists) but it is sufficient for this assignment.
 
 The music microservice API currently has three calls:
 
@@ -51,17 +51,25 @@ The first part is to make "your" change: add the two API calls. This requires ex
 2. Clients that call the API: `ci/v1.1/music.py` is a library providing a simpler interface to the music API, representing it as a Python object whose member functions correspond to API calls.
 3. Tests: `ci/v1.1/test_music.py` tests the music API, calling it via `s2/v1.1/music.py`.
 
-We provide these changes in three files prefixed `a7_self_*`.  Your task is to replace the existing three files with these. In the tools container command line, execute:
+We have provided 2 additional versions of these files. To summarize:
+
+Original Source | Your Change | "Other Dev"'s Change |
+:- | :- | :- |
+`s2/v1.1/app.py` | `s2/v1.1/a7_app.py` | `s2/v1.1/a7_other_dev_app.py`|
+`ci/v1.1/music.py` | `ci/v1.1/a7_music.py` | `ci/v1.1/a7_other_dev_music.py`|
+`ci/v1.1/test_music.py` | `ci/v1.1/a7_test_music.py` | `ci/v1.1/a7_other_dev_test_music.py` |
+
+Your task is to replace the existing files (column 1) with those from "Your Change" (column 2). In the tools container command line, execute:
 
 ~~~bash
-/home/k8s # cd ci/v1.1
+/home/k8s # cd s2/v1.1
+/home/k8s/s2/v1.1 # cp a7_app.py app.py
+/home/k8s/ci/v1.1 # cd ../../ci/v1.1
 /home/k8s/ci/v1.1 # cp a7_music.py music.py
 /home/k8s/ci/v1.1 # cp a7_test_music.py test_music.py
-/home/k8s/ci/v1.1 # cd ../../s2/v1.1
-/home/k8s/s2/v1.1 # cp a7_app.py app.py
 ~~~
 
-You may review the changes made to the three files (`ci/v1.1/music.py`, `ci/v1.1/test_music.py`, & `s2/v1.1/app.py`), using whichever tool you prefer: `diff`, `git diff`, GitHub Desktop, or the version comparison feature of Visual Studio Code. 
+This is a good time to review the changes made to the three files using whichever tool you prefer: `diff`, `git diff`, GitHub Desktop, or the version comparison feature of Visual Studio Code. Examine the code to determine what has been added and/or modified. This will be part of your submission.
 
 ### Previewing the CI tests locally
 
@@ -70,7 +78,7 @@ We'll get into the details of CI tests later in this assignment but for now we'l
 You run the CI tests locally via the `runci-local.sh` script:
 
 ~~~bash
-/home/k8s/s2/v1.1# cd ../../ci
+/home/k8s/ci/v1.1# cd ..
 /home/k8s/ci# ./runci-local.sh v1.1
 ... extensive output ...
 ~~~
@@ -98,7 +106,7 @@ Highlighting some key parts:
 
 ![Test output, highlighting pytest output and server logs](aci-test-output-annotated.png)
 
-The test output is bracketed by summary output from the pytest framework, listing the number of files found with a `test_` prefix, the total tests found in those files, and a breadcrumb trail comprising one dot for every test run.
+The test output is bracketed by summary output from the [pytest](https://docs.pytest.org/en/6.2.x/goodpractices.html#test-discovery) framework, listing the number of files found with a `test_` prefix, the total tests found in those files, and a breadcrumb trail comprising one dot for every test run.
 
 The middle test output should look familiar: logs from the `cmpt756s1` and `cmpt756db` services, which you saw in earlier assignments.
 
@@ -106,7 +114,7 @@ If any tests had failed, we'd get a detailed report of the failure.
 
 ### Running the CI tests on GitHub
 
-In this case, every test passed, so we can proceed to commit the updates and push them to GitHub. You can do this any way you prefer, using command-line Git, GitHub Desktop, or Visual Studio Code.  We'll show how to do it using the command line.  Recall that Git push operations are performed from your **host OS's** command line, not the tools container:
+In this case, every test passed, so we can proceed to commit the updates and push them to GitHub. You can do this any way you prefer&mdash;using command-line Git, GitHub Desktop, or Visual Studio Code.  We'll show  the command line here below.  Recall that Git push operations are performed from your **host OS's** command line, not the tools container:
 
 ~~~bash
 c756-exer $ git add s2/v1.1/app.py
@@ -115,15 +123,15 @@ c756-exer $ git commit -m 'Add *_orig_artist API calls'
 c756-exer $ git push origin
 ~~~
 
-Pushing commits to GitHub kicks off the CI tests for any files that were updated.  Our push modified files in `s2/v1.1`, which will initiate its corresponding CI test, `.github/workflows/ci-system-v1.1.yaml`.
+Pushing commits to GitHub triggers any CI test set up for the updated files.  Our push modified files in `s2/v1.1`, which will initiate its corresponding CI test, [`.github/workflows/ci-system-v1.1.yaml`](https://github.com/scp756-221/c756-exer/blob/be16e6861cf3567f8f554b262e80cc3b7c8c56b4/.github/workflows/ci-system-v1.1.yaml#L8). (Note this link points to the template copy of the assignment repo and not your own repo. You can navigate to the comparable file in your repo if so desired.)
 
 In your browser, open your repository in GitHub, using the URL `https://github.com/REGID/c756-exer`, where `REGID` is your GitHub userid. On that page, click on the `Actions` item in the top row menu, taking you to the "All workflows" page.
 
-Locate the row titled, "Add *_orig_artist API calls" (or whatever subject line you gave the commit). It should be at or near the top of the list.
+Locate the row titled, "Add *_orig_artist API calls" (or whatever subject line you gave the commit) inside the large table. It should be at or near the top of the list.
 
 To the left of the row should be one of three icons:
 
-* A pulsing orange circle:  The test is running.
+* A pulsing orange circle:  The test is still running.
 * A red X: The test failed.
 * A green checkmark: The test succeeded.
 
@@ -134,7 +142,7 @@ Wait until the test has completed successfully and read the detailed test output
 3. Click on the header labelled, `Run CI test`, opening up the (long) output from running the test.
 4. Scroll down the output to find the test output highlighted from your local run, marked by `=======` bars.
 
-Given that this test succeeded, you don't really need to read its output, but this skill will be useful later when a test fails.
+You may be disinclined to read the output as this test succeeded. But practice doing so as this will be useful for when a test does fail.
 
 ## Part 2:  Add Other Dev's changes
 
@@ -143,16 +151,36 @@ You've made your changes and successfully pushed them to the central repository.
 
 ### Roll the repository back to before your commit
 
-We start with one step that might seem odd: We are going to "time travel back" in your local repository to before you made your last changes.  This is where Other Dev would have started--without your changes.
+We start with one step that might superficially seem odd: you will "time travel" to before you made your last changes. This is crucial because it is where Other Dev would have started--without your changes. Do not skip this step.
 
-We achieve this rollback by jumping to the commit _before_ our last change, denoted by `HEAD~`. (The expresssion `HEAD~` above is known as tree-ish. Refer to this [post](https://stackoverflow.com/questions/4044368/what-does-tree-ish-mean-in-git) for details.)
+We achieve this "time travel"/rollback by jumping to the commit _before_ our last change, denoted by `HEAD~`. (The expresssion `HEAD~` above is known as tree-ish. Refer to this [post](https://stackoverflow.com/questions/4044368/what-does-tree-ish-mean-in-git) for details.)
 
 ~~~bash
 /home/k8s/ci/v1.1 # git checkout HEAD~
 ~~~
 
 
-If you do an `ls`, note the files are as they were before your changes. For example, there is once again the file `a7_music.py`. As well `music.py` is the same as before.
+If you examine your files, you will find they are as they were before your changes. For example, `music.py` no longer has your implementation. (The prefix `>` indicates content present in the second file (`a7_music.py`) but not the first (`music.py`).)
+
+~~~bash
+/home/k8s/ci/v1.1 # diff music.py a7_music.py
+54a55,77
+>     def write_orig_artist(self, m_id, orig_artist):
+>         """Write the original artist performing a song.
+...
+>         return r.status_code
+> 
+83a107,134
+>     def read_orig_artist(self, m_id):
+>         """Read the orginal artist of a song.
+> 
+>         Parameters
+...
+>         item = r.json()
+>         return r.status_code, item['orig_artist']
+> 
+~~~
+
 
 ### Start a fresh branch named `other_dev`
 
@@ -167,11 +195,14 @@ Now create the branch and make Other Dev's changes there.
 Now repeat the commands you performed in Part&nbsp;1, only this time using the `a7_other_dev_*` files, which contain Other Dev's updates:
 
 ~~~bash
+/home/k8s # cd s2/v1.1
+/home/k8s/s2/v1.1 # cp a7_other_dev_app.py app.py
+/home/k8s/s2/v1.1 # cd ../../ci/v1.1
 /home/k8s/ci/v1.1 # cp a7_other_dev_music.py music.py
 /home/k8s/ci/v1.1 # cp a7_other_dev_test_music.py test_music.py
-/home/k8s/ci/v1.1 # cd ../../s2/v1.1
-/home/k8s/s2/v1.1 # cp a7_other_dev_app.py app.py
 ~~~
+
+Again, examine the code to determine what has been added and/or modified in this second half of the feature. This will be part of your submission.
 
 Once you've made these changes, repeat the steps that completed Part&nbsp;1:
 
@@ -197,7 +228,7 @@ At this point, let's pause and consider all the components invoked during a loca
               * [via HTTP] `cmpt756db` (Python) Database interface layer
                 * [via HTTP] `DynamoDB` (Java) Data storage layer
 
-That's 12 components, written in 4 languages, organized in 9 layers (each indentation level) for our simple application. Real-world cloud-based microservice architectures will have far more components than this. How do we know which ones to change when we want to update the system?
+That's 12 components, written in 4 languages, organized in 9 layers (indentation level) for our simple application. Real-world cloud-based microservice architectures will have far more components than this. How do we know which ones to change when we want to update the system?
 
 The layered design is key. For any given change, you need to
 
@@ -248,15 +279,13 @@ Now repeat the familiar sequence:
 2. Commit and push the updates
 3. Review the new CI output on GitHub.
 
-What happened?
+Are you satisfied with the work?
 
-### The answer
-
-Seriously, don't just read ahead&mdash;think about this! Is there anything we might have missed?
+Seriously, don't just read ahead&mdash;think about this! Is there anything that might have been missed between the two implementations? (Now's a good time to review the code changes you observed earlier!)
 
 ## Part 4: Write a test that calls both
 
-Although we have verified that each developer's changes work *individually*, we haven't tested whether they work *together*.  We haven't run an *integration test*.
+Although we have verified that each developer's changes work *individually*, we haven't tested whether they work *together*.  We haven't run an *integration test* which brings the two halves of the features together.
 
 For such a test, we'll need a song with at least two previous artists.  (Why?)  Leonard Cohen's "Hallelujah" is an excellent candidate, a song so frequently covered that both [USA Today](https://www.usatoday.com/story/life/entertainthis/2016/11/11/best-covers-leonard-cohens-hallelujah/93636800/) and [NME](https://www.nme.com/blogs/nme-blogs/leonard-cohen-hallelujah-covers-1846415) have published guides to the best versions.  We'll go with an all-Canadian roster for our test: k.d. lang, Rufus Wainwright, and Cohen himself.
 And this time, we're asking you to write the test. To get you started, here's the skeleton to add to `ci/v1.1/test_music.py`:
@@ -308,30 +337,43 @@ Code does not conform---CI fails.
 
 Your code must completely pass the Flake8 check to be accepted.  Correct any style errors and rerun the test.
 
-When your code passes the style check and runs the test, what happens?
+When your code passes the style check and runs the test, what happened?
 
 ## Part 5: Fix the defect
 
-Your test failed.  The updates work individually but not together.  When you take this to your manager, they reply, "Sorry, I was exhausted from helping to care for our newborn baby and I gave inconsistent instructions to you and Other Dev.  I told Other Dev to use the field name `OrigArtist` but I gave you the field name `orig_artist`. The one I told Other Dev is correct.  Change your code to use `OrigArtist` as a field name instead of `orig_artist`."
 
-Make the required changes to `ci/v1./1music.py` and `s2/v1.1/app.py`.  Do not change your test in `test_music.py`. It's fine. Although we commonly say, "the test 'failed'", in fact it *succceeded* when it detected an error.
+Your test (should have) failed. If your newly added test did not failed, review the original code changes and revise your test code accordingly. **Be sure to screen-capture this failure for submission.**
 
-Fix the code, run the tests locally, and once they all pass, commit the changes and push them to GitHub.
+The features worked individually but not together.  It turned out there was a disagreement between you and Other Dev on the field name. You had used `OrigArtist` while Other Dev had used `orig_artist`. Change your code to use `OrigArtist` as a field name instead of `orig_artist`."
 
-The assignment is done when the **GitHub page** shows a green check for the latest run of this test.
+Make the required changes to `ci/v1.1/music.py` and `s2/v1.1/app.py`.  Do not change your test in `test_music.py`. It's fine. Although we commonly say, "the test 'failed'", in fact it *succceeded* when it detected an error.
+
+Once you've corrected the code, run the tests locally, and once they all pass, commit the changes and push them to GitHub.
+
+The assignment is done when the **GitHub page** shows a green check for the latest run of this test. **As before,screen-capture this success for submission.**
 
 ## Epilogue:  Is this a realistic scenario?
 
-This scenario and our simple application are contrived, simplified to keep your workload manageable. Could this kind of inconsistency arise in practice?  In fact, this case, where team members used inconsistent naming conventions, is extremely common. The much higher level of detail in actual systems makes the problem more likely, not less.  Organizations adopt many techniques to reduce the incidence of such inconsistencies but cases inevitably slip through.
+This scenario and our simple application are contrived, simplified to keep your workload manageable. Could this kind of inconsistency arise in practice? This is a categorical yes. The amount of details in actual systems makes problems more likely, not less.  Organizations adopt many techniques to reduce the incidence of such inconsistencies but cases inevitably slip through.
 
-Test. Check. Test again. Check again.
+Test. Check. Use the system wherever possible.
 
-Continuous integration tools are an important part of this process. They don't solve the problem completely but they increase our success rate.  And that's the best we can hope for.
+Continuous integration tools are a basic tool of this process. They don't solve the problem by themselves but careful, considered and deliberate application of them keeps the team/product/system on track. 
 
 ## Submission
 
-Create a PDF file and include the following:
+Create a PDF file and answer questions 1-4. There's no need for an essay for either question 1 or 2. But your answer should be grammatically correct with proper spelling and punctuation. Keep each answer short and to the point: 75 words max.
 
-1. TODO
+1. Summarize what the first half of the original artist feature (as supplied to you in `ci/v1.1/a7_music.py`) does. Do not merely copy/paste function signatures; rather, outline the added/changed functionalities and highlight important implementation details. 
 
-Submit the file to [Assignment 7](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a7/) in CourSys.
+2. Summarize what the other dev's half of the original artist feature (as supplied to you in `ci/v1.1/a7_other_dev_music.py`) does. Do not merely copy/paste function signatures; rather, outline the added/changed functionalities and highlight important implementation details. 
+
+3. Screen-shot from GitHub Action showing the failed run of your `test_full_cycle` after integration. You must show clearly the failure as bounded by `==== FAILURES ====` and the fail/pass counts.
+
+4. Screen-shot from GitHub Action showing a successful run of your `test_full_cycle` after correcting your code. You must show clearly the full run bounded by the `==== test session starts ====` and the summary of 3 successful tests.
+
+5. Your implementation of `test_full_cycle`.
+
+Submit the PDF as the first component `answer.pdf` to [Assignment 7](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+a7/) in CourSys.
+
+Submit your implementation of `test_full_cycle` as the second component.
