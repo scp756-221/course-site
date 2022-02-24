@@ -6,12 +6,18 @@ The paper: Consistency Tradeoffs in Modern Distributed Database System Design: C
 
 This paper by Daniel Abadi responds to a dozen years worth of writing and implementing databases after Eric Brewer gave his famous talk on the relation between consistency, availability, and partitions, which is generally (if misleadingly) referred to as the “CAP theorem”.
 
-For our purposes, the implications of Brewer’s talk are straightforward: Given that network partitions will unavoidably occur, a system that stores the same mutable data item in multiple places must be designed to emphasize either consistency or availability in the event of a partition.
+For this course, the implications of Brewer’s talk are straightforward: since network partitions will unavoidably occur (e.g., we are running in the public Internet), a system that stores the same mutable data item in multiple places must be designed to prefer either consistency or availability whenever a network partition occurs.
 
-Abadi’s article extends this idea with an essential point: Although network partitions do occur, they are rare and most of the time a system will be connected. In this far more common case, the design must trade off consistency against latency. Abadi combines the two conditions, partitioned and connected, via a single acronym, PACELC.
+Abadi’s article adds back the obvious case: Although network partitions do occur, they are rare and most of the time the system will be connected. In this (thankfully) common case, there is still a trade off between consistency against latency. Abadi combines the two conditions, partitioned and connected, via a single acronym, PACELC: 
+
+> if there is a
+> partition (P), how does the system trade off availability and
+> consistency (A and C); else (E), when the system is running
+> normally in the absence of partitions, how does the system
+> trade off latency (L) and consistency (C)?
 
 ## Part 1: pp. 37–40, (not including “Tradeoff Examples”)
-Abadi frames his article in terms of distributed databases (DDBS) but the principles at work apply to any system of distributed persistent storage (including key-value stores) or systems built up on multiple datastores/databases. Although his introduction emphasize database-oriented concepts such as ACID, this isn’t important to how we will use his ideas in this class. The examples he gives are not important either. You may recognize Cassandra from your coursework as it remains commercially relevant; the Dynamo that is mentioned here is the predecessor of Amazon's DynamoDB that you have been using in the exercises and term project.
+Abadi frames his article in terms of distributed databases (DDBS) but the principles at work apply to any system with distributed persistent storage (including key-value stores) or systems built up on multiple datastores/databases. Although his introduction emphasize database-oriented concepts such as ACID, this isn’t important to how we will use his ideas in this class. The examples he gives are not important either. You may recognize Cassandra from your coursework as it remains commercially relevant; the Dynamo that is mentioned here is the predecessor of Amazon's DynamoDB that you are have been using in the assignments and term project.
 
 ### CAP is for failures
 The main point of this section is that designers make tradeoffs for both the partitioned case (“CAP”) and the far more common connected case. Abadi wants to highlight the tradeoffs in the connected case.
@@ -41,8 +47,8 @@ Key conclusion:
 > operations. (p. 41)
 
 ### PACELC
-Abadi summarizes this broader tradeoff by the acronym PACELC, pronounced “pass-elk”. This acronym and the principle it summarizes will be important in the course. The details of the specific systems are not as important but as to how he analyzes them.
+Abadi summarizes this broader tradeoff by the acronym PACELC, pronounced “pass-elk”. This acronym and the principle it summarizes is a key learning for this course. The details of the specific systems are not as important but as to how he analyzes them.
 
 ## Your Turn
 
-   Take 30 minutes for [Quiz 9](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+q8/). 
+   Take 30 minutes for [Quiz 9](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+q9/). 
