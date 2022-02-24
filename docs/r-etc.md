@@ -8,6 +8,8 @@
 
 4. [Service Mesh - The New Battleground For The Platform Wars](https://www.forbes.com/sites/janakirammsv/2020/09/20/service-meshthe-new-battleground-for-the-platform-wars/?sh=3c1689523021)
 
+5. [Cloud computing storms a bastion of the enterprise: the data warehouse](https://siliconangle.com/2020/11/15/cloud-computing-storms-bastion-enterprise-data-warehouse/)
+
 
 ## Key points
 
@@ -24,6 +26,9 @@ Article 4 provides a broader picture around [istio](https://istio.io/). Adding a
 * canary deployment
 
 [Guide 3](https://scp756-221.github.io/course-site//#/g3-mesh/page?embedded=true&hidegitlink=true) walks you through a few of these.
+
+Article 5 dates from November 2020 which is only 16 months ago. The debate between data warehouse vs data lake has already evolved towards a so-called data lakehouse ("an extended data lake") that provides data warehousing capability. See [Dremio](https://www.dremio.com/platform/cloud/), [Databrick's Delta Lake](https://databricks.com/product/delta-lake-on-databricks), [Tabular](https://tabular.io/), and likely others.
+
 
 ## Parts to skim
 
