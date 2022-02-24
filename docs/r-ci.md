@@ -23,4 +23,4 @@ This is a long article but it is a timely guide as you embark on your term proje
 
 ## Your Turn
 
-   Take 30 minutes for [Quiz 8](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+q8/). 
+   Take 30 minutes for [Quiz 8](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+q9/). 

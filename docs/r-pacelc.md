@@ -51,4 +51,4 @@ Abadi summarizes this broader tradeoff by the acronym PACELC, pronounced “pass
 
 ## Your Turn
 
-   Take 30 minutes for [Quiz 9](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+q9/). 
+   Take 30 minutes for [Quiz 9](https://coursys.sfu.ca/2022sp-cmpt-756-g1/+q8/). 
