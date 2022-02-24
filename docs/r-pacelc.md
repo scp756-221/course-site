@@ -6,9 +6,9 @@ The paper: Consistency Tradeoffs in Modern Distributed Database System Design: C
 
 This paper by Daniel Abadi responds to a dozen years worth of writing and implementing databases after Eric Brewer gave his famous talk on the relation between consistency, availability, and partitions, which is generally (if misleadingly) referred to as the “CAP theorem”.
 
-For this course, the implications of Brewer’s talk are straightforward: since network partitions will unavoidably occur (e.g., we are running in the public Internet), a system that stores the same mutable data item in multiple places must be designed to prefer either consistency or availability whenever a network partition occurs.
+For this course, the implications of Brewer’s talk are straightforward: since network partitions will unavoidably occur (e.g., we are running in the public Internet), a system that stores the same mutable data item in multiple places must be designed to prefer either consistency or availability during a network partition.
 
-Abadi’s article adds back the obvious case: Although network partitions do occur, they are rare and most of the time the system will be connected. In this (thankfully) common case, there is still a trade off between consistency against latency. Abadi combines the two conditions, partitioned and connected, via a single acronym, PACELC: 
+Abadi’s article can be seen as working out the scenarios. That is, although network partitions do occur, they are rare and most of the time the system will be connected. In the(thankfully) common case, there is still a trade off, but between consistency and latency. Abadi combines the two scenarios, partitioned and connected, via the single acronym, PACELC: 
 
 > if there is a
 > partition (P), how does the system trade off availability and
