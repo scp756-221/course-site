@@ -3,7 +3,7 @@
 
 ## Recording
 
-* Tuesday [Zoom recording (COMING)]() (passcode C756221)
+* Tuesday [Zoom recording (1:44:55)](https://sfu.zoom.us/rec/share/uoIvUWHEz8hOqs8ZTb0_q3YpiREYs3V5I1sGkA7fgjuebjUcj9J3dNkwTuGBRq28.pf2m0CKDq6thVW_8?startTime=1646151802000) (passcode C756221)
 * Friday [Zoom recording (COMING)]() (passcode C756221)
 
 ## Presented Slides  
