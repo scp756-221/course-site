@@ -25,7 +25,7 @@ Key Dates:
 |-|-|
 | Jan 11, 2022 (Tue) | First day of course. |
 | Feb 19, 2022 (Sat) | Project team confirmed. |
-| Mar 12, 2022 (Sat) | Interim milestone |
+| Mar 19, 2022 (Sat) | Interim milestone |
 | Apr 8, 2022 (Fri) | Last day of course. |
 | Apr 12, 2022 (Tue) | Project completion; Final submission. |
 
