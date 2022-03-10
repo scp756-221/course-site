@@ -6,7 +6,7 @@
 
 3. [Why data scientists love Kubernetes](https://opensource.com/article/19/1/why-data-scientists-love-kubernetes)
 
-4. [Service Mesh - The New Battleground For The Platform Wars](https://www.forbes.com/sites/janakirammsv/2020/09/20/service-meshthe-new-battleground-for-the-platform-wars/?sh=3c1689523021)
+4. [The Service Mesh - What every software engineer needs to know about the world's most over-hyped technology](https://buoyant.io/service-mesh-manifesto/)
 
 5. [Cloud computing storms a bastion of the enterprise: the data warehouse](https://siliconangle.com/2020/11/15/cloud-computing-storms-bastion-enterprise-data-warehouse/)
 
@@ -20,7 +20,7 @@ Article 3 includes pointer to some projects that your project team may wish to p
 * [Seldon](https://github.com/SeldonIO/seldon-core): converts an ML model into a REST microservice
 * [Binder](https://github.com/jupyterhub/binderhub): server Jupyter notebooks from a Kubernetes cluster
 
-Article 4 provides a broader picture around [istio](https://istio.io/). Adding a service mesh to your microservices system makes it easy/possible to perform:
+Article 4 provides a broader picture of [istio](https://istio.io/) within the category of the service mesh. Adding a service mesh to your microservices system makes it easy/possible to perform:
 * traffic management (circuit breaking, fault injection, traffic shifting, etc)
 * blue/green deployment
 * canary deployment
