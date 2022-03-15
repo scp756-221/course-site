@@ -3,7 +3,7 @@
 
 ## Recording
 
-* Tuesday [Zoom recording (Pt 1: 0:50:32)](https://sfu.zoom.us/rec/share/ZNWpoz7U3GgEPMB9nz1h1C_xVUqQPlIA2AKtjqzpezObaKU0YZGa0YTu3i820G2g.JyQEbFNQOASI3FD7?startTime=1647357841000)[(Pt 2: COMING)]() (passcode C756221)
+* Tuesday [Zoom recording (Pt 1: 0:50:32)](https://sfu.zoom.us/rec/share/ZNWpoz7U3GgEPMB9nz1h1C_xVUqQPlIA2AKtjqzpezObaKU0YZGa0YTu3i820G2g.JyQEbFNQOASI3FD7?startTime=1647357841000)[(Pt 2: 0:51:44)](https://sfu.zoom.us/rec/share/CysvJB_oA0URqDzPsElib28SSmOI883Apn0QtjVamnp8_qIGhw4QJ6_8mzndHqB0.dMsXGEqSWfCpYcW7?startTime=1647379656000 (Passcode: C756221)) (passcode C756221)
 * Friday [Zoom recording (COMING)]() (passcode C756221)
 
 ## Presented Slides  
