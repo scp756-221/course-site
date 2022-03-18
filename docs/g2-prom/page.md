@@ -134,6 +134,11 @@ will see a simple query interface with a text box for for queries.
 
 ### Listing Prometheus's many metrics
 
+**Prometheus was updated in March with a new UI. Click on the "Classic UI" button on the top bar to revert 
+to the Classic UI for this guide.** 
+![Prometheus' New UI](prometheus-new-ui.png)
+
+
 Begin by listing all the metrics available from Prometheus for your
 system. Click on the dropdown list labelled,
 
