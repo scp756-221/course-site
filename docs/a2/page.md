@@ -12,40 +12,13 @@ Second, you will explore the features of git, GitHub Desktop and GitHub.
 
 **This assignment has two prerequsites:**
 
-**1. You must have completed the full AWS sign up section of
-  Assignment&nbsp;0.**
+**1. You must have completed the full AWS sign up section of Assignment&nbsp;0.**
 
 **2. You must have completed all of Assignment&nbsp;1.**
 
-### Generate course code repo instance
+### Setup
 
-**You must have successfully installed Git before starting this
-step.**
-
-**You must have a GitHub userid (see the first part of
-Assignment&nbsp;0) before starting this step.**
-
-Due to corrections made since Assignment 1, you will need to regenerate a repo for Assignment 2. The process is similar:
-
-1. Sign in to GitHub using your userid.
-2. Sign in to [GitHub Education](https://education.github.com/) using the same userid. 
-3. Accept this assignment via this [link](https://classroom.github.com/a/3cAM2ygY)
-4. Wait while a copy of the repo is generated for you.
-5. Bookmark the URL of your copy of the repo http://github.com/scp756-221/assignment2on-YOUR-GITHUB-ID. As the repo resides in this class' organization, you will not see it listed under "Your repositories". But you will find it at the left-hand margin of your [GitHub home page]](https://github.com) after you sign in.
-6. Reuse Assignment 1's `tpl-vars.txt`. **Do not delete the old Assignment 1 repo.** If you'd cloned Assignment 1's repo into `c756-exer` locally, you will find it convenient to rename this so as to free up the name for this new copy:
-```sh
-$ mv c756-exer c756-exer-assignment1
-```
-
-7. Clone the repo from step 4 to your laptop and re-instantiate the templates. (You may need to adjust the Assignment 1 repo name below.)
-```sh
-$ git clone https://github.com/scp756-221/assignment2on-YOUR-GITHUB-ID.git c756-exer
-$ cp c756-exer-assignment1/cluster/tpl-vars.txt c756-exer/cluster/tpl-vars.txt
-$ cd c756-exer
-$ make -f Makefile-tpl templates
-```
-
-
+Assignment 2 and onward builds on and can reuse the repo as generated for Assignment 1. If you do wish to start from scratch, you will find it helpful to save Assignment 1's `tpl-vars.txt`, taking care to guard it carefully as it contains your AWS keys. (Pro tip: a good place is your home .ssh directory.) 
 
 ## Part 1: Running an Amazon EC2 instance
 

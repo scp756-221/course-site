@@ -25,11 +25,11 @@ rapid download of the large installation files.**
 
 You will need to setup the appropriate tools on your own laptop for 
 this course's assignments and term project. The heavy
-lifting will be typically on the cloud side (AWS or other services)
+lifting will be typically on the cloud side (AWS)
 but you will nonetheless need a certain amount of tooling on your computer to
 operate the cloud.
 
-**If you have less than 8GB of RAM on your own machine**, you should use the MPCS
+**If you have less than 8GB of RAM on your own machine**, you can use the MPCS
 lab instead (while accepting some degradation). Please inform the instructor
 for allowances and/or specific instructions.
 
@@ -38,12 +38,12 @@ for allowances and/or specific instructions.
 We will standardize on
 [Visual Studio Code](https://code.visualstudio.com/) (VSC) for this
 semester. Install the version for your operating system. You are not required to use it but 
-it will be the reference tool.
+it will be the reference tool. 
 
 A good editor/IDE raises your productivity significantly with syntax
 highlighting, syntax validation/hinting, support for multiple
 files/source trees, integration with version control (Git) and
-numerous other creature comforts. **Do not skip this step.**
+numerous other creature comforts. 
 
 ### Git and GitHub Desktop
 
@@ -52,11 +52,11 @@ Install Git per
 In many environments (e.g., macOS), Git comes pre-installed; check.
 
 Install [GitHub Desktop](https://desktop.github.com/) as well to
-complement the command-line Git. Also configure GitHub Desktop's integration (under Preferences) to use your chosen editor.
+complement command-line Git. Also configure GitHub Desktop's integration (under Preferences) to use your chosen editor.
 
+We will not be going through these exhaustively but if you are new to or otherwise not familiar with git, these front-end bring a lot creature comfort to using bare git.
 
-
-We have
+There is 
 [a course Git summary](https://coursys.sfu.ca/2022sp-cmpt-756-g1/pages/dzone_git_refcard.pdf).
 (Additional tutorials at
 [DZone Git reference card](https://dzone.com/refcardz/getting-started-git)
