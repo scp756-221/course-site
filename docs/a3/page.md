@@ -115,9 +115,9 @@ Experiment with `ekn` to terminate your instance. Try a few cycles of `erun`+`ep
 Refer to the documentation at the repo under the AWS folder. ([WIP URL](https://github.com/overcoil/c756-quickies/tree/spring-2023/AWS))
 
 These macro operate on three pieces of information:
-* The "instance type"--the hardware that you wish to use. (The `INSTANCE` variable inside `.ec2.mak`.)
-* The AMI id--the operating system/software to run on this hardware. (The `IMAGE` variable inside `.ec2.mak`.)
-* The user-id--this is a detail of the AMI which you've selected. (The `SSH_USER` variable inside `.ec2.mak`.)
+* The "instance type"--the hardware that you wish to use. ([WIP URL]())
+* The AMI id--the operating system/software to run on this hardware. ([WIP URL]())
+* The user-id--this is a detail of the AMI which you've selected. ([WIP URL]())
 
 The key idea behind this macro package is to simplify the tracking of the instance-id and public IP address (which are hard to remember) with the use of a mnemonic name (which is arguably easier to keep tabs of). Azure uses a similar system though Microsoft defers to you to supply the name. The macro package here uses a [handy naming service](https://frightanic.com/goodies_content/docker-names.php).
 
