@@ -42,7 +42,7 @@ $ mv c756-exer c756-exer-assignment1
 $ git clone https://github.com/scp756-221/assignment2on-YOUR-GITHUB-ID.git c756-exer
 $ cp c756-exer-assignment1/cluster/tpl-vars.txt c756-exer/cluster/tpl-vars.txt
 $ cd c756-exer
-$ make -f k8s-tpl.mak templates
+$ make -f Makefile-tpl templates
 ```
 
 
@@ -58,7 +58,7 @@ If you set up your AWS credentials in Assignment&nbsp;1 and instantiated the tem
 If you have obtained your AWS credentials since you completed Assignment&nbsp;1, you need to add them to the template variables file now. Update the AWS credentials in `cluster/tpl-vars.txt` and then re-instantiate the templates in the tools container:
 
 ~~~bash
-/home/e-k8s# make -f k8s-tpl.mak templates
+/home/e-k8s# make -f Makefile-tpl templates
 ~~~
 
 ### Creating and running an EC2 instance

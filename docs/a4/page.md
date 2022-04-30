@@ -59,43 +59,21 @@ You will complete this assignment using AWS EKS as your Kubernetes platform.  (W
 
 In the first three assignments, we worked exclusively in the `c756-exer/s2/standalone` directory. In this and future assignments, we will work with the full directory structure under `c756-exer`:
 
-| Directory/file | Note |
-|-|-|
-|s1/ | the User service |
-|s2/ | the Music service |
-|db/ | the database writer service |
-|postman/ | the API definition collection |
-|cluster/ | material for working with a Kubernetes cluster. Also location of all files that would pose security risks if made public|
-|logs/ | all output files are collected here |
-|tools/ | misc tools to prepare repo content (makefiles) for use |
-|gatling/ | Gatling load tester---for Assignment 5 onward |
-|profiles/ | files defining any personal bash or Git command aliases you use |
-|gcloud/ | tools for running the Google cloud command-line |
-| --- | --- |
-|{cmusic.sh, dmusic.sh, duser.sh} | scripts to drive the API |
-| --- | --- |
-|k8s.mak | instantiated makefile for operating a Kubernetes cluster |
-|api.mak | instantiated makefile to operate the API |
-|obs.mak | makefile to manage the observability components (Grafana, Prometheus, Kiali) |
-|allclouds.mak | instantiated makefile to examine all cloud providers |
-|eks.mak | instantiated makefile for setup of an AWS EKS cluster |
-| --- | --- |
-|az.mak | (optional) instantiated makefile for setup of an Azure AKS cluster |
-|gcp.mak | (optional) instantiated makefile for setup of a GCP GKE cluster |
-|mk.mak | (optional) instantiated makefile for setup of a Minikube cluster. Will not work in tools container |
+Refer to [WIP URL](https://github.com/scp756-221/c756-exer/blob/spring-2023/README.md) for details of the content of the complete repo.
+
 
 **Note that the assignment is organized as a collection of templates (files with ``-tpl`` suffix) that require instantiation. Do not fill in/use the ``-tpl`` files directly since you run the risk of leaking sensitive information should they be pushed (inadvertently or otherwise) to Github etc. (The ``.gitignore`` are setup to exclude your instantiated files.)**
 
 ## 2. Creating and Controlling your Cluster
 
 You create a cluster with a command specific to the vendor (AWS, Azure, or Google for clusters in the cloud or Minikube for clusters on your own machine).
-Once a cluster is created, you use operate the cluster using the Kubernetes-API-based tools: ``kubectl``, `k9s`, and `make`.
+Once a cluster is created, you use operate the cluster using the Kubernetes-API-based tools: ``kubectl``, `k9s`, or others. This course makes (!) heavy use of `make` as a novel way to drive `kubectl`. 
 
-In the same fashion, ``istioctl`` operates on the service mesh for a cluster, irrespective of how the cluster came to be.
+In the same fashion, ``istioctl`` is used to manage (install or uninstall) a service mesh into a cluster, irrespective of how the cluster came to be.
 
 ### 2.1 The Kubernetes toolset
 
-You will use `kubeconfig`, `k9s`, and `make` to control your clusters.
+You will use `kubectl`, `k9s`, and `make` to control your clusters.
 
 #### 2.1.1 `kubectl` and kubeconfig
 
@@ -142,59 +120,69 @@ The tool `k9s` is a complement to `kubectl`.  They both offer equivalent functio
 
 #### 2.1.3 `make` & makefile
 
-The assignments for 756 are organized around a set of makefiles to simplify and to introduce the various tools. Recall [last week's reading](https://scp756-221.github.io/course-site//#/r3) included an article on it. If you wish to dig further, refer [here](https://www.gnu.org/software/make/manual/html_node/Introduction.html).
+The assignments for 756 are organized around `make` to simplify and to introduce the various tools. Recall [last week's reading](https://scp756-221.github.io/course-site//#/r3) included an article on it. If you wish to dig further, refer [here](https://www.gnu.org/software/make/manual/html_node/Introduction.html).
 
 There are four files that you will interact with frequently and three others that you might want to explore on your own:
 
 | File | Purpose |
 | -----| ----------------- |
-| k8s.mak | instantiated makefile for operating k8s |
-| api.mak | instantiated makefile to operate the API |
-| allclouds.mak | instantiated makefile to examine all cloud providers |
-| eks.mak | instantiated makefile for setup of an AWS EKS cluster |
+| `Makefile` | instantiated makefile for operating k8s |
+| `etc/api.mak` | instantiated makefile to operate the API |
+| `etc/eks.mak` | instantiated makefile for setup of an AWS EKS cluster |
+| `etc/mesh.mak` | makefile that manages istio in your Kubernetes cluster |
+| `etc/obs.mak` | makefile for manages Prometheus, Grafana and Kiali in your Kubernetes cluster |
+| `etc/allclouds.mak` | instantiated makefile to examine all cloud providers |
 | --- | --- |
-| az.mak | (Optional) instantiated makefile for setup of an Azure AKS cluster |
-| gcp.mak | (Optional) instantiated makefile for setup of a GCP GKE cluster |
-| mk.mak | (Optional) instantiated makefile for setup of a Minikube cluster. Will not work in tools container |
+| `etc/az.mak` | (Optional) instantiated makefile for setup of an Azure AKS cluster |
+| `etc/gcp.mak` | (Optional) instantiated makefile for setup of a GCP GKE cluster |
+| `etc/mk.mak` | (Optional) instantiated makefile for setup of a Minikube cluster. Will not work in tools container |
 
 
 The core idea of a makefile is to automate the execution of commands to reproduce artifacts in a chained fashion. It is typically used to compile program source into executables but it is applicable anytime you have outputs that are dependent on a chain of upstream inputs.
 
-For example, ``eks.mak`` has been setup to start, stop, and check on the status of your Amazon EKS  cluster as follows:
+For example, ``eks.mak`` has been setup to start, stop, and check on the status of your Amazon EKS cluster. You can invoke it directly as follows:
 
 | Command | Purpose |
 | -----| ----------------- |
-| ``make -f eks.mak start`` | create your EKS cluster |
-| ``make -f eks.mak stop`` | delete your EKS cluster |
-| ``make -f eks.mak down`` | delete an EKS cluster's nodegroup |
-| ``make -f eks.mak up`` | create a nodegroup for an EKS cluster whose group was previously deleted |
-| ``make -f eks.mak status`` | check on the status of your EKS cluster |
-| ``make -f eks.mak ls`` | list all EKS clusters and their node groups |
-| ``make -f eks.mak cd`` | make the EKS cluster your current cluster (when runnning clusters from multiple vendors) |
+| ``make -f etc/eks.mak start`` | create your EKS cluster |
+| ``make -f etc/eks.mak stop`` | delete your EKS cluster |
+| ``make -f etc/eks.mak ls`` | list all EKS clusters and their node groups |
+
+But to save typing, the top-level `Makefile` is already setup for the two most common (`start` and `stop`). More importantly, this indirection allows the top-level Makefile to switch between Kubernetes providers. Examine `Makefile` to understand how this work. Thus:
+
+| Command | Purpose |
+| -----| ----------------- |
+| ``make start`` | create your Kubernetes cluster |
+| ``make stop`` | delete your Kubernetes cluster |
+
 
 It may seem dubious value to introduce this extra machinery when a single call to `eksctl` is a direct way to start, stop and check on clusters. But one benefit of using make is to wrap a _series_ of commands and associate it with a pseudo-target (e.g., the `start`, `stop`, or `ls` in the above) for automation. As well, the  parameter definitions (e.g.,  `REGION`/`$(REGION)`, `KVER`/`$(KVER)`) and comments serves to document the tools, options and process for achieving a given objective. In this course, I have adopted a set of consistent pseudo-targets across the cloud vendors to homogenize the creation of clusters in multiple contexts--across the a set of public cloud providers:
 
 | Command | Purpose |
 | -----| ----------------- |
-| ``make -f mk.mak start`` | create a Minikube cluster |
-| ``make -f az.mak start`` | create an AKS cluster |
-| ``make -f eks.mak start`` | create an AWS EKS cluster |
-| ``make -f gcp.mak start`` | create a GCP GKE cluster |
-| ``make -f allclouds.mak`` | a convenient `ls -a` across all three clouds |
+| ``make -f etc/mk.mak start`` | create a Minikube cluster |
+| ``make -f etc/az.mak start`` | create an AKS cluster |
+| ``make -f etc/eks.mak start`` | create an AWS EKS cluster |
+| ``make -f etc/gcp.mak start`` | create a GCP GKE cluster |
 
 ### 2.2 Creating a Cluster
 
-**To help with learning k8s, this assignment is built around a set of makefiles that wrap many long and verbose commands into convenient short snippets. Please study the makefiles (`*.mak`) and examine the commands therein to work out what's happening. You will need to understand these commands to effectively use Kubernetes here and in the term project.**
+**To help with learning k8s, this assignment is built around a set of makefiles that wrap many long and verbose commands into convenient short snippets. Please study the makefiles (`Makefile`, `*.mak`) and examine the commands therein to work out what's happening. You will need to understand these commands to effectively use Kubernetes here and in the term project.**
 
 #### 2.2.2 Cloud cluster
 
 Start up an Amazon EKS cluster as follows:
 
 ```bash
-/home/k8s# make -f eks.mak start
+/home/k8s# make -f etc/eks.mak start
 ```
 
-This is a slow operation, often taking 10--15 minutes. If you review ``eks.mak``, this is the command that was used (some parameters may vary):
+or more tersely:
+```bash
+/home/k8s# make start
+```
+
+This is a slow operation, often taking 20--30 minutes. If you review ``eks.mak``, this is the command that was used (some parameters may vary):
 
 ```
 eksctl create cluster --name aws756 --version 1.21 --region us-west-2 --nodegroup-name worker-nodes --node-type t3.medium --nodes 2 --nodes-min 2 --nodes-max 2 --managed
@@ -238,16 +226,18 @@ While you're here organizing your context, create a `c756ns` namespace inside ea
 There is a `cd` target that you can also use:
 ```bash
 # Choose one of eks/az/gcp
-/home/k8s#  make -f VENDOR.mak cd
+/home/k8s#  make -f etc/VENDOR.mak cd
 ```
 to switch between contexts/clusters.
+
+(Optional) I have a set of `kubectl` macros inside [`c756-quickies`](https://github.com/overcoil/c756-quickies) that you may find useful.
 
 ### 2.3 Deleting a Cluster
 
 For the cloud vendors, the following will stop the cluster:
 
 ```bash
-/home/k8s#  make -f VENDOR.mak stop
+/home/k8s#  make -f etc/VENDOR.mak stop
 ```
 
 As with startup, this command will take some time to complete. This command will complete at this time because your cluster was freshly initialized with no resources (beyond the barebone nodes). I
@@ -272,24 +262,24 @@ To reduce cost, you can either delete the cluster entirely (`make -f eks.mak sto
 
 **Deleting the nodegroup does not harm the cluster.** If anything, the design of Kubernetes supports and anticipates the removal of computing resources.
 
-To delete the nodegroup of your cloud cluster:
+To delete the node group of your cloud cluster:
 ```bash
-/home/k8s#  make -f VENDOR.mak down
+/home/k8s#  make -f etc/VENDOR.mak down
 ```
 
-To recreate the node-group of your cloud cluster:
+To recreate the node group of your cloud cluster:
 ```bash
-/home/k8s#  make -f VENDOR.mak up
+/home/k8s#  make -f etc/VENDOR.mak up
 ```
 
 Either of these command will again take a relatively long time (10+ min) to complete. The time of the initial creation of your cluster is largely composed of the time for creating the node group. A more common reason for creating/deleting your nodegroup is to change the size of machines in your cluster.
 
-This ``down`` command will again complete readily at this time because there are no services running on them.
+This `down` command will again complete readily at this time because there are no services running on them.
 
-The ``ls`` command will determine what services are running on your cluster (the nodes). You will need to stop any service that exposes an external IP before you can delete the cluster.
+The `ls` command will determine what services are running on your cluster (the nodes). You will need to stop any service that exposes an external IP before you can delete the cluster.
 
 ```
-/home/k8s#  make -f eks.mak ls
+/home/k8s#  make -f etc/eks.mak ls
 kubectl config get-contexts
 CURRENT   NAME     CLUSTER                      AUTHINFO                         NAMESPACE
 *         aws756   aws756.us-west-2.eksctl.io   AWSID@aws756.us-west-2.eksctl.io c756ns
@@ -305,13 +295,13 @@ aws756	worker-nodes	ACTIVE	2021-12-14T23:32:51Z	2		2		2	              t3.medium 
 
 ### 2.4 Installing the service mesh `istio`
 
-``istio`` is a service mesh that was conceived concurrently with k8s. But for various reasons, it was ultimately pulled out of k8s and developed as an independent project.
+``istio`` is a service mesh that was conceived concurrently with Kubernetes. But for various reasons, it was ultimately pulled out of Kubernetes and developed as an independent project.
 
-``istio`` is installed into each cluster only once but it will only operate within specific namespaces that you choose. A k8s namespace is a cluster-level construct that organizes the resources within your cluster. You can liken it to the folders in a filesystem (though namespaces are only one-level deep).
+``istio`` is installed as a singleton into each cluster and can operate within specific namespaces that you choose. A Kubernetes namespace is a cluster-level construct that organizes the resources within the cluster. You can liken it to the folders in a filesystem (though namespaces are only one-level deep).
 
-To use ``istio`` with an application, you create a namespace for your application, label the namespace for ``istio``, and install your application into this namespace.
+To use ``istio`` in your application, create a namespace for your application, indicate your intention for ``istio`` to operate on the resources in the namespace (via Kubernetes's label feature), and install your application into this namespace.
 
-To install Istio and label the `c756ns` namespace:
+To install ``istio`` and label the `c756ns` namespace:
 
 ```bash
 # switch to the EKS context
@@ -319,13 +309,24 @@ To install Istio and label the `c756ns` namespace:
 /home/k8s# istioctl install -y --set profile=demo --set hub=gcr.io/istio-release
 /home/k8s# kubectl label namespace c756ns istio-injection=enabled
 
+# confirm the label is there
+/home/k8s# kubectl get namespace --show-labels
+NAME              STATUS   AGE     LABELS
+c756ns            Active   4h38m   istio-injection=enabled,kubernetes.io/metadata.name=c756ns
+default           Active   4h55m   kubernetes.io/metadata.name=default
+istio-system      Active   4h42m   kubernetes.io/metadata.name=istio-system
+kiali-operator    Active   4h40m   kubernetes.io/metadata.name=kiali-operator
+kube-node-lease   Active   4h55m   kubernetes.io/metadata.name=kube-node-lease
+kube-public       Active   4h55m   kubernetes.io/metadata.name=kube-public
+kube-system       Active   4h55m   addonmanager.kubernetes.io/mode=Reconcile,control-plane=true,kubernetes.io/cluster-service=true,kubernetes.io/metadata.name=kube-system
+
 # if you wish to remove the label
 /home/k8s# kubectl label namespace c756ns istio-injection-
 ```
 
 #### 2.4.1 Tunneling into your cluster in the cloud
 
-The steps above will trigger istio to set up an AWS Elastic Load Balancer (ELB) to act as an ingress gateway, opening the cluster to requests from outside machines. (The comparable operation on Azure or GCP will do the same.)
+The steps above will trigger ``istio`` to set up an AWS Elastic Load Balancer (ELB) to act as an ingress gateway, opening the cluster to requests from outside machines. (The comparable operation on Azure or GCP will do the same.)
 
 Now, use `kubectl get svc --all-namespaces` (or the `lsa` pseudo-target in `k8s.mak`) to verify that you have 3 new services under a new `istio-system` namespace: `istio-egressgateway`, `istio-ingressgateway`, & `istiod`.
 
@@ -336,7 +337,7 @@ Now, use `kubectl get svc --all-namespaces` (or the `lsa` pseudo-target in `k8s.
 ~~~
 
 Finally, you will need to determine how to access your cluster.
-You can fetch the required external IP address using `kubectl`:
+You can fetch the required external IP address using `kubectl` as follows:
 
 ```bash
 /home/k8s# kubectl -n istio-system get service istio-ingressgateway | cut -c -140
@@ -346,7 +347,7 @@ istio-ingressgateway   LoadBalancer   10.100.255.11   a844a1e4bb85d49c4901affa0b
 
 The `EXTERNAL-IP` is the entry point to your cluster. The example above (for EKS) shows the rather ungainly DNS name (`a844a1e4bb85d49c4901affa0b677773-127853909.us-west-2.elb.amazonaws.com`).
 
-**Whenever there is no way into your cluster, you will have a `<pending>` as your EXTERNAL-IP.**  Check that Istio is running, using the `kubectl get svc --all-namespaces` command described above.
+**Whenever there is no way into your cluster, you will have a `<pending>` as your EXTERNAL-IP.**  Check that ``istio`` is running, using the `kubectl get svc --all-namespaces` command described above.
 
 ## 3. Deploying your Application
 
@@ -354,31 +355,31 @@ There are several steps required to deploy and run these our music application i
 
 ### 3.1 Building your images
 
-As in Assignment 3, you will need to build the containers and push them to the container registry. This time, you will build three services (S2, the music service you have used so far, along with S1 and DB).
+As in Assignment 3, you will need to build the containers and push them to the container registry. This time, you will build three services (``s2``, the music service you have used so far, along with ``s1`` and ``db``).
 
 Build your images with (`cri` short for container registry images):
 
 ```
-/home/k8s# make -f k8s.mak cri
+/home/k8s# make cri
 ```
 
-Finally, there is one manual step left before the system can come up auto-magically: to switch your container repositories to public access. (This is a simplification for the purpose of this course.)
+Finally, there is one manual step left before the system can come up auto-magically: to switch your container repositories to public access. This is a simplification for the purpose of this course; in many real-world scenarios, you'll be authenticating with the container registry.
 
 Refer to GitHub's documentation to [set public access on your container repositories](https://docs.github.com/en/packages/guides/configuring-access-control-and-visibility-for-container-images#configuring-visibility-of-container-images-for-your-personal-account)
 
 
 ### 3.2 Deploying the music service
 
-This final version of the music service (S2) in the application is not standalone; it relies upon several other resources:
+This full version of the music service (``s2``) in the application is not standalone; it relies upon several other resources:
 
-* **DB:** The database service, providing persistent storage to the two higher-level services, S1 and S2.
-* **DynamoDB:** An Amazon service, called by DB to actually store the values.
-* **Gateway:** A link between S1 and S2 and the external world, such as your machine.
+* **``db``** The database service, providing persistent storage to the two higher-level services, S1 and S2.
+* **Amazon DynamoDB:** An Amazon NoSQL database service, used by ``db`` to actually store the values.
+* **Gateway:** A link between S1 and S2 and the external world (including your laptop).
 
-To run this, we first need to start the gateway, database, and music services.  We can do that with a single call:
+To run this, we first need to start the gateway, database, and music services.  We can do that with the following. You will find it useful to study the ``Makefile`` to work out the components of each service.
 
 ~~~bash
-/home/k8s# make -f k8s.mak gw db s2
+/home/k8s# make gateway credentials servicedb service2
 ~~~
 
 In Assignments&nbsp;1--3, you examined the logs of the music service. When running under Docker in Assignment&nbsp;3, you used `docker container logs` to get these logs. Kubernetes offers a similar command:
@@ -389,7 +390,7 @@ In Assignments&nbsp;1--3, you examined the logs of the music service. When runni
 
 The `--selector` parameter specifies the pod name and the `--container` parameter specifies the container name (both of which are `cmpt756s2`), while `--tail=-1` requests that the entire log be returned, no matter how long.
 
-The `kubectl` command is verbose and inconvenient to use if you wish to return to the log frequently. Even though automating this via the makefile is possible, `k9s` provides a better, faster, interactive way to get logs.
+The `kubectl` command is verbose and inconvenient to use if you wish to return to the log frequently. Even though shortening this via `make` is possible (check out `make log-s1`!), `k9s` provides a better, faster, interactive way to get logs.
 
 1. In a separate terminal window, start the tools container as before.
 
@@ -399,7 +400,7 @@ The `kubectl` command is verbose and inconvenient to use if you wish to return t
    /home/k8s# k9s
    ~~~
 
-3. K9s will open up its "pods" display. You should see two pods, one each for the database and music services. Locate the one for the music service (it will begin with `cmpt756s2-v1`), move the cursor down to select it, then press `Return`.
+3. ``k9s`` will usually open up its "pods" display. You should see two pods, one each for the database and music services. Locate the one for the music service (it will begin with `cmpt756s2-v1`), move the cursor down to select it, then press `Return`.
 4. The pod for the music service includes three containers.  Two of them were injected by Istio, while one of them is the container for our music code. That one will be named `cmpt756s2`.  Move the cursor to select it, then press `Return`.
 5. You will see the most recent lines of the music service log. In fact, the music service will show requests every five seconds or so. These are health checks, requests from Kubernetes to determine if the music service meets minimal standards of functionality.
 6. To see the beginning lines of the log, press `1`.  You will return to this when you want to locate the unique code for the "bug".
@@ -412,7 +413,7 @@ The `kubectl` command is verbose and inconvenient to use if you wish to return t
 To complete setting up the music service, we need to initialize DynamoDB and load it with initial data:
 
 ~~~bash
-/home/k8s# make -f k8s.mak loader
+/home/k8s# make loader
 ~~~
 
 This step builds and pushes another image (`cmpt756loader`) to `ghcr.io`. Return to your GitHub Packages tab and set the access for this new image to public as before.
@@ -428,6 +429,8 @@ where `datastore` is the service and `load` is the operation, in distinction to 
 To test that all these pieces are now working, we need to start the music client. In a separate (third) terminal window, run the client,
 where `EXTERNAL-IP` is the long DNS name you found in the section, "Tunneling into your cluster in the cloud", such as
 `a844a1e4bb85d49c4901affa0b677773-127853909.us-west-2.elb.amazonaws.com`:
+
+(Note that the `mcli` directory contains a separate `Makefile` that is different from the top-level `Makefile` you've been using till now.)
 
 ~~~bash
 /home/k8s# cd mcli
@@ -448,7 +451,7 @@ a Kubernetes cluster running in the cloud.
 
 ### 3.3 Fixing the "bug" in the music service
 
-For one final time, I ask you to find and fix the music servce "bug".  To demonstrate the bug, issue the `test` command from the music client.  You will get the familiar error code `500` and the stack trace in the S2 logs. (The stack trace will not be visible in the k9s logs because it is black text displayed on a black background.  But if you select the blank space where the text should be, you will see the trace.)
+For this final time, you will now find and fix the music servce "bug".  To demonstrate the bug, issue the `test` command from the music client.  You will get the familiar error code `500` and the stack trace in the S2 logs. (The stack trace will not be visible in the k9s logs because it is black text displayed on a black background.  But if you select the blank space where the text should be, you will see the trace.)
 
 So this version of the music service has our "bug". Here are the familiar steps for fixing it, with the details of performing them in the Kubernetes environment:
 
@@ -457,7 +460,7 @@ So this version of the music service has our "bug". Here are the familiar steps 
 3. **Push the fix:** This is accomplished by the single command:
 
    ~~~bash
-   /home/k8s# make -f k8s.mak rollout-s2
+   /home/k8s# make bounce-s2
    ~~~
 
    This command:
@@ -477,9 +480,9 @@ That assignment was a lot of material.  At this point, it may well seem like usi
 
    ~~~bash
    # Choose your cloud provider
-   /home/k8s# make -f eks.mak start OR make -f az.mak start OR make -f gcp.mak start
+   /home/k8s# make start
    # Now configure it --- same command, regardless of cloud provider
-   /home/k8s# make -f k8s.mak provision
+   /home/k8s# make provision
    ~~~
 
   You entered all the commands explicitly in this assignment to gain some familiarity with the underlying mechanisms.  Going forward, you can use the simpler, automated operations.

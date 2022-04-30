@@ -55,18 +55,18 @@ We have provided 2 additional versions of these files. To summarize:
 
 Original Source | Your Change | "Other Dev"'s Change |
 :- | :- | :- |
-`s2/v1.1/app.py` | `s2/v1.1/a7_app.py` | `s2/v1.1/a7_other_dev_app.py`|
-`ci/v1.1/music.py` | `ci/v1.1/a7_music.py` | `ci/v1.1/a7_other_dev_music.py`|
-`ci/v1.1/test_music.py` | `ci/v1.1/a7_test_music.py` | `ci/v1.1/a7_other_dev_test_music.py` |
+`s2/v1.1/app.py` | `s2/v1.1/a7_self_app.py` | `s2/v1.1/a7_other_app.py`|
+`ci/v1.1/music.py` | `ci/v1.1/a7_self_music.py` | `ci/v1.1/a7_other_music.py`|
+`ci/v1.1/test_music.py` | `ci/v1.1/a7_self_test_music.py` | `ci/v1.1/a7_other_test_music.py` |
 
 Your task is to replace the existing files (column 1) with those from "Your Change" (column 2). In the tools container command line, execute:
 
 ~~~bash
 /home/k8s # cd s2/v1.1
-/home/k8s/s2/v1.1 # cp a7_app.py app.py
+/home/k8s/s2/v1.1 # cp a7_self_app.py app.py
 /home/k8s/ci/v1.1 # cd ../../ci/v1.1
-/home/k8s/ci/v1.1 # cp a7_music.py music.py
-/home/k8s/ci/v1.1 # cp a7_test_music.py test_music.py
+/home/k8s/ci/v1.1 # cp a7_self_music.py music.py
+/home/k8s/ci/v1.1 # cp a7_self_test_music.py test_music.py
 ~~~
 
 This is a good time to review the changes made to the three files using whichever tool you prefer: `diff`, `git diff`, GitHub Desktop, or the version comparison feature of Visual Studio Code. Examine the code to determine what has been added and/or modified. This will be part of your submission.
@@ -160,10 +160,10 @@ We achieve this "time travel"/rollback by jumping to the commit _before_ our las
 ~~~
 
 
-If you examine your files, you will find they are as they were before your changes. For example, `music.py` no longer has your implementation. (The prefix `>` indicates content present in the second file (`a7_music.py`) but not the first (`music.py`).)
+If you examine your files, you will find they are as they were before your changes. For example, `music.py` no longer has your implementation. (The prefix `>` indicates content present in the second file (`a7_self_music.py`) but not the first (`music.py`).)
 
 ~~~bash
-/home/k8s/ci/v1.1 # diff music.py a7_music.py
+/home/k8s/ci/v1.1 # diff music.py a7_self_music.py
 54a55,77
 >     def write_orig_artist(self, m_id, orig_artist):
 >         """Write the original artist performing a song.
@@ -196,10 +196,10 @@ Now repeat the commands you performed in Part&nbsp;1, only this time using the `
 
 ~~~bash
 /home/k8s # cd s2/v1.1
-/home/k8s/s2/v1.1 # cp a7_other_dev_app.py app.py
+/home/k8s/s2/v1.1 # cp a7_other_app.py app.py
 /home/k8s/s2/v1.1 # cd ../../ci/v1.1
-/home/k8s/ci/v1.1 # cp a7_other_dev_music.py music.py
-/home/k8s/ci/v1.1 # cp a7_other_dev_test_music.py test_music.py
+/home/k8s/ci/v1.1 # cp a7_other_music.py music.py
+/home/k8s/ci/v1.1 # cp a7_other_test_music.py test_music.py
 ~~~
 
 Again, examine the code to determine what has been added and/or modified in this second half of the feature. This will be part of your submission.
@@ -364,9 +364,9 @@ Continuous integration tools are a basic tool of this process. They don't solve 
 
 Create a PDF file and answer questions 1-4. There's no need for an essay for either question 1 or 2. But your answer should be grammatically correct with proper spelling and punctuation. Keep each answer short and to the point: 75 words max.
 
-1. Summarize what the first half of the original artist feature (as supplied to you in `ci/v1.1/a7_music.py`) does. Do not merely copy/paste function signatures; rather, outline the added/changed functionalities and highlight important implementation details. 
+1. Summarize what the first half of the original artist feature (as supplied to you in `ci/v1.1/a7_self_music.py`) does. Do not merely copy/paste function signatures; rather, outline the added/changed functionalities and highlight important implementation details. 
 
-2. Summarize what the other dev's half of the original artist feature (as supplied to you in `ci/v1.1/a7_other_dev_music.py`) does. Do not merely copy/paste function signatures; rather, outline the added/changed functionalities and highlight important implementation details. 
+2. Summarize what the other dev's half of the original artist feature (as supplied to you in `ci/v1.1/a7_other_music.py`) does. Do not merely copy/paste function signatures; rather, outline the added/changed functionalities and highlight important implementation details. 
 
 3. Screen-shot from GitHub Action showing the failed run of your `test_full_cycle` after integration. You must show clearly the failure as bounded by `==== FAILURES ====` and the fail/pass counts.
 

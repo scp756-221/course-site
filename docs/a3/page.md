@@ -8,7 +8,7 @@ In Part&nbsp;2, you will explore further features of containers and the `docker`
 
 **This assignment has several prerequistes:**
 
-**1. You must have obtained a GHCR access token and saved it in `cluster/ghcr.io-token.txt`.  See Assignment&nbsp;0 for details.**
+**1. You must have obtained a GHCR access token and saved it in `cluster/ghcr.io-token.txt`.  See Assignment&nbsp;1 for details.**
 
 **2. You must have completed the Docker assignments previously assigned.**
 
@@ -77,14 +77,10 @@ In Assignment&nbsp;2, you used the web console to start up an EC2 instance. From
 # pull down the CLI shortcuts
 $ cd ~
 $ git clone https://github.com/overcoil/c756-quickies
-$ cd c756-quickies
-$ cp .aws-a ~/
-$ cp .aws-off ~/
-$ cp .ec2.mak ~/
-$ cd ~
+$ cp c756-quickies/AWS/.aws-a ~
 
-# insert your security group and key
-$ vi ~/.ec2.mak
+# insert your security group and key into your .bashrc/.zshrc or .aws-a
+$ vi ...
 ~~~
 
 ~~~bash
@@ -94,26 +90,20 @@ $ source ~/.aws-a
 
 Now you can launch and stop instances very quickly with the `erun`, `eps` and `ekn` shortcuts.
 
-There is also an `esshn` shortcut that will log you into the machine too.
+There is also an `essh` shortcut that will log you into the machine too.
 
-Review the script to work out how the hand-off works between the commands/targets. (Hint: it uses `x86-ip.log` to transfer the IP address between commands.)
 
 ~~~bash
 # launch the EC2 instance
 $ erun
 ...
 
-# inspect the IP address of the instance you launched
-$ cat x86-ip.log
-A.B.C.D
-~~~
-
 You can use `eps` to examine the instances you have running. Examine the alias to work out the output.
 
 ~~~bash
 # check your instances
 $ eps
-i-01099e36520cd6e22 t2.xlarge running 2021-12-14T00:09:18+00:00 34.217.34.207 furious_varahamihira
+i-01099e36520cd6e22 furious_varahamihira t2.micro/x86 ubuntu@34.217.34.207 ami-017d56f5127a80893 running
 ~~~
 There are 3 key outputs:
 * Instance-id: `i-01099e36520cd6e22`. This is an AWS-private id for use with the AWS CLI. 
@@ -122,19 +112,17 @@ There are 3 key outputs:
 
 Experiment with `ekn` to terminate your instance. Try a few cycles of `erun`+`eps`+`ekn` and examine the output.
 
-Review the `epkg` macro which is a generalization of `erun` to access other machines.
-
-Finally, consider `esshn` which allows you to `ssh` into an instance by name.
+Refer to the documentation at the repo under the AWS folder. ([WIP URL](https://github.com/overcoil/c756-quickies/tree/spring-2023/AWS))
 
 These macro operate on three pieces of information:
 * The "instance type"--the hardware that you wish to use. (The `INSTANCE` variable inside `.ec2.mak`.)
 * The AMI id--the operating system/software to run on this hardware. (The `IMAGE` variable inside `.ec2.mak`.)
 * The user-id--this is a detail of the AMI which you've selected. (The `SSH_USER` variable inside `.ec2.mak`.)
 
-The key idea behind these macros is to automate the tracking of the instance-id and public IP address (which are hard to remember) with the use of the mnemonic name (which is arguably easier to keep tabs of).
+The key idea behind this macro package is to simplify the tracking of the instance-id and public IP address (which are hard to remember) with the use of a mnemonic name (which is arguably easier to keep tabs of). Azure uses a similar system though Microsoft defers to you to supply the name. The macro package here uses a [handy naming service](https://frightanic.com/goodies_content/docker-names.php).
 
 
-When you are satisified, locate the AMI used in Assignment 2 and find the appropriate package to launch a machine. (You will invoke it along the line of `epkg <somepackage>`.)
+When you are satisified, locate the AMI used in Assignment 2 and find the appropriate package to launch a machine. (You will invoke it along the line of `erun <somepackage>`.)
 
 ~~~bash
 # copy the data and CR token over
@@ -240,12 +228,12 @@ If the success code is reported, the "bug" has been fixed.  Commit and push the 
 Once you are done with all the above steps, terminate the EC2 instance.  **You will accumulate charges until the instance is terminated.** Use the CLI:
 
 ~~~bash
-# check your instances
+# check your instances again
 $ eps
-i-01099e36520cd6e22 t2.xlarge running 2021-12-14T00:09:18+00:00 34.217.34.207 furious_varahamihira
+i-01099e36520cd6e22 furious_varahamihira t2.micro/x86 ubuntu@34.217.34.207 ami-017d56f5127a80893 running
 
 # kill the one 
-$ ekill i-01099e36520cd6e22
+$ ekn furious_varahamihira
 
 # or kill everything
 $ epurge

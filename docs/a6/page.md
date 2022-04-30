@@ -57,25 +57,14 @@ This assignment differs from prior assignment in that you will be collecting man
 
 ### Controlling costs
 
-In this assignment, you will use some of the more expensive EC2 instances, costing US$&nbsp;0.526&nbsp;/&nbsp;hr and more. You can minimize your expenses by planning the assignment. Review the whole assignment completely before executing any commands, so that you know the assignment's structure and steps before you start.
+In this assignment, you will use up to two types of EC2 instances. The two types each cost US$&nbsp;0.526&nbsp;/&nbsp;hr (x86) and US$&nbsp;0.556&nbsp;/&nbsp;hr (ARM). You can minimize your expenses by planning the assignment. Review the whole assignment completely before executing any commands, so that you know the assignment's structure and steps before you start.
 
 ## Manage EC2 instances using the command line
 
-You will manage your EC2 instances using the  set of command-line tools introduced previously in Assignment 3. A copy is also included in the `profiles` subdirectory and described in `profiles/README-aws.md`. These tools simplify working with EC2 instances, avoiding the busywork required by the EC2 Web console.
+You will manage your EC2 instances using the [WIP URL](https://github.com/overcoil/c756-quickies/tree/spring-2023/AWS) introduced previously in Assignment 3. These tools simplify working with EC2 instances, avoiding the busywork required by the EC2 Web console.
 
-If you haven't previously used/configured these, do so now. The copy included require a small amount of one-time setup inside `profiles/ec2.mak` to define the following variables:
+**Unlike the assignments 1-4, you will run this assignment completely outside of the tools container. As such, you will need to have installed and configured the AWS CLI on your laptop.**
 
-  * `SGI_WFH`
-  * `KEY`
-  * `LKEY`
-
-See `profiles/README-aws.md` for the details.
-
-The commands must be enabled every time you start a new instance of the tools container:
-
-~~~bash
-/home/k8s# . tools/profile
-~~~
 
 ### Start a GPU instance
 
@@ -83,38 +72,46 @@ Once you have set up the EC2 commands, start a GPU-enabled EC2 instance
 by running the following commands:
 
 NOTE: This assignment requires that the `gpu_small` package is configured with the default:
-
 ```sh
-# Cheaper GPU with Python-based AMI
-# USD 0.526/hr in us-west-2
-INSTANCE=$(GPU_ML_X)
-IMAGE=$(AMI_AMAZON_LINUX_ML)
-SSH_USER=$(AMAZON_USER)
+        "gpu_small")
+          INSTANCE=$GPU_ML_X
+          AWSAAMI=$AMI_AMAZON_LINUX_ML
+          SSH_USER=$AMAZON_USER
+          ;;
 ```
-
 If you have changed these (possibly in Assignment 3), please restore your package as above.
 
+A typical run looks along the line of:
 ~~~bash
-/home/k8s# epkg gpu_small
-/home/k8s# # Wait 1--2 minutes for the instance to completely initialize
-/home/k8s# esn NAME ec2-user
-The authenticity of host 'ec2-54-191-192-143.us-west-2.compute.amazonaws.com (54.191.192.143)' can't be established.
-ECDSA key fingerprint is SHA256:gMoqq/rEr7T6VoyVfgnceMmv0RzfaxqNC9+kVxQOopE.
+$ erun gpu_small
++erun:5> aws --profile default --region us-west-2 --output json ec2 run-instances --instance-initiated-shutdown-behavior terminate --tag-specifications 'ResourceType=instance,Tags=[{Key=mnemonic-name,Value=angry_cray}, {Key=course,Value=c756}, {Key=ssh-user,Value=ec2-user}, {Key=bill-to,Value=self}]' --security-group-ids sg-00000000000000000 --key-name id_rsa --instance-type g4dn.xlarge --image-id ami-0a100c9a1c22dd744
++erun:12> set +x
+angry_cray
+# the line immediate above has the name of the instance; you can also use eps to check for it
+~~~
+
+Note the various parameter values passed in and also the sole return value: `angry_cray` is the "adjective_name" name generated for your instance. 
+
+You can use `eps` to check on the progress:
+~~~
+$ eps
+i-056f5c0663546762c angry_cray g4dn.xlarge/x86_64 ec2-user@35.86.152.5 ami-0a100c9a1c22dd744 running
+i-0882715aa3516bdf4 tender_heisenberg t2.micro/x86_64 ubuntu@34.221.113.31 ami-036d46416a34a611c shutting-down
+~~~
+
+Once the state is `running1, log in using `essh`:
+
+~~~
+# log in using the name
+$ essh angry_cray
+The authenticity of host 'ec2-35-86-152-5.us-west-2.compute.amazonaws.com (35.86.152.5)' can't be established.
+ED25519 key fingerprint is SHA256:Qt4c2SsrVtl1EzJMODwyDmn0Il7JSEU0OYXkdovDRW4.
+This key is not known by any other names
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added 'ec2-54-191-192-143.us-west-2.compute.amazonaws.com,54.191.192.143' (ECDSA) to the list of known hosts.
+Warning: Permanently added 'ec2-35-86-152-5.us-west-2.compute.amazonaws.com' (ED25519) to the list of known hosts.
+... copious signon messages ...
 ~~~
 
-where `NAME` is the "adjective_name" name generated for your instance,
-such as `fervent_lichterman`.  If the `esn` command fails, it is likely because the instance
-has not fully started. Wait 15 seconds or so and try again.
-
-Once the `esn` command has completed, sign on to the instance:
-
-~~~bash
-/home/k8s# esshn NAME ec2-user
-... signon messages ...
-[ec2-user@NAME/ec2 ~]$ 
-~~~
 
 The prompt includes some useful reminders: the signon userid, the name of the machine, and that this session
 is a remote EC2 instance.
@@ -242,7 +239,7 @@ signed in to it. The GPU instances are relatively expensive to run
 Kill an instance by running the following in your own machine, not the EC2 instance, replacing `NAME` with the "adjective_name" of your instance:
 
 ~~~bash
-/home/k8s# ekn NAME
+$ ekn NAME
 ~~~
 
 ## The sample neural net application
@@ -374,7 +371,7 @@ on a CPU. Here are some tips to keep the process manageable:
    with resumption. Because EC2 instances are ephemeral, you will lose 
    the contents of the machine (including a saved checkpoints) whenever you 
    terminate your instance. By default,
-   this is the behaviour of `erun`/`epkg`/`armrun`/`armpkg`. 
+   this is the behaviour of `erun`. 
    (Look for the `--instance-initiated-shutdown-behavior terminate` flag
    during the creation of your EC2 instance; refer to the AWS documentation
    if you wish to adjust this.)
@@ -390,7 +387,7 @@ With this background out of the way, you are ready to start the assignment.
 ## Use three sessions to observe the performance
 
 You will need two more terminal windows into this EC2 instance.
-In two other windows, run the same `esshn NAME ec2-user` you ran
+In two other windows, run the same `essh NAME` you ran
 above. In one window run `top`, in the other run `nvidia-smi dmon -s um`.
 Arrange the windows
 with the training run in the largest window and performance monitors
@@ -572,19 +569,17 @@ In summary, this instance provides four times as much parallelism available when
 
 You start this instance using essentially the same commands as for an x86 instance, with a few differences:
 
-* The package command is `armpkg`.
+* You will launch your machine by selecting the ARM package `agpu_small`: `erun agpu_small`.
 * The userid is `ubuntu`.
 * The conda activation command is `source activate base`.
 
 Here are the commands, where `NAME` is the name assigned to the instance upon its creation:
 
 ~~~bash
-/home/k8s# armpkg gpu_small
+$ erun gpu_small
 ...
-/home/k8s# # Wait 1--2 minutes for the instance to completely initialize
-/home/k8s# esn NAME ubuntu
-...
-/home/k8s# esshn NAME ubuntu
+$ # Wait 1--2 minutes for the instance to completely initialize
+$ essh NAME
 ... signon messages ...
 [ubuntu@suspicious_spence/ec2 ~]$ source activate base
 (base) [ubuntu@suspicious_spence/ec2 ~]$ git clone https://github.com/scp756-221/gpu-assignment
@@ -604,10 +599,11 @@ After the initial throwaway run, train *NaiveNet* for the same width values as y
 Once you have gathered all the above timings, terminate the ARM instance.  The surest way to guarantee that you have no instances running in the background is to run the `epurge` command, which terminates *all* EC2 instances in the current region:
 
 ~~~bash
-/home/k8s# epurge
+$epurge
 ...
-/home/k8s# eps
-i-0735372c21aca9b7e g4dn.xlarge shutting-down 54.191.192.143 fervent_lichterman
+$ eps
+i-056f5c0663546762c boring_cray g4dn.xlarge/x86_64 ec2-user@35.86.152.5 ami-0a100c9a1c22dd744 shutting-down
+i-0882715aa3516bdf4 tender_heisenberg t2.micro/x86_64 ubuntu@ ami-036d46416a34a611c terminated
 ~~~
 
 ## Is this realistic?  Our future of heterogeneous cores

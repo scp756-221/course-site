@@ -277,7 +277,7 @@ Next you need to instantiate every template file.  In the tools
 container, run this command:
 
 ~~~bash
-/home/k8s# make -f k8s-tpl.mak templates
+/home/k8s# make -f Makefile-tpl templates
 tools/process-templates.sh
 /home/k8s#
 ~~~
@@ -298,7 +298,7 @@ care:
 
 * Do not copy any of its files outside the directory.
 * The directory should be only readable by you.
-* Do not remove any lines from its `.gitignore` file. This file protects you from inadvertent exposure of various secrets.
+* Do not remove any lines from its `.gitignore` file if you do not understand the purpose of this file or its content. This file protects you from inadvertent exposure of various secrets.
 * Do not create any other files in this directory.
 * Do not display any of these files on your terminal using programs such
   as `cat`. If you want to review their contents, do so in an editor
